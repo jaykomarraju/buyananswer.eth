@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+}
+
+.head{
+  font-family: 'Inconsolata';
+  font-weight: 700;
+  font-size: 3em;
+  /* background-color: pink; */
+  padding:25px;
+}
