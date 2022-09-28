@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import AnsweredQuestionTicket from "./AnsweredQuestionTicket";
 
 const Sect = styled.div`
 display:flex;
@@ -31,7 +32,9 @@ border-radius:10px;
 width:100px;
 color:red;`
 
-const QuestionsPlayground = styled.div``
+const QuestionsPlayground = styled.div`
+margin-bottom:150px;
+max-width:800px;padding:5px;`
 
 const ANSButton = styled.button`
 margin:5px;
@@ -60,20 +63,25 @@ const YourAns = styled.p``
 const Date = styled.p`
 margin-right:25px;`
 
+const PublicCheck = styled.div`display:flex; align-items:center;justify-content:right;padding:25px;`
+
+const Label = styled.p``
 
 const AnswerQuestionPlayground = () => {
   return (
     <QuestionsPlayground>
-      <ReceivedQuestion>
-        <Sect>
+      <AnsweredQuestionTicket/>
+      <AnsweredQuestionTicket/>
+      {/* <ReceivedQuestion> */}
+        {/* <Sect>
           <QText>
             Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying
             to start a company. What is the typical attitude toward college
             founders in the valley? Also do investors prefer a demo or a pitch?
           </QText>
           <QPrice>$12</QPrice>
-        </Sect>
-        <Answer>
+        </Sect> */}
+        {/* <Answer>
             <Info>
                 <YourAns>Your Answer:</YourAns>
                 <Date>March 22nd, 2021</Date>
@@ -81,9 +89,14 @@ const AnswerQuestionPlayground = () => {
             <AnsText>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </AnsText>
-        </Answer>
-      </ReceivedQuestion>
+        </Answer> */}
+        {/* <PublicCheck>
+            <Label>PUBLIC:</Label>
+            <input type="checkbox"></input>
+        </PublicCheck> */}
+      {/* </ReceivedQuestion> */}
 
+     
      
     </QuestionsPlayground>
   );

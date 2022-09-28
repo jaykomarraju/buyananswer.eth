@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import BottomNavBar from '../components/BottomNavBar';
 import ConnectWalletButton from '../components/ConnectWalletButton';
+import ConnectWalletIcon from '../components/ConnectWalletIcon';
 
 const Wrapper = styled.div`
 //   padding: 5%;
@@ -58,23 +60,26 @@ const BottomWrap = styled.div`
 const Home = () => {
   return (
     <Wrapper>
+        <ConnectWalletIcon/>
       {/* <Top>
         <ConnectWalletButton/>
       </Top> */}
       <Middle>
         <div class="head">BUY AN ANSWER</div>
-        <PushinP>WHO DO YOU WANT TO ASK A QUESTION?</PushinP>
+        <PushinP>WHOSE THOUGHTS ARE YOU TRYING TO PICK?</PushinP>
         <UsernameBoxEntry
           type="text"
           placeholder={headPlaceholder}
         ></UsernameBoxEntry>
         <br></br>
-        <Button>VISIT BOARD</Button>
+        <Link to="askpage">
+        <Button>VISIT BOARD</Button></Link>
       </Middle>
       {/* <BottomWrap> */}
 
         {/* <BottomNavBar/> */}
      {/* </BottomWrap> */}
+     <BottomNavBar /> 
     </Wrapper>
   )
 }

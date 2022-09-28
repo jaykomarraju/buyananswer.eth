@@ -3,6 +3,7 @@ import styled from "styled-components";
 import profile from "../assets/profile.png";
 import myboard from "../assets/myboard.png";
 import home from "../assets/home.png";
+import { Outlet, Link } from "react-router-dom";
 
 const MenuWrapper = styled.div`
   position: fixed;
@@ -50,21 +51,24 @@ const BottomNavBar = () => {
   return (
     <Centerer>
       <MenuWrapper>
+      <Link to="/profile">
         <MenuItem>
           <MenuImage>
             <Icon src={profile} alt="profile"></Icon>
           </MenuImage>
-        </MenuItem>
+        </MenuItem></Link>
+        <Link to="/">
         <MenuItem>
           <MenuImage>
             <Icon src={home} alt="home"></Icon>
           </MenuImage>
-        </MenuItem>
+        </MenuItem></Link>
+        <Link to="/myboard">
         <MenuItem>
           <MenuImage>
             <Icon src={myboard} alt="myboard"></Icon>
           </MenuImage>
-        </MenuItem>
+        </MenuItem></Link>
       </MenuWrapper>
     </Centerer>
   );

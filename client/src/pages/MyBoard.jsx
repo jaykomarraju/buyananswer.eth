@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import AnswerQuestionPlayground from '../components/AnswerQuestionsPlayground';
+import BottomNavBar from '../components/BottomNavBar';
+import ConnectWalletIcon from '../components/ConnectWalletIcon';
 import DeclinedQuestionPlayground from '../components/DeclinedQuestionsPlayground';
 import ReceivedQuestionPlayground from '../components/ReceivedQuestionPlayground';
 
@@ -33,21 +36,41 @@ const QuestionWrapper = styled.div``
 const Playground = styled.div``
 
 const MyBoard = () => {
+
+  const [selectedWindow, setSelectedWindow] = useState(<ReceivedQuestionPlayground/>)
+
+  const handleReceiveClick = () => {
+    setSelectedWindow(<ReceivedQuestionPlayground/>)
+  }
+
+  const handleAnswerClick = () => {
+    setSelectedWindow(<AnswerQuestionPlayground/>)
+  }
+
+  const handleDeclineClick = () => {
+    setSelectedWindow(<DeclinedQuestionPlayground/>)
+  }
+    
   return (
+
     <Wrapper>
+        <ConnectWalletIcon/>
         <Playground>
-            <Head>ASK JUSTIN KAN</Head>
+            <Head>ASK JOHN DOE</Head>
             <Buttons>
-                <Button>RECEIVED</Button>
-                <Button>ANSWERED</Button>
-                <Button>DECLINED</Button>
+                <Button onClick={handleReceiveClick}>RECEIVED</Button>
+                <Button onClick={handleAnswerClick}>ANSWERED</Button>
+                <Button onClick={handleDeclineClick}>DECLINED</Button>
             </Buttons>
             <QuestionWrapper>
-            <ReceivedQuestionPlayground/>
+            {selectedWindow}
+            {/* <ReceivedQuestionPlayground/> */}
             {/* <AnswerQuestionPlayground/> */}
+            
             {/* <DeclinedQuestionPlayground/> */}
             </QuestionWrapper>
         </Playground>
+        <BottomNavBar/>
     </Wrapper>
   )
 }
