@@ -18,8 +18,10 @@ const Ticket = styled.div`
 const Ticket2 = styled.div`
   cursor: pointer;
 //   display: flex;
-  background:#262626;
-  color:white;
+//   background:#262626;
+background:#00e390;
+// opacity: 0.5;
+  color:#1a1a1a;
   padding: 10px;
   margin-left: 10px;
 
@@ -60,7 +62,11 @@ const DateAnswered = styled.p`
   margin: 0;
 `;
 
-const Heading = styled.p`font-size:16px;margin-top:10px;font-weight:600;`
+const Heading = styled.p`
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: 600;
+`;
 
 const AnsweredQuestionTicket = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -88,9 +94,11 @@ const AnsweredQuestionTicket = () => {
         <Question>
           Monetize your digital presence by answering your fans' burning
           questions. We created a platform to capture the value of expertise.If
-          you have a digital influence and would like to answer some questions. Monetize your digital presence by answering your fans' burning
+          you have a digital influence and would like to answer some questions.
+          Monetize your digital presence by answering your fans' burning
           questions. We created a platform to capture the value of expertise.If
-          you have a digital influence and would like to answer some questions. Monetize your digital presence by answering your fans' burning
+          you have a digital influence and would like to answer some questions.
+          Monetize your digital presence by answering your fans' burning
           questions. We created a platform to capture the value of expertise.If
           you have a digital influence and would lik.
         </Question>

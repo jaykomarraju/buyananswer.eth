@@ -93,7 +93,7 @@ function App() {
         <Route path="profhist" element={<ProfHistPage />} />
         <Route path="successqorder" element={<SuccessQuestionOrder />} />
         <Route path="ansques" element={<AnswerQuestion />} />
-        <Route path="anscnfrm" element={<AnswerConfirmation/>}/>
+        <Route path="anscnfrm" element={<AnswerConfirmation/>}/>  
       </Routes>
       {/* <Container> */}
       {/* <ConnectWalletIcon /> */}
