@@ -30,6 +30,11 @@ contract BuyAnAnswer {
         uint256 timestamp
     );
 
+    event Deposit(address sender, uint amount);
+    event Withdrawal(address receiver, uint amount);
+    event Transfer(address sender, address receiver, uint amount);
+
+
     address payable owner;
 
     struct Question {
@@ -59,6 +64,7 @@ contract BuyAnAnswer {
     }
 
     mapping(string => Question[]) boardIDToQuestions;
+    mapping(address => uint) balances;
     mapping(address => Question[]) userToReceivedQuestions;
     mapping(address => Answer[]) userToAnswers;
     mapping(string => Answer[]) boardIDToAnswers;
@@ -69,13 +75,42 @@ contract BuyAnAnswer {
         owner = payable(msg.sender);
     }
 
-    // Send a message to a room and fire an event to be caught by the UI
+   function deposit() public payable {
+        emit Deposit(msg.sender, msg.value);
+        balances[msg.sender] += msg.value;
+    }
+
+    function getBalance() external view returns(uint){
+        return balances[msg.sender];
+    }
+
+    function withdraw(uint amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient funds");
+        emit Withdrawal(msg.sender, amount);
+        balances[msg.sender] -= amount;
+    }
+
+    function transfer(address receiver, uint amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient funds");
+        emit Transfer(msg.sender, receiver, amount);
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+    }
+
+    // Send a question as an object onto the boardID -> questions mapping and the user -> receivedQuestions mapping
+    // Also the price is deducted from the users balance as soon as question is asked.
+    // This must be stored within the contract until one of 3 actinos takes place
+    //              1. Question is answered by answerUser (93% of balance for question is transferred to answerUser, 7% to buyAnAnswer address)
+    //              2. Question is cancelled by askUser before 3 days of asking the question (97% of balance is transferred to askUser, 3% to buyAnAnswer address)
+    //              2. Question is cancelled by askUser after 3 days of asking the question (100% of balance is sent to askUser)
+    //              3. Question is declined by answerUser (100% of balance is sent to askUser)
     function sendQuestion(
         string calldata _qst,
         address _answerUser,
         string calldata _boardID,
         uint256 _prc
     ) external {
+        require(balances[msg.sender] >= _prc, "Insufficient funds");
         Question memory question = Question(
             _qst,
             payable(msg.sender),
@@ -86,6 +121,8 @@ contract BuyAnAnswer {
         );
         boardIDToQuestions[_boardID].push(question);
         userToReceivedQuestions[_answerUser].push(question);
+        balances[msg.sender] -= _prc;
+        // balances[_answerUser] += _prc;
         emit AskQuestion(
             _qst,
             payable(msg.sender),
@@ -94,8 +131,17 @@ contract BuyAnAnswer {
             _prc,
             _boardID
         );
+        emit Transfer(msg.sender, _answerUser, _prc);
     }
 
+
+    // if a question is answered it can't be answered again
+    // it is imparative to keep a track of the 
+    // balanced received by the contract in asking questions and the 
+    // exited balanced with answering questions
+    // Currently a user is able to answer one question multiple times and
+    // is using this keeping increasing the balance which is obviously
+    // a bug and must be corrected at the earliest.
     function sendAnswer(
         string calldata _boardID,
         uint256 _index,
@@ -111,7 +157,7 @@ contract BuyAnAnswer {
             );
             boardIDToAnswers[_boardID].push(answer);
             userToAnswers[payable(msg.sender)].push(answer);
-
+            balances[question.answerUser] += question.price;
             emit AnswerQuestion(
                 question,
                 payable(msg.sender),
