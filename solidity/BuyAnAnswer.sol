@@ -165,7 +165,7 @@ contract BuyAnAnswer {
                 block.timestamp
             );
         } else {
-            // err handling
+            // err handling (look into using the required keyword in solidity to handle stuff like this)
         }
     }
 
