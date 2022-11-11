@@ -90,6 +90,7 @@ const Username = styled.div`
   width: 100%;
   height: 45px;
   // margin-bottom:10px;
+
 `;
 
 const Desc = styled.textarea`
@@ -157,7 +158,7 @@ const Head2 = styled.div`
 const Platform = styled.div`
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
   text-align: right;
   margin-right: 0;
   // background:purple;
@@ -296,7 +297,7 @@ const ProfHistPage = () => {
               <Entry></Entry>
             </Platform>
             <Platform>
-              <Name>FACEBOOK,COM/</Name>
+              <Name>FACEBOOK.COM/</Name>
               <Entry></Entry>
             </Platform>
             <Platform>

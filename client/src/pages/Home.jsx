@@ -1,26 +1,23 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import styled from 'styled-components'
-import BottomNavBar from '../components/BottomNavBar';
-import ConnectWalletButton from '../components/ConnectWalletButton';
-import ConnectWalletIcon from '../components/ConnectWalletIcon';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import BottomNavBar from "../components/BottomNavBar";
+import ConnectWalletButton from "../components/ConnectWalletButton";
+import ConnectWalletIcon from "../components/ConnectWalletIcon";
 
 const Wrapper = styled.div`
-//   padding: 5%;
-height:90vh;
-// background:green;
-  display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+  //   padding: 5%;
+  height: 90vh;
+  // background:green;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const headPlaceholder = "Enter username...";
 
-const Middle = styled.div`
-    
-`;
-
+const Middle = styled.div``;
 
 const Top = styled.div`
   height: 20vh;
@@ -33,7 +30,7 @@ const Button = styled.button`
   background: transparent;
   border: 1.5px solid black;
   border-radius: 7px;
-  width:50%;
+  width: 50%;
 `;
 
 const UsernameBoxEntry = styled.input`
@@ -53,19 +50,26 @@ const PushinP = styled.p`
 `;
 
 const BottomWrap = styled.div`
-// position:fixed;
-// bottom:25px;
-`
+  // position:fixed;
+  // bottom:25px;
+`;
+
+const TopHeading = styled.p`
+  text-transform: uppercase;
+  font-size: 50px;
+  font-weight: 800;
+`;
 
 const Home = () => {
   return (
     <Wrapper>
-        <ConnectWalletIcon/>
+      <ConnectWalletIcon />
       {/* <Top>
         <ConnectWalletButton/>
       </Top> */}
       <Middle>
-        <div class="head">BUY AN ANSWER</div>
+          <TopHeading>BUY AN ANSWER</TopHeading>
+        
         <PushinP>WHOSE THOUGHTS ARE YOU TRYING TO PICK?</PushinP>
         <UsernameBoxEntry
           type="text"
@@ -73,15 +77,16 @@ const Home = () => {
         ></UsernameBoxEntry>
         <br></br>
         <Link to="askpage">
-        <Button>VISIT BOARD</Button></Link>
+          <Button>VISIT BOARD</Button>
+        </Link>
       </Middle>
       {/* <BottomWrap> */}
 
-        {/* <BottomNavBar/> */}
-     {/* </BottomWrap> */}
-     <BottomNavBar /> 
+      {/* <BottomNavBar/> */}
+      {/* </BottomWrap> */}
+      <BottomNavBar />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
