@@ -30,10 +30,9 @@ contract BuyAnAnswer {
         uint256 timestamp
     );
 
-    event Deposit(address sender, uint amount);
-    event Withdrawal(address receiver, uint amount);
-    event Transfer(address sender, address receiver, uint amount);
-
+    event Deposit(address sender, uint256 amount);
+    event Withdrawal(address receiver, uint256 amount);
+    event Transfer(address sender, address receiver, uint256 amount);
 
     address payable owner;
 
@@ -64,7 +63,7 @@ contract BuyAnAnswer {
     }
 
     mapping(string => Question[]) boardIDToQuestions;
-    mapping(address => uint) balances;
+    mapping(address => uint256) balances;
     mapping(address => Question[]) userToReceivedQuestions;
     mapping(address => Answer[]) userToAnswers;
     mapping(string => Answer[]) boardIDToAnswers;
@@ -75,22 +74,22 @@ contract BuyAnAnswer {
         owner = payable(msg.sender);
     }
 
-   function deposit() public payable {
+    function deposit() public payable {
         emit Deposit(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
     }
 
-    function getBalance() external view returns(uint){
+    function getBalance() external view returns (uint256) {
         return balances[msg.sender];
     }
 
-    function withdraw(uint amount) public {
+    function withdraw(uint256 amount) public {
         require(balances[msg.sender] >= amount, "Insufficient funds");
         emit Withdrawal(msg.sender, amount);
         balances[msg.sender] -= amount;
     }
 
-    function transfer(address receiver, uint amount) public {
+    function transfer(address receiver, uint256 amount) public {
         require(balances[msg.sender] >= amount, "Insufficient funds");
         emit Transfer(msg.sender, receiver, amount);
         balances[msg.sender] -= amount;
@@ -100,10 +99,10 @@ contract BuyAnAnswer {
     // Send a question as an object onto the boardID -> questions mapping and the user -> receivedQuestions mapping
     // Also the price is deducted from the users balance as soon as question is asked.
     // This must be stored within the contract until one of 3 actinos takes place
-    //              1. Question is answered by answerUser (93% of balance for question is transferred to answerUser, 7% to buyAnAnswer address)
-    //              2. Question is cancelled by askUser before 3 days of asking the question (97% of balance is transferred to askUser, 3% to buyAnAnswer address)
-    //              2. Question is cancelled by askUser after 3 days of asking the question (100% of balance is sent to askUser)
-    //              3. Question is declined by answerUser (100% of balance is sent to askUser)
+    //           1. Question is answered by answerUser (93% of balance for question is transferred to answerUser, 7% to buyAnAnswer address)
+    //           2. Question is cancelled by askUser before 3 days of asking the question (97% of balance is transferred to askUser, 3% to buyAnAnswer address)
+    //           3. Question is cancelled by askUser after 3 days of asking the question (100% of balance is sent to askUser)
+    //           4. Question is declined by answerUser (100% of balance is sent to askUser)
     function sendQuestion(
         string calldata _qst,
         address _answerUser,
@@ -134,10 +133,9 @@ contract BuyAnAnswer {
         emit Transfer(msg.sender, _answerUser, _prc);
     }
 
-
     // if a question is answered it can't be answered again
-    // it is imparative to keep a track of the 
-    // balanced received by the contract in asking questions and the 
+    // it is imparative to keep a track of the
+    // balanced received by the contract in asking questions and the
     // exited balanced with answering questions
     // Currently a user is able to answer one question multiple times and
     // is using this keeping increasing the balance which is obviously
@@ -186,10 +184,10 @@ contract BuyAnAnswer {
     }
 
     //
-    // Currently, there is no support for returning nested lists, so the length
-    // of messages needs to be fetched and then retrieved by index. This is not
-    // fast but it is the most gas efficient method for storing and
-    // fetching data. Ideally this only needs to be done once per room load
+    //  Currently, there is no support for returning nested lists, so the length
+    //  of messages needs to be fetched and then retrieved by index. This is not
+    //  fast but it is the most gas efficient method for storing and
+    //  fetching data. Ideally this only needs to be done once per room load
     function getQuestionCountForBoard(string calldata _boardID)
         external
         view
