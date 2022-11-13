@@ -47,6 +47,23 @@ contract BuyAnAnswer {
         bool isAnswered;
     }
 
+    struct User {
+        address payable userAddress;
+        string username;
+        string email;
+        string name;
+        string boardID;
+        // Question[] askedQuestions;
+        // Answer[] answeredQuestions;
+        string boardHeadline;
+        string boardDesc;
+        uint256 minQuestionPrice;
+        string INSTAGRAM;
+        string LINKEDIN;
+        string FACEBOOK;
+        string TWITTER;
+    }
+
     struct Answer {
         Question question;
         address payable answerer;
@@ -70,6 +87,7 @@ contract BuyAnAnswer {
     mapping(string => Answer[]) boardIDToAnswers;
     mapping(string => Board) boardIDToBoard;
     mapping(address => string) addressToUsername;
+    mapping(address => User) addressToUser;
 
     function BuyAnAnswerApp() public {
         owner = payable(msg.sender);
@@ -79,6 +97,8 @@ contract BuyAnAnswer {
         emit Deposit(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
     }
+
+    
 
     function getBalance() external view returns (uint256) {
         return balances[msg.sender];
@@ -97,6 +117,56 @@ contract BuyAnAnswer {
         balances[receiver] += amount;
     }
 
+        // address payable userAddress;
+        // string username;
+        // string email;
+        // string name;
+        // string boardID;
+        // Question[] askedQuestions;
+        // Answer[] answeredQuestions;
+        // string boardHeadline;
+        // string boardDesc;
+        // uint256 minQuestionPrice;
+        // string INSTAGRAM;
+        // string LINKEDIN;
+        // string FACEBOOK;
+        // string TWITTER;                                 
+
+    // this is a function to create a user initially
+    function createUser(
+        string calldata _username,
+        string calldata _email,
+        string calldata _name,
+        string calldata _boardID,
+        string calldata _boardHeadline,
+        string calldata _boardDesc,
+        uint256 _minPrice,
+        string calldata _socialLink_INSTAGRAM,
+        string calldata _socialLink_LINKEDIN,
+        string calldata _socialLink_FACEBOOK,
+        string calldata _socialLink_TWITTER
+        ) internal {
+            User memory u = User(
+                payable(msg.sender),
+                _username,
+                _email,
+                _name,
+                _boardID,
+                // boardIDToQuestions[_boardID],
+                // userToAnswers[payable(msg.sender)],
+                _boardHeadline,
+                _boardDesc,
+                _minPrice,
+                _socialLink_INSTAGRAM,
+                _socialLink_LINKEDIN,
+                _socialLink_FACEBOOK,
+                _socialLink_TWITTER
+            );
+
+            addressToUser[payable(msg.sender)] = u;
+        }
+    
+
     // Send a question as an object onto the boardID -> questions mapping and the user -> receivedQuestions mapping
     // Also the price is deducted from the users balance as soon as question is asked.
     // This must be stored within the contract until one of 3 actinos takes place
@@ -109,8 +179,10 @@ contract BuyAnAnswer {
         address _answerUser,
         string calldata _boardID,
         uint256 _prc
-    ) external {
-        require(balances[msg.sender] >= _prc, "Insufficient funds");
+    ) external payable {
+        // require(balances[msg.sender] >= _prc, "Insufficient funds");
+        // if (msg.value != _prc) {}
+        require (msg.value == _prc, "You have not sent the price amount");
         Question memory question = Question(
             _qst,
             payable(msg.sender),
@@ -147,7 +219,7 @@ contract BuyAnAnswer {
         string calldata _boardID,
         uint256 _index,
         string calldata _answer
-    ) external {
+    ) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
         if (!question.isAnswered) {
             boardIDToQuestions[_boardID][_index].isAnswered = true;
@@ -162,7 +234,8 @@ contract BuyAnAnswer {
                 userToAnswers[payable(msg.sender)].push(answer);
 
                 uint256 balanceToAnswerer = (question.price * 9) / 10;
-                balances[question.answerUser] += balanceToAnswerer;
+                // balances[question.answerUser] += balanceToAnswerer;
+                transfer(question.answerUser, balanceToAnswerer);
                 emit AnswerQuestion(
                     question,
                     payable(msg.sender),
@@ -185,9 +258,9 @@ contract BuyAnAnswer {
     //
     // Functions for creating and fetching custom usernames. If a user updates
     // their username it will update for all of their messages
-    function createUser(string calldata _name) external {
-        addressToUsername[msg.sender] = _name;
-    }
+    // function createUser(string calldata _name) external {
+    //     addressToUsername[msg.sender] = _name;
+    // }
 
     //
     function getUsernameForAddress(address _user)
@@ -259,6 +332,21 @@ contract BuyAnAnswer {
             question.timestamp,
             question.boardID,
             question.isAnswered
+        );
+    }
+
+    function getUserByAddress(
+        address _userAddress
+    )
+        external
+        view
+        returns (
+            string memory
+        )
+    {
+        User memory user = addressToUser[_userAddress];
+        return (
+            user.username
         );
     }
 
