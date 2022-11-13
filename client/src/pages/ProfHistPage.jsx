@@ -41,19 +41,24 @@ const Section = styled.div`
 const Section4 = styled.div`
   display: flex;
   align-items: center;
+  // color:blue;
+  margin-left:-20px;
 `;
 
 const ProfilePicture = styled.div`
   // background:pink;
-  width: 100px;
-  height: 100px;
+  // max-width: 100px;
+  // max-height: 100px;
+  width:100px;
+  height:100px;
+  aspect-ratio:1;
   border-radius: 50%;
   border: 1.5px solid black;
   margin: 20px;
 `;
 
 const Label = styled.p`
-  margin-right: 10px;
+  margin-right: 4px;
   // text-align: left;
   // background:blue;
 `;
@@ -80,6 +85,7 @@ const SmallEntry = styled.input`
 
 const Entries = styled.div`
   // color:blue;
+  
   // background:green;
 `;
 

@@ -7,7 +7,7 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 
 const Wrapper = styled.div`
   //   padding: 5%;
-  height: 90vh;
+  height: 75vh;
   // background:green;
   display: flex;
   flex-direction: column;
@@ -17,7 +17,10 @@ const Wrapper = styled.div`
 
 const headPlaceholder = "Enter username...";
 
-const Middle = styled.div``;
+const Middle = styled.div`
+// width:95vw;
+// margin:5px;
+`;
 
 const Top = styled.div`
   height: 20vh;
@@ -36,13 +39,16 @@ const Button = styled.button`
 const UsernameBoxEntry = styled.input`
 font-size:2em;
 font-family:'Poppins'
-width:80%;
+// width:80%;
 background:transparent;
 padding:5px;
 text-align:right;
 border: 2px solid black;
 border-radius:7px;
 margin-bottom:20px;
+width:80vw;
+max-width:500px;
+// margin-left:10%;
 `;
 
 const PushinP = styled.p`
@@ -60,8 +66,14 @@ const TopHeading = styled.p`
   font-weight: 800;
 `;
 
+const Container = styled.div`
+  width:100vw;
+  height:100vh;
+`
+
 const Home = () => {
   return (
+    <Container>
     <Wrapper>
       <ConnectWalletIcon />
       {/* <Top>
@@ -85,7 +97,7 @@ const Home = () => {
       {/* <BottomNavBar/> */}
       {/* </BottomWrap> */}
       <BottomNavBar />
-    </Wrapper>
+    </Wrapper></Container>
   );
 };
 
