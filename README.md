@@ -1,10 +1,10 @@
-# buyananswer.eth
+repo: buyananswer.eth
 
 Work:
 
 Working figma: https://www.figma.com/file/PnXms604MyGmsjdNyR8Wbz/buyananswer-MVP?node-id=0%3A1
 
-## BUYANANSWER.COM
+## BUYANANSWER.io
 Building the digital transaction of answering a question
 	
 Buy An Answer is a web application that allows users to pay each other to answer questions. It could be simply asking your favorite recipe creator for tips on tweaking your grandma's recipe, getting on your favorite podcasters to talk about topics you care about, or a personal TikTok from your online finance guru answering your particular question. The medium of answering the question doesn’t really doesn’t matter. In a world where everyone is building social followings online, a tool to monetize this digital credibility is revolutionary in the knowledge-sharing creator economy.
