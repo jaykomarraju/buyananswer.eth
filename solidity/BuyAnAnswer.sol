@@ -44,6 +44,7 @@ contract BuyAnAnswer {
         uint256 price;
         uint256 timestamp;
         string boardID;
+        bool isAnswered;
     }
 
     struct Answer {
@@ -116,11 +117,13 @@ contract BuyAnAnswer {
             payable(_answerUser),
             _prc,
             block.timestamp,
-            _boardID
+            _boardID,
+            false
         );
         boardIDToQuestions[_boardID].push(question);
         userToReceivedQuestions[_answerUser].push(question);
         balances[msg.sender] -= _prc;
+        balances[address(this)] += _prc;
         // balances[_answerUser] += _prc;
         emit AskQuestion(
             _qst,
@@ -146,24 +149,36 @@ contract BuyAnAnswer {
         string calldata _answer
     ) external {
         Question memory question = boardIDToQuestions[_boardID][_index];
-        if (question.answerUser == payable(msg.sender)) {
-            Answer memory answer = Answer(
-                question,
-                payable(msg.sender),
-                _answer,
-                block.timestamp
-            );
-            boardIDToAnswers[_boardID].push(answer);
-            userToAnswers[payable(msg.sender)].push(answer);
-            balances[question.answerUser] += question.price;
+        if (!question.isAnswered) {
+            boardIDToQuestions[_boardID][_index].isAnswered = true;
+            if (question.answerUser == payable(msg.sender)) {
+                Answer memory answer = Answer(
+                    question,
+                    payable(msg.sender),
+                    _answer,
+                    block.timestamp
+                );
+                boardIDToAnswers[_boardID].push(answer);
+                userToAnswers[payable(msg.sender)].push(answer);
+
+                uint256 balanceToAnswerer = (question.price * 9) / 10;
+                balances[question.answerUser] += balanceToAnswerer;
+                emit AnswerQuestion(
+                    question,
+                    payable(msg.sender),
+                    _answer,
+                    block.timestamp
+                );
+            } else {
+                // err handling (look into using the required keyword in solidity to handle stuff like this)
+            }
+        } else {
             emit AnswerQuestion(
                 question,
                 payable(msg.sender),
-                _answer,
+                "already answered",
                 block.timestamp
             );
-        } else {
-            // err handling (look into using the required keyword in solidity to handle stuff like this)
         }
     }
 
@@ -231,7 +246,8 @@ contract BuyAnAnswer {
             address,
             uint256,
             uint256,
-            string memory
+            string memory,
+            bool
         )
     {
         Question memory question = boardIDToQuestions[_boardID][_index];
@@ -241,7 +257,8 @@ contract BuyAnAnswer {
             question.answerUser,
             question.price,
             question.timestamp,
-            question.boardID
+            question.boardID,
+            question.isAnswered
         );
     }
 
