@@ -21,6 +21,8 @@ import ProfHistPage from "./pages/ProfHistPage";
 import SuccessQuestionOrder from "./pages/SuccessQuestionOrder";
 import AnswerQuestion from "./pages/AnswerQuestion";
 import AnswerConfirmation from "./pages/AnswerConfirmation";
+import CreateProfile from "./pages/CreateProfile";
+import ProfHistEditPage from "./pages/ProfHistEditPage";
 
 const Container = styled.div`
   width: 100vw;
@@ -79,9 +81,9 @@ const BottomWrap = styled.div`
 
 const headPlaceholder = "Enter username...";
 
-const getWeb3 = () => {
-  return new Web3('HTTP://127.0.0.1:7545');
-}
+// const getWeb3 = () => {
+//   return new Web3('HTTP://127.0.0.1:7545');
+// }
 
 function App() {
   return (
@@ -90,7 +92,9 @@ function App() {
         <Route path="/" element={<Home />} />
         {/* <Route index element={<BottomNavBar />} /> */}
         <Route path="profile" element={<ProfHistPage />} />
-        <Route path="createprofile" element={<Profile />} />
+        {/* <Route path="createprofile" element={<Profile />} /> */}
+        <Route path="createprofile" element={<CreateProfile />} />
+        <Route path="editprofile" element={<ProfHistEditPage />} />
         <Route path="myboard" element={<MyBoard />} />
         <Route path="answered" element={<AnswerQuestionPlayground />} />
         <Route path="declined" element={<DeclinedQuestionPlayground />} />

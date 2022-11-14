@@ -4,24 +4,27 @@ import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 
-const Wrapper = styled.div`
-  // padding: 5%;
-  margin-top: 30px;
-  margin-bottom: 100px;
-  height: 80%;
-  // margin-left:10px;
-  // margin-right:10px;
-  // background:lightgreen;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  // justify-content: center;
-`;
-
 const Cont = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px 20px 20px 20px;
+  // background:#4B9CD3;
+`;
+const Wrapper = styled.div`
+// background:lightgreen;
+// padding: 5%;
+margin-top: 30px;
+margin-bottom: 100px;
+height: 80%;
+width:100%;
+max-width:800px;
+// margin-left:10px;
+// margin-right:10px;
+// background:lightgreen;
+display: flex;
+flex-direction: column;
+align-items: center;
+// justify-content: center;
 `;
 
 const Middle = styled.div`
@@ -36,6 +39,7 @@ const Section = styled.div`
 const ProfilePicture = styled.div`
   // background:pink;
   width: 100px;
+  aspect-ratio: 1;
   height: 100px;
   border-radius: 50%;
   border: 1.5px solid black;
@@ -172,17 +176,26 @@ const CreateProfile = () => {
           <Section>
             <ProfilePicture></ProfilePicture>
             <Entries>
-              <Username>
+              <Button>Upload Profile Picture</Button>
+              {/* <Username>
                 <Label>USERNAME*</Label>
                 <Entry></Entry>
               </Username>
               <Username>
                 <Label>EMAIL*</Label>
                 <Entry></Entry>
-              </Username>
+              </Username> */}
             </Entries>
           </Section>
           <Section>
+          <Username>
+                <Label>USERNAME</Label>
+                <Entry></Entry>
+              </Username></Section><Section>
+              <Username>
+                <Label>EMAIL</Label>
+                <Entry></Entry>
+              </Username></Section><Section>
             <Username>
               <Label>NAME</Label>
               <Entry></Entry>
@@ -210,7 +223,7 @@ const CreateProfile = () => {
                 <Name>INSTRAGRAM</Name>
                 <Entry2></Entry2>
               </Platform>
-              <Platform>
+              {/* <Platform>
                 <Name>LINKEDIN</Name>
                 <Entry2></Entry2>
               </Platform>
@@ -221,7 +234,7 @@ const CreateProfile = () => {
               <Platform>
                 <Name>TWITTER</Name>
                 <Entry2></Entry2>
-              </Platform>
+              </Platform> */}
             </Socials>
           </Section>
           <Link to="/profhist">

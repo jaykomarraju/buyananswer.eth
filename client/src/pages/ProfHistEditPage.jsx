@@ -255,7 +255,7 @@ const Question = styled.p`flex:7; text-align:left;padding-left:10px;`
 
 const Fin = styled.p`flex:1;font-size:25px;`
 
-const ProfHistPage = () => {
+const ProfHistEditPage = () => {
 
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
@@ -301,33 +301,33 @@ const ProfHistPage = () => {
           <Spread>
             <First></First>
             <div>
-              <Link to="/editprofile">
-              <Second>EDIT</Second></Link>
-              {/* <Second>SAVE</Second> */}
+              {/* <Second>EDIT</Second> */}
+              <Link to="/profile">
+              <Second>SAVE</Second></Link>
             </div>
           </Spread>
         </Section>
         <br></br>
         <Section>
           <Label>HEADLINE</Label>
-          {/* <Entry value=""></Entry> */}
-          <ValueLabel>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </ValueLabel>
+          <Entry value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."></Entry>
+          {/* <ValueLabel>
+          
+          </ValueLabel> */}
         </Section>
         <Section>
           <Label>PUBLIC BOARD DESCRIPTION</Label>
-          {/* <Desc></Desc> */}
-          <ValueLabel>
+          <Desc value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."></Desc>
+          {/* <ValueLabel>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          </ValueLabel>
+          </ValueLabel> */}
         </Section>
         <Section>
           <Label>MINIMUM QUESTION PRICE</Label>
-          {/* <SmallEntry></SmallEntry> */}
-          <MinPriceValueLabel>
+          <SmallEntry value="$5.00"></SmallEntry>
+          {/* <MinPriceValueLabel>
             $5.00
-          </MinPriceValueLabel>
+          </MinPriceValueLabel> */}
         </Section>
         <Section>
           <Socials>
@@ -335,10 +335,10 @@ const ProfHistPage = () => {
 
             <Platform>
               <Name>INSTRAGRAM.COM/</Name>
-              {/* <Entry></Entry> */}
-              <LinkValueLabel>
+              <Entry value="johndoe"></Entry>
+              {/* <LinkValueLabel>
             johndoe
-          </LinkValueLabel>
+          </LinkValueLabel> */}
             </Platform>
             {/* <Platform>
               <Name>LINKEDIN.COM/</Name>
@@ -364,4 +364,4 @@ const ProfHistPage = () => {
   );
 };
 
-export default ProfHistPage;
+export default ProfHistEditPage;

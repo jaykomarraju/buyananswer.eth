@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import BottomNavBar from '../components/BottomNavBar';
 import ConnectWalletIcon from '../components/ConnectWalletIcon';
 
+const Container = styled.div`
+  height:100vh;
+  width:100vw;
+`
+
 const Wrapper = styled.div`
 //   padding: 5%;
 height:100vh;
@@ -12,7 +17,7 @@ height:100vh;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    margin-top:63px;
+    margin-top:15%;
     margin-left:auto;
     margin-right:auto;
     max-width:800px;
@@ -26,7 +31,9 @@ const ProfilePicture = styled.div`
   border: 1.5px solid black;
   margin: 20px;
 `;
-const Heading  = styled.p``
+const Heading  = styled.p`
+font-size: 2em;
+`
 
 const BoardDesc = styled.div`display:flex;align-items:center;`
 
@@ -38,7 +45,7 @@ const Pic = styled.div``
 
 const QuestionEntry = styled.textarea`
 width:85%;
-height:300px;
+min-height:300px;
 font-size:16px;
 background:transparent;
 border:1.5px solid black;
@@ -61,6 +68,11 @@ border: 1.5px solid black;
 border-radius:10px;
 `
 
+const Headline = styled.p`
+margin-top:-35px;
+margin-bottom:40px;
+`
+
 const Button = styled.button`
 padding:15px;
 border:1.5px solid black;
@@ -76,6 +88,7 @@ font-weight:600;`
 
 const AskPage = () => {
   return (
+    <Container>
     <Wrapper>
         <ConnectWalletIcon/>
         <Url>BUYANANSWER.COM/JOHNDOE</Url>
@@ -83,7 +96,12 @@ const AskPage = () => {
             <Pic>
         <ProfilePicture></ProfilePicture></Pic><Name>
         <Heading>ASK JOHN DOE</Heading>
-        <SubHeading>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</SubHeading></Name></BoardDesc>
+        <Headline>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </Headline>
+        <SubHeading>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.  
+        </SubHeading></Name></BoardDesc>
         <QuestionEntry placeholder="Enter your question here..."></QuestionEntry>
         <PriorityBonusSect>
             <Label>PRIORITY BONUS:</Label>
@@ -91,12 +109,12 @@ const AskPage = () => {
         </PriorityBonusSect>
         <TotalSect>
             <Label>TOTAL:</Label>
-            <Label>$14.50 (0.01 ETH)</Label>
+            <Label>$5.00 (0.0040 ETH)</Label>
         </TotalSect>
         <Link to="/successqorder">
         <Button>BUY ANSWER</Button></Link>
         <BottomNavBar/>
-    </Wrapper>
+    </Wrapper></Container>
   )
 }
 

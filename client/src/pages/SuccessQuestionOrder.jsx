@@ -93,7 +93,7 @@ const SuccessQuestionOrder = () => {
             picth deck? (Obviously I'm looking at tech startups specifically)
           </QuestionText>
           <Right>
-            <AmtPaid>$10.21</AmtPaid>
+            <AmtPaid>$5.00</AmtPaid>
             <DateAsked>MAR 29, 2022</DateAsked>
           </Right>
         </Box>
