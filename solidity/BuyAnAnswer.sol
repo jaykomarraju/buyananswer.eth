@@ -240,8 +240,10 @@ contract BuyAnAnswer {
         // require(balances[msg.sender] >= _prc, "Insufficient funds");
         // if (msg.value != _prc) {}
         bytes32 _boardID = addressToUser[_answerUser].boardID;
+        uint minP = boardIDToBoard[_boardID].minQuestionPrice;
         require(msg.value == _prc, "You have not sent the price amount");
         require(_boardID != 0, "user you are asking is not registered");
+        require(_prc >= minP, "the price you have set is lower than the minimum price set by the users you are asking.");
         Question memory question = Question(
             _qst,
             payable(msg.sender),
@@ -277,6 +279,7 @@ contract BuyAnAnswer {
         require(question.answerUser == payable(msg.sender));
         require (!(boardIDToQuestions[_boardID][_index].isAnswered), "Already answered/declined");
         boardIDToQuestions[_boardID][_index].isAnswered = true;
+        
         question.isAnswered = true;
         boardIDToDeclinedQuestions[_boardID].push(question);
     }
