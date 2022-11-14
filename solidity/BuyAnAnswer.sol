@@ -91,6 +91,7 @@ contract BuyAnAnswer {
 
     mapping(bytes32 => Question[]) boardIDToQuestions;
     mapping(bytes32 => Question[]) boardIDToDeclinedQuestions;
+    mapping(bytes32 => Question[]) boardIDToAnsweredQuestions;
     mapping(address => uint256) balances;
     mapping(address => Question[]) userToReceivedQuestions;
     mapping(address => Answer[]) userToAnswers;
@@ -290,6 +291,7 @@ contract BuyAnAnswer {
         if (!question.isAnswered) {
             boardIDToQuestions[_boardID][_index].isAnswered = true;
             question.isAnswered = true;
+            
             if (question.answerUser == payable(msg.sender)) {
                 Answer memory answer = Answer(
                     question,
@@ -298,6 +300,7 @@ contract BuyAnAnswer {
                     block.timestamp
                 );
                 boardIDToAnswers[_boardID].push(answer);
+                boardIDToAnsweredQuestions[_boardID].push(question);
                 userToAnswers[payable(msg.sender)].push(answer);
 
                 uint256 balanceToAnswerer = (question.price * 9) / 10;
