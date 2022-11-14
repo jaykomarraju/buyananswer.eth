@@ -276,6 +276,7 @@ contract BuyAnAnswer {
         require(question.answerUser == payable(msg.sender));
         require (!(boardIDToQuestions[_boardID][_index].isAnswered), "Already answered/declined");
         boardIDToQuestions[_boardID][_index].isAnswered = true;
+        question.isAnswered = true;
         boardIDToDeclinedQuestions[_boardID].push(question);
     }
 
