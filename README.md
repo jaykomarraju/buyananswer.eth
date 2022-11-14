@@ -3,7 +3,7 @@ repo: buyananswer.eth
 
 Work:
 
-Jump To Understand the Structures and Systems in BUYANANSWER: https://github.com/jaykomarraju/buyananswer.eth/blob/main/docs/System%20Design.pdf
+Structures and Systems in BUYANANSWER: https://github.com/jaykomarraju/buyananswer.eth/blob/main/docs/System%20Design.pdf
 
 Working figma: https://www.figma.com/file/PnXms604MyGmsjdNyR8Wbz/buyananswer-MVP?node-id=0%3A1
 
