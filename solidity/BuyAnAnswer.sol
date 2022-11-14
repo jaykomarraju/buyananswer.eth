@@ -273,6 +273,7 @@ contract BuyAnAnswer {
 
     function declineAnswer(bytes32 _boardID, uint256 _index) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
+        require(question.answerUser == payable(msg.sender));
         require (!(boardIDToQuestions[_boardID][_index].isAnswered), "Already answered/declined");
         boardIDToQuestions[_boardID][_index].isAnswered = true;
         boardIDToDeclinedQuestions[_boardID].push(question);
@@ -284,8 +285,10 @@ contract BuyAnAnswer {
         string calldata _answer
     ) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
+        require(question.answerUser == payable(msg.sender), "Not authorized to answer.");
         if (!question.isAnswered) {
             boardIDToQuestions[_boardID][_index].isAnswered = true;
+            question.isAnswered = true;
             if (question.answerUser == payable(msg.sender)) {
                 Answer memory answer = Answer(
                     question,
