@@ -96,8 +96,8 @@ const AskPage = () => {
             <Pic>
         <ProfilePicture></ProfilePicture></Pic><Name>
         <Heading>ASK JOHN DOE</Heading>
-        <Headline>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        <Headline><i>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i>
         </Headline>
         <SubHeading>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.  
