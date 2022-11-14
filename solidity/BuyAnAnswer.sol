@@ -15,7 +15,7 @@ contract BuyAnAnswer {
         address payable answerUser,
         uint256 timestamp,
         uint256 price,
-        string boardID
+        bytes32 boardID
     );
     event AnswerQuestion(
         Question question,
@@ -24,10 +24,20 @@ contract BuyAnAnswer {
         uint256 timestamp
     );
     event CreateBoard(
-        string boardID,
+        bytes32 boardID,
         address payable user,
-        string tagline,
+        string boardHeadline,
+        string boardDesc,
+        uint256 minQuestionPrice,
         uint256 timestamp
+    );
+    event CreateUser(
+        address payable userAddress,
+        string username,
+        string email,
+        string name,
+        bytes32 boardID,
+        string INSTAGRAM
     );
 
     event Deposit(address sender, uint256 amount);
@@ -43,7 +53,7 @@ contract BuyAnAnswer {
         address payable answerUser;
         uint256 price;
         uint256 timestamp;
-        string boardID;
+        bytes32 boardID;
         bool isAnswered;
     }
 
@@ -52,16 +62,13 @@ contract BuyAnAnswer {
         string username;
         string email;
         string name;
-        string boardID;
+        bytes32 boardID;
         // Question[] askedQuestions;
         // Answer[] answeredQuestions;
-        string boardHeadline;
-        string boardDesc;
-        uint256 minQuestionPrice;
         string INSTAGRAM;
-        string LINKEDIN;
-        string FACEBOOK;
-        string TWITTER;
+        // string LINKEDIN;
+        // string FACEBOOK;
+        // string TWITTER;
     }
 
     struct Answer {
@@ -72,20 +79,22 @@ contract BuyAnAnswer {
     }
 
     struct Board {
-        string boardID;
+        bytes32 boardID;
         address payable owner;
-        string tagline;
-        Question[] receivedQuestions;
-        Answer[] answers;
+        string boardHeadline;
+        string boardDesc;
+        uint256 minQuestionPrice;
+        // Question[] receivedQuestions;
+        // Answer[] answers;
         uint256 createdAt;
     }
 
-    mapping(string => Question[]) boardIDToQuestions;
+    mapping(bytes32 => Question[]) boardIDToQuestions;
     mapping(address => uint256) balances;
     mapping(address => Question[]) userToReceivedQuestions;
     mapping(address => Answer[]) userToAnswers;
-    mapping(string => Answer[]) boardIDToAnswers;
-    mapping(string => Board) boardIDToBoard;
+    mapping(bytes32 => Answer[]) boardIDToAnswers;
+    mapping(bytes32 => Board) boardIDToBoard;
     mapping(address => string) addressToUsername;
     mapping(address => User) addressToUser;
 
@@ -98,8 +107,6 @@ contract BuyAnAnswer {
         balances[msg.sender] += msg.value;
     }
 
-    
-
     function getBalance() external view returns (uint256) {
         return balances[msg.sender];
     }
@@ -110,62 +117,111 @@ contract BuyAnAnswer {
         balances[msg.sender] -= amount;
     }
 
-    function transfer(address receiver, uint256 amount) public {
-        require(balances[msg.sender] >= amount, "Insufficient funds");
-        emit Transfer(msg.sender, receiver, amount);
-        balances[msg.sender] -= amount;
+    function transfer(
+        address sender,
+        address receiver,
+        uint256 amount
+    ) public {
+        require(balances[sender] >= amount, "Insufficient funds");
+        emit Transfer(sender, receiver, amount);
+        balances[sender] -= amount;
         balances[receiver] += amount;
     }
 
-        // address payable userAddress;
-        // string username;
-        // string email;
-        // string name;
-        // string boardID;
-        // Question[] askedQuestions;
-        // Answer[] answeredQuestions;
-        // string boardHeadline;
-        // string boardDesc;
-        // uint256 minQuestionPrice;
-        // string INSTAGRAM;
-        // string LINKEDIN;
-        // string FACEBOOK;
-        // string TWITTER;                                 
+    // address payable userAddress;
+    // string username;
+    // string email;
+    // string name;
+    // string boardID;
+    // Question[] askedQuestions;
+    // Answer[] answeredQuestions;
+    // string boardHeadline;
+    // string boardDesc;
+    // uint256 minQuestionPrice;
+    // string INSTAGRAM;
+    // string LINKEDIN;
+    // string FACEBOOK;
+    // string TWITTER;
+
+    // function toBytes(string calldata x) public returns (bytes memory b) {
+    //     b = new bytes(32);
+    //     assembly { mstore(add(b, 32), x.offset) }
+    // }
+    function createBoardID(string calldata usrnm, string calldata eml)
+        internal
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(usrnm, eml));
+    }
+
+    function createBoard(
+        string calldata _boardHeadline,
+        string calldata _boardDesc,
+        uint256 _minQuestionPrice
+    ) external {
+        require(
+            addressToUser[(msg.sender)].boardID != 0,
+            "create a profile first"
+        );
+        Board memory creationBoard = Board(
+            addressToUser[(msg.sender)].boardID,
+            addressToUser[(msg.sender)].userAddress,
+            _boardHeadline,
+            _boardDesc,
+            _minQuestionPrice,
+            block.timestamp
+        );
+        boardIDToBoard[addressToUser[(msg.sender)].boardID] = creationBoard;
+        emit CreateBoard(
+            addressToUser[(msg.sender)].boardID,
+            addressToUser[(msg.sender)].userAddress,
+            _boardHeadline,
+            _boardDesc,
+            _minQuestionPrice,
+            block.timestamp
+        );
+    }
 
     // this is a function to create a user initially
     function createUser(
         string calldata _username,
         string calldata _email,
         string calldata _name,
-        string calldata _boardID,
-        string calldata _boardHeadline,
-        string calldata _boardDesc,
-        uint256 _minPrice,
-        string calldata _socialLink_INSTAGRAM,
-        string calldata _socialLink_LINKEDIN,
-        string calldata _socialLink_FACEBOOK,
-        string calldata _socialLink_TWITTER
-        ) internal {
-            User memory u = User(
-                payable(msg.sender),
-                _username,
-                _email,
-                _name,
-                _boardID,
-                // boardIDToQuestions[_boardID],
-                // userToAnswers[payable(msg.sender)],
-                _boardHeadline,
-                _boardDesc,
-                _minPrice,
-                _socialLink_INSTAGRAM,
-                _socialLink_LINKEDIN,
-                _socialLink_FACEBOOK,
-                _socialLink_TWITTER
-            );
+        string calldata _socialLink_INSTAGRAM
+    ) external // string calldata _socialLink_LINKEDIN,
+    // string calldata _socialLink_FACEBOOK,
+    // string calldata _socialLink_TWITTER
+    {
+        bytes32 _boardID = createBoardID(_username, _email);
+        User memory u = User(
+            payable(msg.sender),
+            _username,
+            _email,
+            _name,
+            _boardID,
+            _socialLink_INSTAGRAM
+            // _socialLink_LINKEDIN,
+            // _socialLink_FACEBOOK,
+            // _socialLink_TWITTER
+        );
 
-            addressToUser[payable(msg.sender)] = u;
-        }
-    
+        addressToUser[payable(msg.sender)] = u;
+
+        emit CreateUser(
+            // address payable userAddress,
+            // string username,
+            // string email,
+            // string name,
+            // bytes32 boardID,
+            // string INSTAGRAM
+            payable(msg.sender),
+            _username,
+            _email,
+            _name,
+            _boardID,
+            _socialLink_INSTAGRAM
+        );
+    }
 
     // Send a question as an object onto the boardID -> questions mapping and the user -> receivedQuestions mapping
     // Also the price is deducted from the users balance as soon as question is asked.
@@ -177,12 +233,13 @@ contract BuyAnAnswer {
     function sendQuestion(
         string calldata _qst,
         address _answerUser,
-        string calldata _boardID,
         uint256 _prc
     ) external payable {
         // require(balances[msg.sender] >= _prc, "Insufficient funds");
         // if (msg.value != _prc) {}
-        require (msg.value == _prc, "You have not sent the price amount");
+        bytes32 _boardID = addressToUser[_answerUser].boardID;
+        require(msg.value == _prc, "You have not sent the price amount");
+        require(_boardID != 0, "user you are asking is not registered");
         Question memory question = Question(
             _qst,
             payable(msg.sender),
@@ -205,7 +262,7 @@ contract BuyAnAnswer {
             _prc,
             _boardID
         );
-        emit Transfer(msg.sender, _answerUser, _prc);
+        emit Transfer(msg.sender, address(this), _prc);
     }
 
     // if a question is answered it can't be answered again
@@ -216,7 +273,7 @@ contract BuyAnAnswer {
     // is using this keeping increasing the balance which is obviously
     // a bug and must be corrected at the earliest.
     function sendAnswer(
-        string calldata _boardID,
+        bytes32 _boardID,
         uint256 _index,
         string calldata _answer
     ) external payable {
@@ -235,7 +292,7 @@ contract BuyAnAnswer {
 
                 uint256 balanceToAnswerer = (question.price * 9) / 10;
                 // balances[question.answerUser] += balanceToAnswerer;
-                transfer(question.answerUser, balanceToAnswerer);
+                transfer(address(this), question.answerUser, balanceToAnswerer);
                 emit AnswerQuestion(
                     question,
                     payable(msg.sender),
@@ -263,12 +320,25 @@ contract BuyAnAnswer {
     // }
 
     //
-    function getUsernameForAddress(address _user)
+    function getUserForAddress(address _user)
         external
         view
-        returns (string memory)
+        returns (string memory, bytes32)
     {
-        return addressToUsername[_user];
+        return (addressToUser[_user].username, addressToUser[_user].boardID);
+    }
+
+    function getBoardFromUserAddress(address _user)
+        external
+        view
+        returns (Board memory)
+    {
+        return (boardIDToBoard[addressToUser[_user].boardID]);
+    }
+
+    function getThisUser() external view returns (string memory, bytes32) {
+        address _user = payable(msg.sender);
+        return (addressToUser[_user].username, addressToUser[_user].boardID);
     }
 
     //
@@ -276,7 +346,7 @@ contract BuyAnAnswer {
     //  of messages needs to be fetched and then retrieved by index. This is not
     //  fast but it is the most gas efficient method for storing and
     //  fetching data. Ideally this only needs to be done once per room load
-    function getQuestionCountForBoard(string calldata _boardID)
+    function getQuestionCountForBoard(bytes32 _boardID)
         external
         view
         returns (uint256)
@@ -307,10 +377,7 @@ contract BuyAnAnswer {
     //
     // There is no support for returning a struct to web3, so this needs to be
     // returned as multiple items. This will throw an error if the index is invalid
-    function getQuestionByIndexForBoard(
-        string calldata _boardID,
-        uint256 _index
-    )
+    function getQuestionByIndexForBoard(bytes32 _boardID, uint256 _index)
         external
         view
         returns (
@@ -319,7 +386,7 @@ contract BuyAnAnswer {
             address,
             uint256,
             uint256,
-            string memory,
+            bytes32,
             bool
         )
     {
@@ -335,25 +402,16 @@ contract BuyAnAnswer {
         );
     }
 
-    function getUserByAddress(
-        address _userAddress
-    )
+    function getUserByAddress(address _userAddress)
         external
         view
-        returns (
-            string memory
-        )
+        returns (User memory)
     {
         User memory user = addressToUser[_userAddress];
-        return (
-            user.username
-        );
+        return (user);
     }
 
-    function getAnswerFromBoardIDAndIndex(
-        string calldata _boardID,
-        uint256 _index
-    )
+    function getAnswerFromBoardIDAndIndex(bytes32 _boardID, uint256 _index)
         external
         view
         returns (
