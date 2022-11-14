@@ -1,4 +1,6 @@
 import logo from "./logo.svg";
+import Web3 from "web3";
+// import BuyAnAnswer from './solidity/'
 import "./App.css";
 import styled from "styled-components";
 import React from "react";
@@ -76,6 +78,10 @@ const BottomWrap = styled.div`
 // `
 
 const headPlaceholder = "Enter username...";
+
+const getWeb3 = () => {
+  return new Web3('HTTP://127.0.0.1:7545')
+}
 
 function App() {
   return (
