@@ -1,13 +1,13 @@
 
 repo: buyananswer.eth
 
-# Work:
+### Work:
 
 Structures and Systems in BUYANANSWER: https://github.com/jaykomarraju/buyananswer.eth/blob/main/docs/System%20Design.pdf
 
 Working figma: https://www.figma.com/file/PnXms604MyGmsjdNyR8Wbz/buyananswer-MVP?node-id=0%3A1
 
-## BUYANANSWER.io
+# BUYANANSWER.io
 Building the digital transaction of answering a question
 	
 Buy An Answer is a web application that allows users to pay each other to answer questions. It could be simply asking your favorite recipe creator for tips on tweaking your grandma's recipe, getting on your favorite podcasters to talk about topics you care about, or a personal TikTok from your online finance guru answering your particular question. The medium of answering the question doesn’t really doesn’t matter. In a world where everyone is building social followings online, a tool to monetize this digital credibility is revolutionary in the knowledge-sharing creator economy.
@@ -20,7 +20,7 @@ Why crypto? Isn’t that tanking? Well, this is WEB 3.0. A world of digital tran
 
 So now you know what we are and what we stand for, sign up today! We are live on the Ethereum blockchain. Though it is a beta, it is extremely secure (security/transparency is at the forefront of buyananswer.io).
 
-# Future update of BUYANANSWER.io
+### Future update of BUYANANSWER.io
 
 After the MVP launch, we are going to update the product to add a community element. Essentially a crypto discord room for every board and to enter it you will have to have asked an question answered on that board. All the member of this board will be able to chat with each other about topics, they can view every question answered on that board, comment and discuss on Q/A Posts.
 
