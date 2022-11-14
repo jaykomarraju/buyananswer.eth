@@ -1,7 +1,7 @@
 
 repo: buyananswer.eth
 
-Work:
+# Work:
 
 Structures and Systems in BUYANANSWER: https://github.com/jaykomarraju/buyananswer.eth/blob/main/docs/System%20Design.pdf
 
@@ -19,4 +19,10 @@ Now let us sort of understand what the vision is. Will it just be a text transac
 Why crypto? Isn’t that tanking? Well, this is WEB 3.0. A world of digital transactions at scale. Answer questions is just one of the many person2person digital transactions that will run on the web. The race over the next decade will be to establish as many credible person2person digital transactions as we can. Having said that, these transactions can be built using Stripe/Paypal/etc. But the reason we are picking crypto (particularly ETH) is this protects the sovereignty of the user. People can be canceled today if their opinions are against the mainstream. We stand for individual sovereignty. 
 
 So now you know what we are and what we stand for, sign up today! We are live on the Ethereum blockchain. Though it is a beta, it is extremely secure (security/transparency is at the forefront of buyananswer.io).
+
+# Future update of BUYANANSWER.io
+
+After the MVP launch, we are going to update the product to add a community element. Essentially a crypto discord room for every board and to enter it you will have to have asked an question answered on that board. All the member of this board will be able to chat with each other about topics, they can view every question answered on that board, comment and discuss on Q/A Posts.
+
+
 
