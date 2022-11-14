@@ -94,10 +94,11 @@ contract BuyAnAnswer {
     mapping(bytes32 => Question[]) boardIDToAnsweredQuestions;
     mapping(address => uint256) balances;
     mapping(address => Question[]) userToReceivedQuestions;
+    mapping(address => Question[]) userToAskedQuestions;
     mapping(address => Answer[]) userToAnswers;
     mapping(bytes32 => Answer[]) boardIDToAnswers;
     mapping(bytes32 => Board) boardIDToBoard;
-    mapping(address => string) addressToUsername;
+    // mapping(address => string) addressToUsername;
     mapping(address => User) addressToUser;
 
     function BuyAnAnswerApp() public {
@@ -255,6 +256,7 @@ contract BuyAnAnswer {
         );
         boardIDToQuestions[_boardID].push(question);
         userToReceivedQuestions[_answerUser].push(question);
+        userToAskedQuestions[payable(msg.sender)].push(question);
         balances[msg.sender] -= _prc;
         balances[address(this)] += _prc;
         // balances[_answerUser] += _prc;
