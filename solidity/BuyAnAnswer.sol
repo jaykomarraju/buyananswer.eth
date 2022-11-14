@@ -90,6 +90,7 @@ contract BuyAnAnswer {
     }
 
     mapping(bytes32 => Question[]) boardIDToQuestions;
+    mapping(bytes32 => Question[]) boardIDToDeclinedQuestions;
     mapping(address => uint256) balances;
     mapping(address => Question[]) userToReceivedQuestions;
     mapping(address => Answer[]) userToAnswers;
@@ -265,13 +266,18 @@ contract BuyAnAnswer {
         emit Transfer(msg.sender, address(this), _prc);
     }
 
-    // if a question is answered it can't be answered again
+    // if a question is answered/declined it can't be answered again
     // it is imparative to keep a track of the
     // balanced received by the contract in asking questions and the
-    // exited balanced with answering questions
-    // Currently a user is able to answer one question multiple times and
-    // is using this keeping increasing the balance which is obviously
-    // a bug and must be corrected at the earliest.
+    // exited balanced with answering questions.
+
+    function declineAnswer(bytes32 _boardID, uint256 _index) external payable {
+        Question memory question = boardIDToQuestions[_boardID][_index];
+        require (!(boardIDToQuestions[_boardID][_index].isAnswered), "Already answered/declined");
+        boardIDToQuestions[_boardID][_index].isAnswered = true;
+        boardIDToDeclinedQuestions[_boardID].push(question);
+    }
+
     function sendAnswer(
         bytes32 _boardID,
         uint256 _index,
