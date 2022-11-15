@@ -47,26 +47,26 @@ const MenuImage = styled.div``;
 const Icon = styled.img`
   width: 30px;
 `;
-const BottomNavBar = () => {
+const UnAuthBottomNavBar = () => {
   return (
     <Centerer>
       <MenuWrapper>
-      <Link to="/profile">
+      <Link to="/noauthprofile">
         <MenuItem>
           <MenuImage>
             <Icon src={profile} alt="profile"></Icon>
           </MenuImage>
         </MenuItem></Link>
-        <Link to="/connected">
+        <Link to="/">
         <MenuItem>
           <MenuImage>
             <Icon src={home} alt="home"></Icon>
           </MenuImage>
         </MenuItem></Link>
-        <Link to="/myboard">
+        <Link to="/noauthboard">
         <MenuItem>
           <MenuImage>
-            <Icon src={myboard} alt="myboard"></Icon>
+            <Icon src={myboard} alt="noauthboard"></Icon>
           </MenuImage>
         </MenuItem></Link>
       </MenuWrapper>
@@ -74,4 +74,4 @@ const BottomNavBar = () => {
   );
 };
 
-export default BottomNavBar;
+export default UnAuthBottomNavBar;

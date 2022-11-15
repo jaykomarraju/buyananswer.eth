@@ -4,6 +4,7 @@ import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
+import UnAuthBottomNavBar from "../components/UnAuthBottomNavBar";
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -71,14 +72,15 @@ const Container = styled.div`
   height:100vh;
 `
 
-const Home = () => {
+const UnConnectedHome = () => {
   return (
     <Container>
     <Wrapper>
-      <ConnectWalletIcon />
-      {/* <Top>
-        <ConnectWalletButton/>
-      </Top> */}
+      {/* <ConnectWalletIcon /> */}
+      <Top>
+        <Link to="/connected">
+        <ConnectWalletButton/></Link>
+      </Top>
       <Middle>
           <TopHeading>BUY AN ANSWER</TopHeading>
         
@@ -88,7 +90,7 @@ const Home = () => {
           placeholder={headPlaceholder}
         ></UsernameBoxEntry>
         <br></br>
-        <Link to="/askpage">
+        <Link to="noauthaskpage">
           <Button>VISIT BOARD</Button>
         </Link>
       </Middle>
@@ -96,9 +98,9 @@ const Home = () => {
 
       {/* <BottomNavBar/> */}
       {/* </BottomWrap> */}
-      <BottomNavBar />
+      <UnAuthBottomNavBar />
     </Wrapper></Container>
   );
 };
 
-export default Home;
+export default UnConnectedHome;

@@ -23,6 +23,10 @@ import AnswerQuestion from "./pages/AnswerQuestion";
 import AnswerConfirmation from "./pages/AnswerConfirmation";
 import CreateProfile from "./pages/CreateProfile";
 import ProfHistEditPage from "./pages/ProfHistEditPage";
+import UnAuthAskPageView from "./pages/UnAuthAskPageView";
+import UnConnectedHome from "./pages/UnConnectedHome";
+import UnConnectedProfile from "./pages/UnConnectedProfile";
+import UnConnectedBoard from "./pages/UnConnectedBoard";
 
 const Container = styled.div`
   width: 100vw;
@@ -89,17 +93,21 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/connected" element={<Home />} />
+        <Route path="/" element={<UnConnectedHome />} />
         {/* <Route index element={<BottomNavBar />} /> */}
         <Route path="profile" element={<ProfHistPage />} />
+        <Route path="noauthprofile" element={<UnConnectedProfile />} />
         {/* <Route path="createprofile" element={<Profile />} /> */}
         <Route path="createprofile" element={<CreateProfile />} />
         <Route path="editprofile" element={<ProfHistEditPage />} />
         <Route path="myboard" element={<MyBoard />} />
+        <Route path="noauthboard" element={<UnConnectedBoard />} />
         <Route path="answered" element={<AnswerQuestionPlayground />} />
         <Route path="declined" element={<DeclinedQuestionPlayground />} />
         <Route path="naboard" element={<UserBoardDoesNotExist />} />
         <Route path="askpage" element={<AskPage />} />
+        <Route path="noauthaskpage" element={<UnAuthAskPageView />} />
         <Route path="profhist" element={<ProfHistPage />} />
         <Route path="successqorder" element={<SuccessQuestionOrder />} />
         <Route path="ansques" element={<AnswerQuestion />} />

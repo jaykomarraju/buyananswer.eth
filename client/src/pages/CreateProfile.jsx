@@ -136,7 +136,7 @@ const SubHead = styled.p`
   font-size: 17px;
   display: flex;
   justify-content: left;
-  width: 85%;
+  width: 100%;
   max-width: 500px;
   margin: 0;
   margin-bottom: 20px;
@@ -148,7 +148,7 @@ const Head2 = styled.div`
   font-size: 20px;
   display: flex;
   justify-content: left;
-  width: 85%;
+  width: 100%;
   max-width: 500px;
 `;
 
