@@ -27,6 +27,8 @@ import UnAuthAskPageView from "./pages/UnAuthAskPageView";
 import UnConnectedHome from "./pages/UnConnectedHome";
 import UnConnectedProfile from "./pages/UnConnectedProfile";
 import UnConnectedBoard from "./pages/UnConnectedBoard";
+import {load} from './funcs';
+import { useEffect } from "react";
 
 const Container = styled.div`
   width: 100vw;
@@ -88,6 +90,12 @@ const headPlaceholder = "Enter username...";
 // const getWeb3 = () => {
 //   return new Web3('HTTP://127.0.0.1:7545');
 // }
+
+
+
+// useEffect(()=>{
+
+// })
 
 function App() {
   return (
