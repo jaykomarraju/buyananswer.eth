@@ -78,8 +78,9 @@ const UnConnectedHome = () => {
     <Wrapper>
       {/* <ConnectWalletIcon /> */}
       <Top>
-        <Link to="/connected">
-        <ConnectWalletButton/></Link>
+        {/* <Link to="/connected"> */}
+        <ConnectWalletButton/>
+        {/* </Link> */}
       </Top>
       <Middle>
           <TopHeading>BUY AN ANSWER</TopHeading>
