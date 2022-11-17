@@ -27,7 +27,7 @@ import UnAuthAskPageView from "./pages/UnAuthAskPageView";
 import UnConnectedHome from "./pages/UnConnectedHome";
 import UnConnectedProfile from "./pages/UnConnectedProfile";
 import UnConnectedBoard from "./pages/UnConnectedBoard";
-import {load} from './funcs';
+// import {load} from './funcs';
 import { useEffect } from "react";
 
 const Container = styled.div`

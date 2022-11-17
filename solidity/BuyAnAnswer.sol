@@ -190,9 +190,8 @@ contract BuyAnAnswer {
         string calldata _username,
         string calldata _email,
         string calldata _name,
-        string calldata _socialLink_INSTAGRAM
-    ) external // string calldata _socialLink_LINKEDIN,
-    // string calldata _socialLink_FACEBOOK,
+        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN,
+    ) external // string calldata _socialLink_FACEBOOK,
     // string calldata _socialLink_TWITTER
     {
         bytes32 _boardID = createBoardID(_username, _email);
@@ -241,10 +240,13 @@ contract BuyAnAnswer {
         // require(balances[msg.sender] >= _prc, "Insufficient funds");
         // if (msg.value != _prc) {}
         bytes32 _boardID = addressToUser[_answerUser].boardID;
-        uint minP = boardIDToBoard[_boardID].minQuestionPrice;
+        uint256 minP = boardIDToBoard[_boardID].minQuestionPrice;
         require(msg.value == _prc, "You have not sent the price amount");
         require(_boardID != 0, "user you are asking is not registered");
-        require(_prc >= minP, "the price you have set is lower than the minimum price set by the users you are asking.");
+        require(
+            _prc >= minP,
+            "the price you have set is lower than the minimum price set by the users you are asking."
+        );
         Question memory question = Question(
             _qst,
             payable(msg.sender),
@@ -279,9 +281,12 @@ contract BuyAnAnswer {
     function declineAnswer(bytes32 _boardID, uint256 _index) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
         require(question.answerUser == payable(msg.sender));
-        require (!(boardIDToQuestions[_boardID][_index].isAnswered), "Already answered/declined");
+        require(
+            !(boardIDToQuestions[_boardID][_index].isAnswered),
+            "Already answered/declined"
+        );
         boardIDToQuestions[_boardID][_index].isAnswered = true;
-        
+
         question.isAnswered = true;
         boardIDToDeclinedQuestions[_boardID].push(question);
     }
@@ -292,11 +297,14 @@ contract BuyAnAnswer {
         string calldata _answer
     ) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
-        require(question.answerUser == payable(msg.sender), "Not authorized to answer.");
+        require(
+            question.answerUser == payable(msg.sender),
+            "Not authorized to answer."
+        );
         if (!question.isAnswered) {
             boardIDToQuestions[_boardID][_index].isAnswered = true;
             question.isAnswered = true;
-            
+
             if (question.answerUser == payable(msg.sender)) {
                 Answer memory answer = Answer(
                     question,
@@ -345,6 +353,20 @@ contract BuyAnAnswer {
     {
         return (addressToUser[_user].username, addressToUser[_user].boardID);
     }
+
+    function getProfileFromUserAddress(address _user)
+        external
+        view
+        returns (
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            string memory
+        )
+    {}
 
     function getBoardFromUserAddress(address _user)
         external
