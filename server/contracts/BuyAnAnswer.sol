@@ -42,7 +42,7 @@ contract BuyAnAnswer {
 
     event Deposit(address sender, uint256 amount);
     event Withdrawal(address receiver, uint256 amount);
-    event Transfer(address sender, address receiver, uint256 amount);
+    event Transfer(address receiver, uint256 amount);
 
     address payable owner;
 
@@ -118,16 +118,15 @@ contract BuyAnAnswer {
         require(balances[msg.sender] >= amount, "Insufficient funds");
         emit Withdrawal(msg.sender, amount);
         balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
     }
 
     function transfer(
-        address sender,
         address receiver,
         uint256 amount
     ) public {
-        require(balances[sender] >= amount, "Insufficient funds");
-        emit Transfer(sender, receiver, amount);
-        balances[sender] -= amount;
+        // require(balances[sender] >= amount, "Insufficient funds");
+        emit Transfer(receiver, amount);
         balances[receiver] += amount;
     }
 
@@ -190,9 +189,8 @@ contract BuyAnAnswer {
         string calldata _username,
         string calldata _email,
         string calldata _name,
-        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN,
-    ) external // string calldata _socialLink_FACEBOOK,
-    // string calldata _socialLink_TWITTER
+        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN, // string calldata _socialLink_FACEBOOK,
+    ) external // string calldata _socialLink_TWITTER
     {
         bytes32 _boardID = createBoardID(_username, _email);
         User memory u = User(
@@ -259,6 +257,7 @@ contract BuyAnAnswer {
         boardIDToQuestions[_boardID].push(question);
         userToReceivedQuestions[_answerUser].push(question);
         userToAskedQuestions[payable(msg.sender)].push(question);
+        deposit();
         balances[msg.sender] -= _prc;
         balances[address(this)] += _prc;
         // balances[_answerUser] += _prc;
@@ -270,7 +269,7 @@ contract BuyAnAnswer {
             _prc,
             _boardID
         );
-        emit Transfer(msg.sender, address(this), _prc);
+        // emit Transfer(msg.sender, address(this), _prc);
     }
 
     // if a question is answered/declined it can't be answered again
@@ -289,6 +288,7 @@ contract BuyAnAnswer {
 
         question.isAnswered = true;
         boardIDToDeclinedQuestions[_boardID].push(question);
+        transfer(question.askUser, question.price);
     }
 
     function sendAnswer(
@@ -318,7 +318,7 @@ contract BuyAnAnswer {
 
                 uint256 balanceToAnswerer = (question.price * 9) / 10;
                 // balances[question.answerUser] += balanceToAnswerer;
-                transfer(address(this), question.answerUser, balanceToAnswerer);
+                transfer(question.answerUser, balanceToAnswerer);
                 emit AnswerQuestion(
                     question,
                     payable(msg.sender),
