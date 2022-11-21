@@ -5,9 +5,10 @@ import greenlight from "../assets/greenlight.png";
 const ConnectedWallet = styled.div`
 display:flex;
 align-items:center;
-padding:5px;
+// padding:5px;
+margin-right:55px;
 position:fixed;
-top:20px;
+top:25px;
 right:20px;`
 
 const ConnectedIcon = styled.img`

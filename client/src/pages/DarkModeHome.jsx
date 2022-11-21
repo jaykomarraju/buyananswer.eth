@@ -5,6 +5,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import DarkModeButton from "../components/DarkModeButton";
+import LightModeButton from "../components/LightModeButton";
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -32,7 +33,8 @@ const Button = styled.button`
   padding: 10px;
   font-size: 0.75em;
   background: transparent;
-  border: 1.5px solid black;
+  border: 1.5px solid white;
+  color:white;
   border-radius: 7px;
   width: 50%;
 `;
@@ -44,12 +46,14 @@ font-family:'Poppins'
 background:transparent;
 padding:5px;
 text-align:right;
-border: 2px solid black;
+border: 2px solid white;
 border-radius:7px;
 margin-bottom:20px;
 width:80vw;
 max-width:500px;
 // margin-left:10%;
+background:#121212;
+color:white;
 `;
 
 const PushinP = styled.p`
@@ -70,6 +74,8 @@ const TopHeading = styled.p`
 const Container = styled.div`
   width:100vw;
   height:100vh;
+  background:#121212;
+  color:white;
 `
 
 const Wrap2 = styled.div`
@@ -77,13 +83,14 @@ const Wrap2 = styled.div`
   
 `
 
-const Home = () => {
+const DarkModeHome = () => {
   return (
     <Container>
     <Wrapper>
       <Wrap2>
-      <ConnectWalletIcon /><Link to="/darkmode">
-      <DarkModeButton /></Link></Wrap2>
+      <ConnectWalletIcon /><Link to="/connected">
+      <LightModeButton /></Link>
+      </Wrap2>
       {/* <Top>
         <ConnectWalletButton/>
       </Top> */}
@@ -109,4 +116,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default DarkModeHome;
