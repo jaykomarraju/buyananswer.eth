@@ -9,6 +9,7 @@ contract BuyAnAnswer {
     // fund are transffered to the answerer and 10% will be transfer to a processing buyananswer account.
     // If it is declined, then the user that asked the question will receive 100% of the funds back
     // If the user that answered the question cancels it, they will receive 97% of their money back.
+
     event AskQuestion(
         string message,
         address payable askUser,
@@ -121,10 +122,7 @@ contract BuyAnAnswer {
         payable(msg.sender).transfer(amount);
     }
 
-    function transfer(
-        address receiver,
-        uint256 amount
-    ) public {
+    function transfer(address receiver, uint256 amount) public {
         // require(balances[sender] >= amount, "Insufficient funds");
         emit Transfer(receiver, amount);
         balances[receiver] += amount;
@@ -189,9 +187,8 @@ contract BuyAnAnswer {
         string calldata _username,
         string calldata _email,
         string calldata _name,
-        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN, // string calldata _socialLink_FACEBOOK,
-    ) external // string calldata _socialLink_TWITTER
-    {
+        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN, // string calldata _socialLink_FACEBOOK, // string calldata _socialLink_TWITTER
+    ) external {
         bytes32 _boardID = createBoardID(_username, _email);
         User memory u = User(
             payable(msg.sender),
