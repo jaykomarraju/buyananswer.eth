@@ -20,6 +20,28 @@ Why crypto? Isn’t that tanking? Well, this is WEB 3.0. A world of digital tran
 
 So now you know what we are and what we stand for, sign up today! We are live on the Ethereum blockchain. Though it is a beta, it is extremely secure (security/transparency is at the forefront of buyananswer.io).
 
+## Marketing
+
+1. Optimize your website for SEO
+
+There are two types of SEO, On-page SEO and Off-page SEO. On-page SEO is the process of optimizing your website for the search engines. This includes optimizing your website's title, meta tags, keywords, and descriptions. Off-page SEO is the process of optimizing your website for the search engines by building links to your website from other websites.
+
+2. Get listed in online directories
+
+There are many online directories that list businesses in their respective categories. Getting your business listed in these directories will help you get more exposure and traffic to your website.
+
+3. Create informative and keyword rich content
+
+Creating informative and keyword rich content on your website will help you rank higher in the search engines. This will also help you get more traffic to your website.
+
+4. Promote your website on social media
+
+Social media is a great way to promote your website. You can create a page for your business on social media sites such as Facebook, Twitter, and LinkedIn. You can also use social media to build links to your website.
+
+5. Use Google AdWords
+
+Google AdWords is a paid advertising service from Google. AdWords allows you to place ads on Google.com and millions of other websites across the web. When someone clicks on your ad, they are taken to your website.
+
 ### Future update of BUYANANSWER.io
 
 After the MVP launch, we are going to update the product to add a community element. Essentially a crypto discord room for every board and to enter it you will have to have asked an question answered on that board. All the member of this board will be able to chat with each other about topics, they can view every question answered on that board, comment and discuss on Q/A Posts.
