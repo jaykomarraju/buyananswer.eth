@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -19,8 +19,8 @@ const Wrapper = styled.div`
 const headPlaceholder = "Enter username...";
 
 const Middle = styled.div`
-// width:95vw;
-// margin:5px;
+  // width:95vw;
+  // margin:5px;
 `;
 
 const Top = styled.div`
@@ -68,44 +68,73 @@ const TopHeading = styled.p`
 `;
 
 const Container = styled.div`
-  width:100vw;
-  height:100vh;
-`
+  width: 100vw;
+  height: 100vh;
+`;
 
 const Wrap2 = styled.div`
-  display:flex;
-  
-`
+  display: flex;
+`;
 
 const Home = () => {
+  const [username, setUsername] = useState("");
+
+  const handleClick = () => {
+    console.log("looking for: ", username);
+
+    if (username === "") {
+      alert("Please enter a username");
+    } else {
+      // check if username exists
+      // if it does, redirect to /askpage/${username}
+      // if it doesn't, alert "username not found"
+
+      fetch(`/api/users/${username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("data: ", data);
+          if (data === null) {
+            alert("Username not found");
+          } else {
+            window.location.href = `/askpage/${username}`;
+          }
+        });
+    }
+  };
+
   return (
     <Container>
-    <Wrapper>
-      <Wrap2>
-      <ConnectWalletIcon /><Link to="/darkmode">
-      <DarkModeButton /></Link></Wrap2>
-      {/* <Top>
+      <Wrapper>
+        <Wrap2>
+          <ConnectWalletIcon />
+          {/* <Link to="/darkmode">
+            <DarkModeButton />
+          </Link> */}
+        </Wrap2>
+        {/* <Top>
         <ConnectWalletButton/>
       </Top> */}
-      <Middle>
+        <Middle>
           <TopHeading>BUY AN ANSWER</TopHeading>
-        
-        <PushinP>WHOSE THOUGHTS ARE YOU TRYING TO PICK?</PushinP>
-        <UsernameBoxEntry
-          type="text"
-          placeholder={headPlaceholder}
-        ></UsernameBoxEntry>
-        <br></br>
-        <Link to="/askpage">
-          <Button>VISIT BOARD</Button>
-        </Link>
-      </Middle>
-      {/* <BottomWrap> */}
 
-      {/* <BottomNavBar/> */}
-      {/* </BottomWrap> */}
-      <BottomNavBar />
-    </Wrapper></Container>
+          <PushinP>WHOSE THOUGHTS ARE YOU TRYING TO PICK?</PushinP>
+          <UsernameBoxEntry
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder={headPlaceholder}
+          ></UsernameBoxEntry>
+          <br></br>
+          {/* <Link to="/askpage"> */}
+          <Button onClick={handleClick}>VISIT BOARD</Button>
+          {/* </Link> */}
+        </Middle>
+        {/* <BottomWrap> */}
+
+        {/* <BottomNavBar/> */}
+        {/* </BottomWrap> */}
+        <BottomNavBar />
+      </Wrapper>
+    </Container>
   );
 };
 

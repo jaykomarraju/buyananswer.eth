@@ -7,6 +7,11 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 
+// This is the page that shows the user's profile and history
+// It recieves the user's profile data from the server and displays it.
+// It also recieves the user's history data from the server and displays it.
+// History data is displayed in the form of a list of questions that the user has asked/answered.
+// The user can click on a question to see more details about it.
 
 const Cont = styled.div`
   display: flex;
@@ -15,27 +20,27 @@ const Cont = styled.div`
   // background:#4B9CD3;
 `;
 
-
-
-
 const Wrapper = styled.div`
-// background:lightgreen;
-// padding: 5%;
-margin-top: 30px;
-margin-bottom: 100px;
-height: 80%;
-width:100%;
-max-width:800px;
-// margin-left:10px;
-// margin-right:10px;
-// background:lightgreen;
-display: flex;
-flex-direction: column;
-align-items: center;
-// justify-content: center;
+  // background:lightgreen;
+  // padding: 5%;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  height: 80%;
+  width: 100%;
+  max-width: 800px;
+  // margin-left:10px;
+  // margin-right:10px;
+  // background:lightgreen;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 `;
 
-const Middle = styled.div`width: 92%;max-width:800px;`;
+const Middle = styled.div`
+  width: 92%;
+  max-width: 800px;
+`;
 
 const Section = styled.div`
   display: flex;
@@ -47,16 +52,16 @@ const Section4 = styled.div`
   display: flex;
   align-items: center;
   // color:blue;
-  margin-left:-20px;
+  margin-left: -20px;
 `;
 
 const ProfilePicture = styled.div`
   // background:pink;
   // max-width: 100px;
   // max-height: 100px;
-  width:100px;
-  height:100px;
-  aspect-ratio:1;
+  width: 100px;
+  height: 100px;
+  aspect-ratio: 1;
   border-radius: 50%;
   border: 1.5px solid black;
   margin: 20px;
@@ -70,31 +75,31 @@ const Label = styled.p`
 
 const ValueLabel = styled.p`
   margin-right: 4px;
-  padding-left:25px;
+  padding-left: 25px;
   text-align: right;
   // background:blue;
 `;
 
 const MinPriceValueLabel = styled.div`
-margin-right: 4px;
-padding-left:25px;
-text-align: right;
-// background:blue;
-font-weight:600;
-font-size:2em;
+  margin-right: 4px;
+  padding-left: 25px;
+  text-align: right;
+  // background:blue;
+  font-weight: 600;
+  font-size: 2em;
 `;
 const LinkValueLabel = styled.div`
-margin-right: 4px;
-padding-left:0px;
-text-align: left;
-// background:blue;
-// font-weight:600;
-// font-size:2em;
+  margin-right: 4px;
+  padding-left: 0px;
+  text-align: left;
+  // background:blue;
+  // font-weight:600;
+  // font-size:2em;
 `;
 
 const Entry = styled.input`
   max-width: 500px;
-  width:80%;
+  width: 80%;
   height: 30px;
   background: transparent;
   border: 1.5px solid black;
@@ -114,7 +119,7 @@ const SmallEntry = styled.input`
 
 const Entries = styled.div`
   // color:blue;
-  
+
   // background:green;
 `;
 
@@ -125,7 +130,6 @@ const Username = styled.div`
   width: 100%;
   height: 45px;
   // margin-bottom:10px;
-
 `;
 
 const Desc = styled.textarea`
@@ -237,130 +241,210 @@ const Second2 = styled.button`
 `;
 
 const QuestionHistory = styled.div`
-display:flex;
-flex-direction:column;
-`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Ticket = styled.div`
-display:flex;
-padding:10px;
-margin-left:10px;
+  display: flex;
+  padding: 10px;
+  margin-left: 10px;
 
-margin-right:10px;
-border:1.5px solid black;
-border-radius:15px;
-margin-top:20px;align-items:center;`
+  margin-right: 10px;
+  border: 1.5px solid black;
+  border-radius: 15px;
+  margin-top: 20px;
+  align-items: center;
+`;
 
-const Question = styled.p`flex:7; text-align:left;padding-left:10px;`
+const Social = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+`;
 
-const Fin = styled.p`flex:1;font-size:25px;`
+const SocialLink = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: right;
+  margin-right: 0;
+  // background:purple;
+`;
+
+const SocialPlatform = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: right;
+  margin-right: 0;
+  // background:purple;
+`;
+
+
+const Question = styled.p`
+  flex: 7;
+  text-align: left;
+  padding-left: 10px;
+`;
+
+const Fin = styled.p`
+  flex: 1;
+  font-size: 25px;
+`;
 
 const ProfHistPage = () => {
-
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
+
+  // const Profile = [
+  //   {
+  //     name: "John Doe",
+  //     username: "johndoe",
+  //     email: "john.doe@email.com",
+  //     description: "I am a software engineer",
+  //     socials: [
+  //       {
+  //         platform: "Twitter",
+  //         link: "https://twitter.com/johndoe",
+  //       },
+  //       {
+  //         platform: "Instagram",
+  //         link: "https://instagram.com/johndoe",
+  //       },
+  //       {
+  //         platform: "LinkedIn",
+  //         link: "https://linkedin.com/johndoe",
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  const Profile = {
+    name: "John Doe",
+    username: "johndoe",
+    email: "john.doe@gmail.com",
+    description: "I am a software engineer",
+    socials: [
+      {
+        platform: "Twitter",
+        link: "https://twitter.com/johndoe",
+      },
+      {
+        platform: "Instagram",
+        link: "https://instagram.com/johndoe",
+      },
+      {
+        platform: "LinkedIn",
+        link: "https://linkedin.com/johndoe",
+      },
+    ],
+    boardDescription: "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
+    minimumQuestionPrice: 5.0,
+  };
+
+
+  const [username, setUsername] = useState(Profile.username);
+  const [email, setEmail] = useState(Profile.email);
+  const [name, setName] = useState(Profile.name);
+  const [description, setDescription] = useState(Profile.description);
+  const [socials, setSocials] = useState(Profile.socials);
+
 
   return (
     <Cont>
-    <Wrapper>
-      <ConnectWalletIcon />
-      {/* <Top>
+      <Wrapper>
+        <ConnectWalletIcon />
+        {/* <Top>
       <ConnectWalletButton/>
     </Top> */}
-      
-      <Middle>
-        <Head2>Profile</Head2>
-      <SubHead>/johndoe</SubHead>
-        <Section4>
-          <ProfilePicture></ProfilePicture>
-          <Entries>
-            <Username>
-              <Label>USERNAME: </Label>
-              <Label>johndoe</Label>
-            </Username>
-            <Username>
-              <Label>EMAIL: </Label>
-              <Label>john.doe@gmail.com</Label>
-            </Username>
-            <Username>
-              <Label>NAME: </Label>
-              <Label>JOHN DOE</Label>
-            </Username>
-          </Entries>
-        </Section4>
-        <Section>
-          {/* <Spread2>
+
+        <Middle>
+          <Head2>Profile</Head2>
+          <SubHead>/{username}</SubHead>
+          <Section4>
+            <ProfilePicture></ProfilePicture>
+            <Entries>
+              <Username>
+                <Label>USERNAME: </Label>
+                <Label>{Profile.username}</Label>
+              </Username>
+              <Username>
+                <Label>EMAIL: </Label>
+                <Label>{Profile.email}</Label>
+              </Username>
+              <Username>
+                <Label>NAME: </Label>
+                <Label>{Profile.name}</Label>
+              </Username>
+            </Entries>
+          </Section4>
+          <Section>
+            {/* <Spread2>
             <First>VIEW HISTORY</First>
             <Second2>V</Second2>
           </Spread2> */}
-          {/* <ClosedHistory/> */}
-          {/* <OpenHistory/> */}
-          {/* {historySelection} */}
-          <SwitchingHistoryComponent/>
-        </Section>
-        <Section>
-          <Spread>
-            <First></First>
-            <div>
-              <Link to="/editprofile">
-              <Second>EDIT</Second></Link>
-              {/* <Second>SAVE</Second> */}
-            </div>
-          </Spread>
-        </Section>
-        <br></br>
-        <Section>
-          <Label>HEADLINE</Label>
-          {/* <Entry value=""></Entry> */}
-          <ValueLabel>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </ValueLabel>
-        </Section>
-        <Section>
-          <Label>PUBLIC BOARD DESCRIPTION</Label>
-          {/* <Desc></Desc> */}
-          <ValueLabel>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          </ValueLabel>
-        </Section>
-        <Section>
-          <Label>MINIMUM QUESTION PRICE</Label>
-          {/* <SmallEntry></SmallEntry> */}
-          <MinPriceValueLabel>
-            $5.00
-          </MinPriceValueLabel>
-        </Section>
-        <Section>
-          <Socials>
-            <Head>SOCIALS</Head>
+            {/* <ClosedHistory/> */}
+            {/* <OpenHistory/> */}
+            {/* {historySelection} */}
+            <SwitchingHistoryComponent />
+          </Section>
+          <Section>
+            <Spread>
+              <First></First>
+              <div>
+                <Link to="/editprofile">
+                  <Second>EDIT</Second>
+                </Link>
+                {/* <Second>SAVE</Second> */}
+              </div>
+            </Spread>
+          </Section>
+          <br></br>
+          <Section>
+            <Label>HEADLINE</Label>
+            {/* <Entry value=""></Entry> */}
+            <ValueLabel>
+              {Profile.description}
+            </ValueLabel>
+          </Section>
+          <Section>
+            <Label>PUBLIC BOARD DESCRIPTION</Label>
+            {/* <Desc></Desc> */}
+            <ValueLabel>
+              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. */}
+              {Profile.boardDescription}
+            </ValueLabel>
+          </Section>
+          <Section>
+            <Label>MINIMUM QUESTION PRICE</Label>
+            {/* <SmallEntry></SmallEntry> */}
+            <MinPriceValueLabel>$ {Profile.minimumQuestionPrice}</MinPriceValueLabel>
+          </Section>
+          <Section>
+            <Socials>
+              <Head>SOCIALS</Head>
+               {socials.map((social) => (
+                 <Social>
+                   <SocialPlatform>{social.platform}</SocialPlatform>
+                   <SocialLink>{social.link}</SocialLink>
+                 </Social>
+               ))}
 
-            <Platform>
-              <Name>INSTRAGRAM.COM/</Name>
-              {/* <Entry></Entry> */}
-              <LinkValueLabel>
-            johndoe
-          </LinkValueLabel>
-            </Platform>
-            {/* <Platform>
-              <Name>LINKEDIN.COM/</Name>
-              <Entry></Entry>
-            </Platform>
-            <Platform>
-              <Name>FACEBOOK.COM/</Name>
-              <Entry></Entry>
-            </Platform>
-            <Platform>
-              <Name>TWITTER.COM/</Name>
-              <Entry></Entry>
-            </Platform> */}
-          </Socials>
-        </Section>
-      </Middle>
-      {/* <BottomWrap> */}
+            </Socials>
+          </Section>
+        </Middle>
+        {/* <BottomWrap> */}
 
-      {/* <BottomNavBar/> */}
-      {/* </BottomWrap> */}
-      <BottomNavBar />
-    </Wrapper></Cont>
+        {/* <BottomNavBar/> */}
+        {/* </BottomWrap> */}
+        <BottomNavBar />
+      </Wrapper>
+    </Cont>
   );
 };
 
