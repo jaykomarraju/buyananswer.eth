@@ -68,6 +68,12 @@ const Button = styled.button`
   padding: 12px;
   font-size:15px;
   margin-top:20px;
+
+  &:hover {
+    background: black;
+    color: white;
+  }
+  
 `;
 
 const TopHeading = styled.p`

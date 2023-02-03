@@ -21,7 +21,10 @@ const Head = styled.p``
 
 const Buttons = styled.div`
 display:flex;
-margin:25px;`
+margin:25px;
+
+
+`
 
 const Button= styled.button`
 margin:5px;
@@ -29,7 +32,13 @@ padding:5px;
 background:transparent;
 border:1.5px solid black;
 border-radius:10px;
-width:100px;`
+width:100px;
+
+&:hover{
+    
+    background:black;
+    color:white;
+    }`
 
 const QuestionWrapper = styled.div``
 

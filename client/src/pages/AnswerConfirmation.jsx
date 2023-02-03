@@ -101,6 +101,12 @@ const ReviewButton = styled.button`
   border-radius: 10px;
   margin-top: 30px;
   margin-bottom: 135px;
+
+  &:hover {
+    background: black;
+    color: white;
+  }
+
 `;
 
 const Notes = styled.div`
@@ -113,6 +119,19 @@ padding-left:25px;`
 const List = styled.ul``
 
 const ThingInList = styled.li``
+
+const answerObject = {
+  question: {
+    questionText: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+    questionPrice: 12,
+    questionDate: "MAR 20, 2022",
+    askUser: "sammycursner",
+    answerUser: "justin",
+  },
+  answerText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+
+};
+
 const AnswerConfirmation = () => {
   return (
     <div>
@@ -126,26 +145,25 @@ const AnswerConfirmation = () => {
                   <ProfilePicture></ProfilePicture>
 
                   <Label>Username : </Label>
-                  <Value>@sammycursner</Value>
+                  <Value>{
+                    answerObject.question.askUser
+                    }</Value>
                 </Item>
               </AskerDetails>
             </ItemSpace>
             <ItemSpace>
               <QuestionText>
-                Hey Justin. I’m a student in UNC studying CS and Econ and I’m
-                trying to start a company. What is the typical attitude toward
-                college founders in the valley? Also do investors prefer a demo
-                or a pitch?
+                {answerObject.question.questionText}
               </QuestionText>
               <Flexer>
-                <QuestionPrice>$12.00</QuestionPrice>
-                <Date>MAR 20, 2022</Date>
+                <QuestionPrice>${answerObject.question.questionPrice}</QuestionPrice>
+                <Date>{answerObject.question.questionDate}</Date>
               </Flexer>
             </ItemSpace>
           </QuestionObjectView>
           <Heading>Your Answer :</Heading>
           <AnswerObjectView>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat. Duis aute irure dolor in
@@ -159,7 +177,8 @@ const AnswerConfirmation = () => {
             aliquip ex ea commodo consequat. <br></br><br></br>Duis aute irure dolor in
             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            culpa qui officia deserunt mollit anim id est laborum. */}
+            {answerObject.answerText}
           </AnswerObjectView>
           <Notes>
             <Head>Please Note:</Head>

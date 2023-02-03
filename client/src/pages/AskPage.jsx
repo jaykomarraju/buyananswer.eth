@@ -10,14 +10,15 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  //   padding: 5%;
-  height: 100vh;
+    padding: 50px 10px;
+  // height: 100vh;
   // background:green;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 15%;
+  // margin-top: 15%;
+  // margin-top: 250px;
   margin-left: auto;
   margin-right: auto;
   max-width: 800px;
@@ -91,6 +92,12 @@ const Button = styled.button`
   background: transparent;
   border-radius: 10px;
   margin-bottom: 150px;
+
+  &:hover {
+    background: black;
+    color: white;
+  }
+
 `;
 
 const Url = styled.div`
@@ -117,7 +124,7 @@ const AskPage = () => {
     "I am here to answer any questions you have for me!"
   );
   const [bio, setBio] = useState(
-    "I am a 20 year old student at the University of Waterloo. I am studying Computer Science and I am a huge fan of the Toronto Raptors."
+    "I am a 20 year old student at the University of Waterloo. I am studying Computer Science and I am a huge fan of the Toronto Raptors. I am also a huge fan of the Toronto Maple Leafs. I am also a huge fan of the Toronto Blue Jays. I am also a huge fan of the Toronto Argonauts. "
   );
 
   const [questionText, setQuestionText] = useState("");
@@ -141,11 +148,13 @@ const AskPage = () => {
     const question = {
       username: username,
       question: questionText,
-      priorityBonus: 10,
+      priorityBonus: parseInt(priorityBonus),
       total: parseInt(priorityBonus) + parseInt(price),
       asker: "johndoe",
     };
     console.log(question);
+
+    
 
     // fetch("http://localhost:5000/createQuestion", {
     //   method: "POST",
@@ -173,8 +182,11 @@ const AskPage = () => {
           <Name>
             <Heading>Ask {name}</Heading>
             <Headline>{headline}</Headline>
-            <SubHeading>{bio}</SubHeading>
+            
           </Name>
+        </BoardDesc>
+        <BoardDesc>
+        <SubHeading>{bio}</SubHeading>
         </BoardDesc>
         <QuestionEntry placeholder="Enter your question here..."
           onChange={(e) => {

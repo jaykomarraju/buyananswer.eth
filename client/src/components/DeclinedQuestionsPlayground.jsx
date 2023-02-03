@@ -62,9 +62,59 @@ margin-right:25px;`
 
 
 const DeclinedQuestionPlayground = () => {
+
+  const declinedQuestions = [
+    {
+      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      price: "$12",
+      date: "March 22nd, 2021",
+      askUser: "justin",
+      answerUser: "joe",
+    },
+    {
+      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      price: "$4",
+      date: "March 22nd, 2021",
+      askUser: "john",
+      answerUser: "joe",
+    },
+    {
+      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      price: "$3",
+      date: "March 22nd, 2021",
+      askUser: "mary",
+      answerUser: "joe",
+    },
+  ]
+
+  
+
   return (
     <QuestionsPlayground>
-      <ReceivedQuestion>
+      {declinedQuestions.map((quest) => (
+        <ReceivedQuestion>
+          <Answer>
+            <Info>
+              <Date>
+              {/* <YourAns>Your Answer:</YourAns> */}
+              ASKED BY: @{quest.askUser}</Date>
+            </Info>
+          </Answer>
+          
+          <Sect>
+            <QText>{quest.question}</QText>
+            <QPrice>{quest.price}</QPrice>
+          </Sect>
+          <Answer>
+            <Info>
+              {/* <YourAns>Your Answer:</YourAns> */}
+              <Date>{quest.date}</Date>
+            </Info>
+          </Answer>
+
+        </ReceivedQuestion>
+      ))}
+      {/* <ReceivedQuestion>
         <Sect>
           <QText>
             Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying
@@ -79,7 +129,7 @@ const DeclinedQuestionPlayground = () => {
                 <Date>March 22nd, 2021</Date>
             </Info>
         </Answer>
-      </ReceivedQuestion>
+      </ReceivedQuestion> */}
 
      
     </QuestionsPlayground>

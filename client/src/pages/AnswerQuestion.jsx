@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -59,7 +59,7 @@ const Value = styled.p``;
 
 const Date = styled.p`
   margin: 0;
-  font-size:12px;
+  font-size: 12px;
 `;
 
 const QuestionText = styled.p`
@@ -68,7 +68,7 @@ const QuestionText = styled.p`
 
 const QuestionPrice = styled.p`
   font-size: 26px;
-//   font-weight: 600;
+  //   font-weight: 600;
   margin-bottom: 0;
 `;
 
@@ -90,8 +90,43 @@ const ReviewButton = styled.button`
   border-radius: 10px;
   margin-top: 20px;
   margin-bottom: 135px;
+  // text-decoration: none;
+  font-size: 16px;
+
+  &:hover {
+    background: black;
+    color: white;
+  }
 `;
+
 const AnswerQuestion = () => {
+  const Question = {
+    questionText:
+      "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+    price: "$12.00",
+    date: "MAR 20, 2022",
+    askUser: "@sammycursner",
+    answerUser: "@justin",
+  };
+
+  const [answerText, setAnswerText] = useState("");
+
+  const handleAnswer = (e) => {
+    setAnswerText(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const answer = {
+      question: Question,
+      answer: answerText,
+    };
+
+    console.log(answer);
+    // returns
+  };
+
   return (
     <div>
       <Link to="/myboard">back</Link>
@@ -106,29 +141,32 @@ const AnswerQuestion = () => {
                   <ProfilePicture></ProfilePicture>
 
                   <Label>Username : </Label>
-                  <Value>@sammycursner</Value>
+                  <Value>{Question.askUser}</Value>
                 </Item>
               </AskerDetails>
             </ItemSpace>
             <ItemSpace>
-              <QuestionText>
-                Hey Justin. I’m a student in UNC studying CS and Econ and I’m
-                trying to start a company. What is the typical attitude toward
-                college founders in the valley? Also do investors prefer a demo
-                or a pitch?
-              </QuestionText>
+              <QuestionText>{Question.questionText}</QuestionText>
               <Flexer>
-                <QuestionPrice>$12.00</QuestionPrice>
-                <Date>MAR 20, 2022</Date>
+                <QuestionPrice>{Question.price}</QuestionPrice>
+                <Date>{Question.date}</Date>
               </Flexer>
             </ItemSpace>
           </QuestionObjectView>
           <Heading>Answer Question.</Heading>
 
-          <AnswerEntry placeholder="Enter your answer here..."></AnswerEntry>
-          <Link to="/anscnfrm">
-            <ReviewButton>REVIEW BEFORE SUBMIT</ReviewButton>
+          <AnswerEntry
+            placeholder="Enter your answer here..."
+            onChange={handleAnswer}
+          ></AnswerEntry>
+         
+            <ReviewButton onClick={handleSubmit}>
+              REVIEW BEFORE SUBMIT
+            </ReviewButton>
+            <Link to="/anscnfrm">
+              next
           </Link>
+
           <BottomNavBar />
         </Wrap>
       </Cont>

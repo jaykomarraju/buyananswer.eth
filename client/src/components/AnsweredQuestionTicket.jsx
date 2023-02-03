@@ -5,6 +5,7 @@ import ReactCardFlip from "react-card-flip";
 const Ticket = styled.div`
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   padding: 10px;
   margin-left: 10px;
 
@@ -15,13 +16,24 @@ const Ticket = styled.div`
   align-items: center;
 `;
 
+const TicketContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  `;
+
 const Ticket2 = styled.div`
   cursor: pointer;
-//   display: flex;
-//   background:#262626;
-background:#fff;
-// opacity: 0.5;
-  color:#1a1a1a;
+  //   display: flex;
+  //   background:#262626;
+  background: #fff;
+  // opacity: 0.5;
+  color: #1a1a1a;
   padding: 10px;
   margin-left: 10px;
 
@@ -30,8 +42,8 @@ background:#fff;
   border-radius: 15px;
   margin-top: 20px;
   align-items: center;
-  max-height:300px;
-  overflow:scroll;
+  max-height: 300px;
+  overflow: scroll;
 `;
 
 const Question = styled.p`
@@ -68,7 +80,37 @@ const Heading = styled.p`
   font-weight: 600;
 `;
 
-const AnsweredQuestionTicket = () => {
+const HeadSect = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Asker = styled.p`
+  font-size: 14px;
+  margin: 0;
+`;
+
+const AnswerObject = {
+  question:
+    "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+  answer:
+    "HAHAHA. Monetize your digital presence by answering your fans' burning questions. We created a platform to capture the value of expertise.If you have a digital influence and would like to answer some questions. Monetize your digital presence by answering your fans' burning questions. We created a platform to capture the value of expertise.If you have a digital influence and would like to answer some questions. Monetize your digital presence by answering your fans' burning questions. We created a platform to capture the value of expertise.If you have a digital influence and would lik.",
+  date: "MAR 20, 2021",
+  price: "$9.43",
+  askUser: "Justin",
+  answerUser: "johndoe",
+};
+
+const AnsweredQuestionTicket = (
+  {
+    question,
+    price,
+    answer,
+    date,
+    askUser,
+    answerUser,
+  }
+) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleClick = () => {
@@ -77,32 +119,25 @@ const AnsweredQuestionTicket = () => {
 
   return (
     <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+      
       <Ticket onClick={handleClick}>
-        <Question>
-          Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying
-          to start a company. What is the typical attitude toward college
-          founders in the valley? Also do investors prefer a demo or a pitch?
-        </Question>
+
+        <HeadSect>
+          <Asker>ASKED BY: @{askUser}</Asker>
+        </HeadSect>
+        <TicketContainer>
+        <Question>{question}</Question>
         <Right>
-          <Fin>+ $9.43</Fin>
-          <DateAnswered>MAR 20, 2021</DateAnswered>
+          <Fin>+ {price}</Fin>
+          <DateAnswered>{date}</DateAnswered>
         </Right>
+        </TicketContainer>
       </Ticket>
 
       <Ticket2 onClick={handleClick}>
         <Heading>ANSWER :</Heading>
-        <Question>
-          Monetize your digital presence by answering your fans' burning
-          questions. We created a platform to capture the value of expertise.If
-          you have a digital influence and would like to answer some questions.
-          Monetize your digital presence by answering your fans' burning
-          questions. We created a platform to capture the value of expertise.If
-          you have a digital influence and would like to answer some questions.
-          Monetize your digital presence by answering your fans' burning
-          questions. We created a platform to capture the value of expertise.If
-          you have a digital influence and would lik.
-        </Question>
-        <Heading>@johndoe</Heading>
+        <Question>{answer}</Question>
+        <Heading>@{answerUser}</Heading>
         {/* <Right>
           <Fin>+ $10.43</Fin>
           <DateAnswered>MAR 20, 2021</DateAnswered>
