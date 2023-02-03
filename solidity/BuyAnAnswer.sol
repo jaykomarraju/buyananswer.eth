@@ -38,6 +38,7 @@ contract BuyAnAnswer {
     }
 
     mapping(address => User) public users;
+    mapping(string => User) public usersByUsername;
     mapping(address => Question[]) public history;
     mapping(address => Question[]) public receivedQuestions;
     mapping(address => Question[]) public declinedQuestions;
@@ -68,6 +69,18 @@ contract BuyAnAnswer {
         uint256 _minimumPrice
         // Social[] memory _socials
     ) public {
+
+        // check if there is already a user with this address
+        // if yes, throw error
+        // if no, create user
+
+        // checking if user exists
+
+        // if (users[msg.sender].username != "") {
+        //     revert("User already exists");
+        // }
+
+
         User memory newUser = User(
             _username,
             _name,
@@ -82,12 +95,27 @@ contract BuyAnAnswer {
             // new Question[](0)
             );
         users[msg.sender] = newUser;
+        usersByUsername[_username] = newUser;
     }
 
     // get user
 
     function getUser(address _userAddress) public view returns (User memory) {
         return users[_userAddress];
+    }
+
+
+
+    // update user (only update headline, bio, minimum price)
+
+    function updateUser(
+        string memory _headline,
+        string memory _bio,
+        uint256 _minimumPrice
+    ) public {
+        users[msg.sender].headline = _headline;
+        users[msg.sender].bio = _bio;
+        users[msg.sender].minimumPrice = _minimumPrice;
     }
 
     // post question from user to another user
