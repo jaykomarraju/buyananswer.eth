@@ -136,6 +136,9 @@ contract BuyAnAnswer {
             false
         );
         history[msg.sender].push(newQuestion);
+        history[_answerUser].push(newQuestion);
+        unansweredQuestions[_answerUser].push(newQuestion);
+
         receivedQuestions[_answerUser].push(newQuestion);
     }
 
@@ -153,7 +156,16 @@ contract BuyAnAnswer {
             }
         }
         Answer memory newAnswer = Answer(question, _answerText);
+
         answeredQuestions[msg.sender].push(newAnswer);
+       
+        question.isAnswered = true;
+        question.answerUser = payable(msg.sender);
+        history[question.askUser].push(question);
+        history[question.answerUser].push(question);
+        question.answerUser.transfer(question.price);
+        question.askUser.transfer(question.priorityBonus);
+        payable(question.answerUser).transfer(question.price);
         payable(question.askUser).transfer(question.price);
     }
 
@@ -170,6 +182,11 @@ contract BuyAnAnswer {
             }
         }
         declinedQuestions[msg.sender].push(question);
+        history[question.askUser].push(question);
+        history[question.answerUser].push(question);
+        question.answerUser.transfer(question.price);
+        question.askUser.transfer(question.priorityBonus);
+
     }
 
     // get user history
@@ -178,10 +195,24 @@ contract BuyAnAnswer {
         return history[_userAddress];
     }
 
+    // create mapping for unanswered questions
+
+    mapping(address => Question[]) public unansweredQuestions;
+
+    // get unanswered questions
+
+    function getUnansweredQuestions() public view returns (Question[] memory) {
+        return unansweredQuestions[msg.sender];
+    }
+
     // get user received questions
 
     function getUserReceivedQuestions(address _userAddress) public view returns (Question[] memory) {
+
+        
+
         return receivedQuestions[_userAddress];
+
     }
 
     // get user declined questions
@@ -195,5 +226,58 @@ contract BuyAnAnswer {
     function getUserAnsweredQuestions(address _userAddress) public view returns (Answer[] memory) {
         return answeredQuestions[_userAddress];
     }
+    
+     // get user balance
+    
+     function getUserBalance(address _userAddress) public view returns (uint256) {
+          return users[_userAddress].balance;
+     }
+    
+     // get user boardID
+    
+     function getUserBoardID(address _userAddress) public view returns (bytes32) {
+          return users[_userAddress].boardID;
+     }
+    
+     // get user headline
+    
+     function getUserHeadline(address _userAddress) public view returns (string memory) {
+          return users[_userAddress].headline;
+     }
+    
+     // get user bio
+    
+     function getUserBio(address _userAddress) public view returns (string memory) {
+          return users[_userAddress].bio;
+     }
+    
+     // get user minimum price
+    
+     function getUserMinimumPrice(address _userAddress) public view returns (uint256) {
+          return users[_userAddress].minimumPrice;
+     }
+    
+     // get user socials
+    
+     // function getUserSocials(address _userAddress) public view returns (Social[] memory) {
+     //     return users[_userAddress].socials;
+     // }
+    
+     // get user socials by platform
+    
+     // function getUserSocialsByPlatform(address _userAddress, string memory _platform) public view returns (Social memory) {
+     //     for (uint256 i = 0; i < users[_userAddress].socials.length; i++) {
+     //         if (keccak256(abi.encodePacked(users[_userAddress].socials[i].platform)) == keccak256(abi.encodePacked(_platform))) {
+     //             return users[_userAddress].socials[i];
+     //         }
+     //     }
+     // }
+    
+     // get user by username
+    
+     function getUserByUsername(string memory _username) public view returns (User memory) {
+          return usersByUsername[_username];
+     } 
+
 
 }
