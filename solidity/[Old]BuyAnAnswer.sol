@@ -2,338 +2,488 @@
 pragma solidity >=0.5.0 <0.9.0;
 
 contract BuyAnAnswer {
-    struct User {
-        address userAddress;
-        string username;
-        string name;
-        string email;
-        string password;
-        uint256 balance;
-        bytes32 boardID;
-        string headline;
-        string bio;
-        uint256 minimumPrice;
-        // Social[] socials;
-    }
+    // This will allow all users to ask (target) a question to any other user for any price
+    // This will allow for users to answer/decline questions targeted to them (their eth address)
+    // There must be a layer between a user asking the question and the question being answered. That is the processing layer
+    // This layer will hold the funds as soon as a question is asked. If it is answered, 90% of the
+    // fund are transffered to the answerer and 10% will be transfer to a processing buyananswer account.
+    // If it is declined, then the user that asked the question will receive 100% of the funds back
+    // If the user that answered the question cancels it, they will receive 97% of their money back.
+    event AskQuestion(
+        string message,
+        address payable askUser,
+        address payable answerUser,
+        uint256 timestamp,
+        uint256 price,
+        bytes32 boardID
+    );
+    event AnswerQuestion(
+        Question question,
+        address payable user,
+        string answer,
+        uint256 timestamp
+    );
+    event CreateBoard(
+        bytes32 boardID,
+        address payable user,
+        string boardHeadline,
+        string boardDesc,
+        uint256 minQuestionPrice,
+        uint256 timestamp
+    );
+    event CreateUser(
+        address payable userAddress,
+        string username,
+        string email,
+        string name,
+        bytes32 boardID,
+        string INSTAGRAM
+    );
 
-    struct Social {
-        string platform;
-        string socialUrl;
-    }
+    event Deposit(address sender, uint256 amount);
+    event Withdrawal(address receiver, uint256 amount);
+    event Transfer(address receiver, uint256 amount);
+
+    address payable owner;
 
     struct Question {
-        bytes32 questionID;
-        string questionText;
-        bytes32 boardID;
-        uint256 price;
-        uint256 priorityBonus;
+        // string questionID;
+        string message;
         address payable askUser;
         address payable answerUser;
+        uint256 price;
+        uint256 timestamp;
+        bytes32 boardID;
         bool isAnswered;
+    }
+
+    struct User {
+        address payable userAddress;
+        string username;
+        string email;
+        string name;
+        bytes32 boardID;
+        // Question[] askedQuestions;
+        // Answer[] answeredQuestions;
+        string INSTAGRAM;
+        // string LINKEDIN;
+        // string FACEBOOK;
+        // string TWITTER;
     }
 
     struct Answer {
         Question question;
+        address payable answerer;
         string answerText;
+        uint256 timestamp;
     }
 
-    mapping(address => User) public users;
-    mapping(string => User) public usersByUsername;
-    mapping(address => Question[]) public history;
-    mapping(address => Question[]) public receivedQuestions;
-    mapping(address => Question[]) public declinedQuestions;
-    mapping(address => Answer[]) public answeredQuestions;
-    mapping(bytes32 => Question) public questions;
+    struct Board {
+        bytes32 boardID;
+        address payable owner;
+        string boardHeadline;
+        string boardDesc;
+        uint256 minQuestionPrice;
+        // Question[] receivedQuestions;
+        // Answer[] answers;
+        uint256 createdAt;
+    }
 
-    // create social
+    mapping(bytes32 => Question[]) boardIDToQuestions;
+    mapping(bytes32 => Question[]) boardIDToDeclinedQuestions;
+    mapping(bytes32 => Question[]) boardIDToAnsweredQuestions;
+    mapping(address => uint256) balances;
+    mapping(address => Question[]) userToReceivedQuestions;
+    mapping(address => Question[]) userToAskedQuestions;
+    mapping(address => Answer[]) userToAnswers;
+    mapping(bytes32 => Answer[]) boardIDToAnswers;
+    mapping(bytes32 => Board) boardIDToBoard;
+    // mapping(address => string) addressToUsername;
+    mapping(address => User) addressToUser;
 
-    // function createSocial(
-    //     string memory _platform,
-    //     string memory _socialUrl
-    // ) public {
-    //     Social memory newSocial = Social(_platform, _socialUrl);
-    //     users[msg.sender].socials.push(newSocial);
+    function BuyAnAnswerApp() public {
+        owner = payable(msg.sender);
+    }
+
+    function deposit() public payable {
+        emit Deposit(msg.sender, msg.value);
+        balances[msg.sender] += msg.value;
+    }
+
+    function getBalance() external view returns (uint256) {
+        return balances[msg.sender];
+    }
+
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient funds");
+        emit Withdrawal(msg.sender, amount);
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+
+    function transfer(
+        address receiver,
+        uint256 amount
+    ) public {
+        // require(balances[sender] >= amount, "Insufficient funds");
+        emit Transfer(receiver, amount);
+        balances[receiver] += amount;
+    }
+
+    // address payable userAddress;
+    // string username;
+    // string email;
+    // string name;
+    // string boardID;
+    // Question[] askedQuestions;
+    // Answer[] answeredQuestions;
+    // string boardHeadline;
+    // string boardDesc;
+    // uint256 minQuestionPrice;
+    // string INSTAGRAM;
+    // string LINKEDIN;
+    // string FACEBOOK;
+    // string TWITTER;
+
+    // function toBytes(string calldata x) public returns (bytes memory b) {
+    //     b = new bytes(32);
+    //     assembly { mstore(add(b, 32), x.offset) }
     // }
-
-    function createBoardID(string memory usrnm, string memory eml)
+    function createBoardID(string calldata usrnm, string calldata eml)
         internal
         returns (bytes32)
     {
         return keccak256(abi.encodePacked(usrnm, eml));
     }
 
-    // create user
+    function createBoard(
+        string calldata _boardHeadline,
+        string calldata _boardDesc,
+        uint256 _minQuestionPrice
+    ) external {
+        require(
+            addressToUser[(msg.sender)].boardID != 0,
+            "create a profile first"
+        );
+        Board memory creationBoard = Board(
+            addressToUser[(msg.sender)].boardID,
+            addressToUser[(msg.sender)].userAddress,
+            _boardHeadline,
+            _boardDesc,
+            _minQuestionPrice,
+            block.timestamp
+        );
+        boardIDToBoard[addressToUser[(msg.sender)].boardID] = creationBoard;
+        emit CreateBoard(
+            addressToUser[(msg.sender)].boardID,
+            addressToUser[(msg.sender)].userAddress,
+            _boardHeadline,
+            _boardDesc,
+            _minQuestionPrice,
+            block.timestamp
+        );
+    }
 
+    // this is a function to create a user initially
     function createUser(
-        string memory _username,
-        string memory _name,
-        string memory _email,
-        string memory _password,
-        // bytes32 _boardID,
-        string memory _headline,
-        string memory _bio,
-        uint256 _minimumPrice
-    ) public // Social[] memory _socials
+        string calldata _username,
+        string calldata _email,
+        string calldata _name,
+        string calldata _socialLink_INSTAGRAM // string calldata _socialLink_LINKEDIN, // string calldata _socialLink_FACEBOOK,
+    ) external // string calldata _socialLink_TWITTER
     {
-        // check if there is already a user with this address
-        // if yes, throw error
-        // if no, create user
-
-        // checking if user exists
-
-        // if (users[msg.sender].username != "") {
-        //     revert("User already exists");
-        // }
-
         bytes32 _boardID = createBoardID(_username, _email);
-
-        User memory newUser = User(
+        User memory u = User(
             payable(msg.sender),
             _username,
-            _name,
             _email,
-            _password,
-            0,
+            _name,
             _boardID,
-            _headline,
-            _bio,
-            _minimumPrice
-            // _socials,
-            // new Question[](0)
+            _socialLink_INSTAGRAM
+            // _socialLink_LINKEDIN,
+            // _socialLink_FACEBOOK,
+            // _socialLink_TWITTER
         );
-        users[msg.sender] = newUser;
-        usersByUsername[_username] = newUser;
-    }
 
-    // get user
+        addressToUser[payable(msg.sender)] = u;
 
-    function getUser(address _userAddress) public view returns (User memory) {
-        return users[_userAddress];
-    }
-
-    // update user (only update headline, bio, minimum price)
-
-    function updateUser(
-        string memory _headline,
-        string memory _bio,
-        uint256 _minimumPrice
-    ) public {
-        users[msg.sender].headline = _headline;
-        users[msg.sender].bio = _bio;
-        users[msg.sender].minimumPrice = _minimumPrice;
-    }
-
-    // post question from user to another user
-
-    function postQuestion(
-        string memory _questionText,
-        uint256 _priorityBonus,
-        address payable _answerUser
-    ) public payable {
-        Question memory newQuestion = Question(
-            keccak256(
-                abi.encodePacked(
-                    _questionText,
-                    getUser(_answerUser).boardID,
-                    (getUser(_answerUser).minimumPrice + _priorityBonus),
-                    _priorityBonus,
-                    msg.sender,
-                    _answerUser
-                )
-            ),
-            _questionText,
-            getUser(_answerUser).boardID,
-            (getUser(_answerUser).minimumPrice + _priorityBonus),
-            _priorityBonus,
+        emit CreateUser(
+            // address payable userAddress,
+            // string username,
+            // string email,
+            // string name,
+            // bytes32 boardID,
+            // string INSTAGRAM
             payable(msg.sender),
-            _answerUser,
+            _username,
+            _email,
+            _name,
+            _boardID,
+            _socialLink_INSTAGRAM
+        );
+    }
+
+    // Send a question as an object onto the boardID -> questions mapping and the user -> receivedQuestions mapping
+    // Also the price is deducted from the users balance as soon as question is asked.
+    // This must be stored within the contract until one of 3 actinos takes place
+    //           1. Question is answered by answerUser (93% of balance for question is transferred to answerUser, 7% to buyAnAnswer address)
+    //           2. Question is cancelled by askUser before 3 days of asking the question (97% of balance is transferred to askUser, 3% to buyAnAnswer address)
+    //           3. Question is cancelled by askUser after 3 days of asking the question (100% of balance is sent to askUser)
+    //           4. Question is declined by answerUser (100% of balance is sent to askUser)
+    function sendQuestion(
+        string calldata _qst,
+        address _answerUser,
+        uint256 _prc
+    ) external payable {
+        // require(balances[msg.sender] >= _prc, "Insufficient funds");
+        // if (msg.value != _prc) {}
+        bytes32 _boardID = addressToUser[_answerUser].boardID;
+        uint256 minP = boardIDToBoard[_boardID].minQuestionPrice;
+        require(msg.value == _prc, "You have not sent the price amount");
+        require(_boardID != 0, "user you are asking is not registered");
+        require(
+            _prc >= minP,
+            "the price you have set is lower than the minimum price set by the users you are asking."
+        );
+        Question memory question = Question(
+            _qst,
+            payable(msg.sender),
+            payable(_answerUser),
+            _prc,
+            block.timestamp,
+            _boardID,
             false
         );
-        history[msg.sender].push(newQuestion);
-        history[_answerUser].push(newQuestion);
-        unansweredQuestions[_answerUser].push(newQuestion);
-        questions[
-            keccak256(
-                abi.encodePacked(
-                    _questionText,
-                    getUser(_answerUser).boardID,
-                    (getUser(_answerUser).minimumPrice + _priorityBonus),
-                    _priorityBonus,
-                    msg.sender,
-                    _answerUser
-                )
-            )
-        ] = newQuestion;
-        receivedQuestions[_answerUser].push(newQuestion);
+        boardIDToQuestions[_boardID].push(question);
+        userToReceivedQuestions[_answerUser].push(question);
+        userToAskedQuestions[payable(msg.sender)].push(question);
+        deposit();
+        balances[msg.sender] -= _prc;
+        balances[address(this)] += _prc;
+        // balances[_answerUser] += _prc;
+        emit AskQuestion(
+            _qst,
+            payable(msg.sender),
+            payable(_answerUser),
+            block.timestamp,
+            _prc,
+            _boardID
+        );
+        // emit Transfer(msg.sender, address(this), _prc);
     }
 
-    // post answer from user to question
+    // if a question is answered/declined it can't be answered again
+    // it is imparative to keep a track of the
+    // balanced received by the contract in asking questions and the
+    // exited balanced with answering questions.
 
-    function postAnswer(bytes32 _questionID, string memory _answerText)
-        public
-        payable
-    {
-        Question memory question;
-        for (uint256 i = 0; i < receivedQuestions[msg.sender].length; i++) {
-            if (receivedQuestions[msg.sender][i].questionID == _questionID) {
-                question = receivedQuestions[msg.sender][i];
-                break;
-            }
-        }
-        Answer memory newAnswer = Answer(question, _answerText);
-
-        answeredQuestions[msg.sender].push(newAnswer);
+    function declineAnswer(bytes32 _boardID, uint256 _index) external payable {
+        Question memory question = boardIDToQuestions[_boardID][_index];
+        require(question.answerUser == payable(msg.sender));
+        require(
+            !(boardIDToQuestions[_boardID][_index].isAnswered),
+            "Already answered/declined"
+        );
+        boardIDToQuestions[_boardID][_index].isAnswered = true;
 
         question.isAnswered = true;
-        question.answerUser = payable(msg.sender);
-        history[question.askUser].push(question);
-        history[question.answerUser].push(question);
-        question.answerUser.transfer(question.price);
-        question.askUser.transfer(question.priorityBonus);
-        payable(question.answerUser).transfer(question.price);
-        payable(question.askUser).transfer(question.price);
+        boardIDToDeclinedQuestions[_boardID].push(question);
+        transfer(question.askUser, question.price);
     }
 
-    // decline question from user to question
+    function sendAnswer(
+        bytes32 _boardID,
+        uint256 _index,
+        string calldata _answer
+    ) external payable {
+        Question memory question = boardIDToQuestions[_boardID][_index];
+        require(
+            question.answerUser == payable(msg.sender),
+            "Not authorized to answer."
+        );
+        if (!question.isAnswered) {
+            boardIDToQuestions[_boardID][_index].isAnswered = true;
+            question.isAnswered = true;
 
-    function declineQuestion(bytes32 _questionID) public payable {
-        Question memory question;
-        for (uint256 i = 0; i < receivedQuestions[msg.sender].length; i++) {
-            if (receivedQuestions[msg.sender][i].questionID == _questionID) {
-                question = receivedQuestions[msg.sender][i];
-                break;
+            if (question.answerUser == payable(msg.sender)) {
+                Answer memory answer = Answer(
+                    question,
+                    payable(msg.sender),
+                    _answer,
+                    block.timestamp
+                );
+                boardIDToAnswers[_boardID].push(answer);
+                boardIDToAnsweredQuestions[_boardID].push(question);
+                userToAnswers[payable(msg.sender)].push(answer);
+
+                uint256 balanceToAnswerer = (question.price * 9) / 10;
+                // balances[question.answerUser] += balanceToAnswerer;
+                transfer(question.answerUser, balanceToAnswerer);
+                emit AnswerQuestion(
+                    question,
+                    payable(msg.sender),
+                    _answer,
+                    block.timestamp
+                );
+            } else {
+                // err handling (look into using the required keyword in solidity to handle stuff like this)
             }
+        } else {
+            emit AnswerQuestion(
+                question,
+                payable(msg.sender),
+                "already answered",
+                block.timestamp
+            );
         }
-        declinedQuestions[msg.sender].push(question);
-        history[question.askUser].push(question);
-        history[question.answerUser].push(question);
-        question.answerUser.transfer(question.price);
-        question.askUser.transfer(question.priorityBonus);
     }
 
-    // get user history
+    //
+    // Functions for creating and fetching custom usernames. If a user updates
+    // their username it will update for all of their messages
+    // function createUser(string calldata _name) external {
+    //     addressToUsername[msg.sender] = _name;
+    // }
 
-    function getUserHistory(address _userAddress)
-        public
+    //
+    function getUserForAddress(address _user)
+        external
         view
-        returns (Question[] memory)
+        returns (string memory, bytes32)
     {
-        return history[_userAddress];
+        return (addressToUser[_user].username, addressToUser[_user].boardID);
     }
 
-    // create mapping for unanswered questions
-
-    mapping(address => Question[]) public unansweredQuestions;
-
-    // get unanswered questions
-
-    function getUnansweredQuestions() public view returns (Question[] memory) {
-        return unansweredQuestions[msg.sender];
-    }
-
-    // get user received questions
-
-    function getUserReceivedQuestions(address _userAddress)
-        public
+    function getProfileFromUserAddress(address _user)
+        external
         view
-        returns (Question[] memory)
-    {
-        return receivedQuestions[_userAddress];
-    }
+        returns (
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            string memory
+        )
+    {}
 
-    // get user declined questions
-
-    function getUserDeclinedQuestions(address _userAddress)
-        public
+    function getBoardFromUserAddress(address _user)
+        external
         view
-        returns (Question[] memory)
+        returns (Board memory)
     {
-        return declinedQuestions[_userAddress];
+        return (boardIDToBoard[addressToUser[_user].boardID]);
     }
 
-    // get user answered questions
-
-    function getUserAnsweredQuestions(address _userAddress)
-        public
-        view
-        returns (Answer[] memory)
-    {
-        return answeredQuestions[_userAddress];
+    function getThisUser() external view returns (string memory, bytes32) {
+        address _user = payable(msg.sender);
+        return (addressToUser[_user].username, addressToUser[_user].boardID);
     }
 
-    // get user balance
-
-    function getUserBalance(address _userAddress)
-        public
+    //
+    //  Currently, there is no support for returning nested lists, so the length
+    //  of messages needs to be fetched and then retrieved by index. This is not
+    //  fast but it is the most gas efficient method for storing and
+    //  fetching data. Ideally this only needs to be done once per room load
+    function getQuestionCountForBoard(bytes32 _boardID)
+        external
         view
         returns (uint256)
     {
-        return users[_userAddress].balance;
+        return boardIDToQuestions[_boardID].length;
     }
 
-    // get user boardID
-
-    function getUserBoardID(address _userAddress)
-        public
+    function getQuestionsForUser(address _usrAddress)
+        external
         view
-        returns (bytes32)
+        returns (Question[] memory)
     {
-        return users[_userAddress].boardID;
+        return userToReceivedQuestions[_usrAddress];
     }
 
-    // get user headline
-
-    function getUserHeadline(address _userAddress)
-        public
+    function getQuestionsForCurrentUser()
+        external
         view
-        returns (string memory)
+        returns (Question[] memory)
     {
-        return users[_userAddress].headline;
+        return userToReceivedQuestions[payable(msg.sender)];
     }
 
-    // get user bio
+    function getAnswerForCurrentUser() external view returns (Answer[] memory) {
+        return userToAnswers[payable(msg.sender)];
+    }
 
-    function getUserBio(address _userAddress)
-        public
+    //
+    // There is no support for returning a struct to web3, so this needs to be
+    // returned as multiple items. This will throw an error if the index is invalid
+    function getQuestionByIndexForBoard(bytes32 _boardID, uint256 _index)
+        external
         view
-        returns (string memory)
+        returns (
+            string memory,
+            address,
+            address,
+            uint256,
+            uint256,
+            bytes32,
+            bool
+        )
     {
-        return users[_userAddress].bio;
+        Question memory question = boardIDToQuestions[_boardID][_index];
+        return (
+            question.message,
+            question.askUser,
+            question.answerUser,
+            question.price,
+            question.timestamp,
+            question.boardID,
+            question.isAnswered
+        );
     }
 
-    // get user minimum price
-
-    function getUserMinimumPrice(address _userAddress)
-        public
-        view
-        returns (uint256)
-    {
-        return users[_userAddress].minimumPrice;
-    }
-
-    // get user socials
-
-    // function getUserSocials(address _userAddress) public view returns (Social[] memory) {
-    //     return users[_userAddress].socials;
-    // }
-
-    // get user socials by platform
-
-    // function getUserSocialsByPlatform(address _userAddress, string memory _platform) public view returns (Social memory) {
-    //     for (uint256 i = 0; i < users[_userAddress].socials.length; i++) {
-    //         if (keccak256(abi.encodePacked(users[_userAddress].socials[i].platform)) == keccak256(abi.encodePacked(_platform))) {
-    //             return users[_userAddress].socials[i];
-    //         }
-    //     }
-    // }
-
-    // get user by username
-
-    function getUserByUsername(string memory _username)
-        public
+    function getUserByAddress(address _userAddress)
+        external
         view
         returns (User memory)
     {
-        return usersByUsername[_username];
+        User memory user = addressToUser[_userAddress];
+        return (user);
+    }
+
+    function getAnswerFromBoardIDAndIndex(bytes32 _boardID, uint256 _index)
+        external
+        view
+        returns (
+            address,
+            string memory,
+            address,
+            string memory,
+            uint256,
+            uint256
+        )
+    {
+        Answer memory answer = boardIDToAnswers[_boardID][_index];
+        string memory answerText = answer.answerText;
+        Question memory question = answer.question;
+        address asker = question.askUser;
+        address answerer = answer.answerer;
+        string memory questionText = question.message;
+        uint256 price = question.price;
+        uint256 answeredOn = answer.timestamp;
+        return (asker, questionText, answerer, answerText, price, answeredOn);
+    }
+
+    //
+    function getAnswerByQuestionID(string calldata _questionID)
+        external
+        view
+        returns (string memory, string memory)
+    {}
+
+    function kill() external {
+        if (owner == msg.sender) {
+            selfdestruct(owner);
+        }
     }
 }

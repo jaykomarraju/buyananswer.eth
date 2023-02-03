@@ -3,7 +3,68 @@ pragma solidity >=0.5.0 <0.9.0;
 
 contract BuyAnAnswer {
 
+
+    // the front end will be able to call the following:
+    // - create user
+    // - update user
+    //  - get user by username
+    // - post question to user by choosing user address
+    // - post answer to question received by choosing questionID
+    // - decline question received by choosing questionID
+    // - get user history (all questions and answers)
+    // - get unanswered questions 
+    // - get received questions
+    // - get declined questions
+    // - get answered questions
+    // - get user balance
+
+    // CREATE ALL NECESSARY EVENTS
+
+    event UserCreated(
+        address userAddress,
+        string username,
+        string name,
+        string email,
+        string password,
+        uint256 balance,
+        bytes32 boardID,
+        string headline,
+        string bio,
+        uint256 minimumPrice
+    );
+
+    event UserUpdated(
+        address userAddress,
+        string headline,
+        string bio,
+        uint256 minimumPrice
+    );
+
+    event QuestionPosted(
+        bytes32 questionID,
+        string questionText,
+        bytes32 boardID,
+        uint256 price,
+        uint256 priorityBonus,
+        address payable askUser,
+        address payable answerUser,
+        bool isAnswered
+    );
+
+    event AnswerPosted(
+        bytes32 questionID,
+        string answerText
+    );
+
+    event QuestionDeclined(
+        bytes32 questionID
+    );
+
+    // CREATE ALL NECESSARY STRUCTS AND MAPPINGS
+    
+
     struct User {
+        address userAddress;
         string username;
         string name;
         string email;
@@ -43,6 +104,9 @@ contract BuyAnAnswer {
     mapping(address => Question[]) public receivedQuestions;
     mapping(address => Question[]) public declinedQuestions;
     mapping(address => Answer[]) public answeredQuestions;
+    mapping(bytes32 => Question) public questions;
+    mapping(address => Question[]) public unansweredQuestions;
+
 
     // create social
 
@@ -54,7 +118,12 @@ contract BuyAnAnswer {
     //     users[msg.sender].socials.push(newSocial);
     // }
 
-    
+    function createBoardID(string memory usrnm, string memory eml)
+        internal
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(usrnm, eml));
+    }
 
     // create user
 
@@ -63,7 +132,7 @@ contract BuyAnAnswer {
         string memory _name,
         string memory _email,
         string memory _password,
-        bytes32 _boardID,
+        // bytes32 _boardID,
         string memory _headline,
         string memory _bio,
         uint256 _minimumPrice
@@ -80,8 +149,11 @@ contract BuyAnAnswer {
         //     revert("User already exists");
         // }
 
+        bytes32 _boardID = createBoardID(_username, _email);
+
 
         User memory newUser = User(
+            payable(msg.sender),
             _username,
             _name,
             _email,
@@ -96,6 +168,18 @@ contract BuyAnAnswer {
             );
         users[msg.sender] = newUser;
         usersByUsername[_username] = newUser;
+        emit UserCreated(
+            msg.sender,
+            _username,
+            _name,
+            _email,
+            _password,
+            0,
+            _boardID,
+            _headline,
+            _bio,
+            _minimumPrice
+        );
     }
 
     // get user
@@ -116,6 +200,7 @@ contract BuyAnAnswer {
         users[msg.sender].headline = _headline;
         users[msg.sender].bio = _bio;
         users[msg.sender].minimumPrice = _minimumPrice;
+        emit UserUpdated(msg.sender, _headline, _bio, _minimumPrice);
     }
 
     // post question from user to another user
@@ -138,8 +223,18 @@ contract BuyAnAnswer {
         history[msg.sender].push(newQuestion);
         history[_answerUser].push(newQuestion);
         unansweredQuestions[_answerUser].push(newQuestion);
-
+        questions[keccak256(abi.encodePacked(_questionText, getUser(_answerUser).boardID, (getUser(_answerUser).minimumPrice + _priorityBonus), _priorityBonus, msg.sender, _answerUser))] = newQuestion;
         receivedQuestions[_answerUser].push(newQuestion);
+        emit QuestionPosted(
+            keccak256(abi.encodePacked(_questionText, getUser(_answerUser).boardID, (getUser(_answerUser).minimumPrice + _priorityBonus), _priorityBonus, msg.sender, _answerUser)),
+            _questionText,
+            getUser(_answerUser).boardID,
+            (getUser(_answerUser).minimumPrice + _priorityBonus),
+            _priorityBonus,
+            payable(msg.sender),
+            _answerUser,
+            false
+        );
     }
 
     // post answer from user to question
@@ -167,6 +262,10 @@ contract BuyAnAnswer {
         question.askUser.transfer(question.priorityBonus);
         payable(question.answerUser).transfer(question.price);
         payable(question.askUser).transfer(question.price);
+        emit AnswerPosted(
+            question.questionID,
+            _answerText
+        );
     }
 
     // decline question from user to question
@@ -187,6 +286,10 @@ contract BuyAnAnswer {
         question.answerUser.transfer(question.price);
         question.askUser.transfer(question.priorityBonus);
 
+        emit QuestionDeclined(
+            question.questionID
+        );
+
     }
 
     // get user history
@@ -197,7 +300,7 @@ contract BuyAnAnswer {
 
     // create mapping for unanswered questions
 
-    mapping(address => Question[]) public unansweredQuestions;
+    // mapping(address => Question[]) Spublic unansweredQuestions;
 
     // get unanswered questions
 
