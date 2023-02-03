@@ -19,7 +19,7 @@ const Ticket2 = styled.div`
   cursor: pointer;
 //   display: flex;
 //   background:#262626;
-background:#00e390;
+background:#fff;
 // opacity: 0.5;
   color:#1a1a1a;
   padding: 10px;

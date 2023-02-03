@@ -30,7 +30,12 @@ background:transparent;
 border:1.5px solid red;
 border-radius:10px;
 width:100px;
-color:red;`
+color:red;
+
+&:hover{
+  background:red;
+  color:white;
+}`
 
 
 const Flexer = styled.div`flex:7;`
@@ -44,7 +49,12 @@ background:transparent;
 border:1.5px solid green;
 border-radius:10px;
 width:100px;
-color:green;`
+color:green;
+
+&:hover{
+  background:green;
+  color:white;
+  }`
 
 const AText = styled.p`margin-bottom:-5px;text-align:left;padding-left:10px;text-transform:uppercase;`
 

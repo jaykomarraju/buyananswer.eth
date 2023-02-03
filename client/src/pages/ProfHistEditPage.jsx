@@ -7,7 +7,6 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 
-
 const Cont = styled.div`
   display: flex;
   justify-content: center;
@@ -15,27 +14,27 @@ const Cont = styled.div`
   // background:#4B9CD3;
 `;
 
-
-
-
 const Wrapper = styled.div`
-// background:lightgreen;
-// padding: 5%;
-margin-top: 30px;
-margin-bottom: 100px;
-height: 80%;
-width:100%;
-max-width:800px;
-// margin-left:10px;
-// margin-right:10px;
-// background:lightgreen;
-display: flex;
-flex-direction: column;
-align-items: center;
-// justify-content: center;
+  // background:lightgreen;
+  // padding: 5%;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  height: 80%;
+  width: 100%;
+  max-width: 800px;
+  // margin-left:10px;
+  // margin-right:10px;
+  // background:lightgreen;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 `;
 
-const Middle = styled.div`width: 92%;max-width:800px;`;
+const Middle = styled.div`
+  width: 92%;
+  max-width: 800px;
+`;
 
 const Section = styled.div`
   display: flex;
@@ -47,16 +46,16 @@ const Section4 = styled.div`
   display: flex;
   align-items: center;
   // color:blue;
-  margin-left:-20px;
+  margin-left: -20px;
 `;
 
 const ProfilePicture = styled.div`
   // background:pink;
   // max-width: 100px;
   // max-height: 100px;
-  width:100px;
-  height:100px;
-  aspect-ratio:1;
+  width: 100px;
+  height: 100px;
+  aspect-ratio: 1;
   border-radius: 50%;
   border: 1.5px solid black;
   margin: 20px;
@@ -70,31 +69,31 @@ const Label = styled.p`
 
 const ValueLabel = styled.p`
   margin-right: 4px;
-  padding-left:25px;
+  padding-left: 25px;
   text-align: right;
   // background:blue;
 `;
 
 const MinPriceValueLabel = styled.div`
-margin-right: 4px;
-padding-left:25px;
-text-align: right;
-// background:blue;
-font-weight:600;
-font-size:2em;
+  margin-right: 4px;
+  padding-left: 25px;
+  text-align: right;
+  // background:blue;
+  font-weight: 600;
+  font-size: 2em;
 `;
 const LinkValueLabel = styled.div`
-margin-right: 4px;
-padding-left:0px;
-text-align: left;
-// background:blue;
-// font-weight:600;
-// font-size:2em;
+  margin-right: 4px;
+  padding-left: 0px;
+  text-align: left;
+  // background:blue;
+  // font-weight:600;
+  // font-size:2em;
 `;
 
 const Entry = styled.input`
   max-width: 500px;
-  width:80%;
+  width: 80%;
   height: 30px;
   background: transparent;
   border: 1.5px solid black;
@@ -114,7 +113,7 @@ const SmallEntry = styled.input`
 
 const Entries = styled.div`
   // color:blue;
-  
+
   // background:green;
 `;
 
@@ -125,7 +124,6 @@ const Username = styled.div`
   width: 100%;
   height: 45px;
   // margin-bottom:10px;
-
 `;
 
 const Desc = styled.textarea`
@@ -237,110 +235,182 @@ const Second2 = styled.button`
 `;
 
 const QuestionHistory = styled.div`
-display:flex;
-flex-direction:column;
-`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Ticket = styled.div`
-display:flex;
-padding:10px;
-margin-left:10px;
+  display: flex;
+  padding: 10px;
+  margin-left: 10px;
 
-margin-right:10px;
-border:1.5px solid black;
-border-radius:15px;
-margin-top:20px;align-items:center;`
+  margin-right: 10px;
+  border: 1.5px solid black;
+  border-radius: 15px;
+  margin-top: 20px;
+  align-items: center;
+`;
 
-const Question = styled.p`flex:7; text-align:left;padding-left:10px;`
+const Question = styled.p`
+  flex: 7;
+  text-align: left;
+  padding-left: 10px;
+`;
 
-const Fin = styled.p`flex:1;font-size:25px;`
+const Fin = styled.p`
+  flex: 1;
+  font-size: 25px;
+`;
 
 const ProfHistEditPage = () => {
+  const Profile = {
+    name: "John Doe",
+    username: "johndoe",
+    email: "john.doe@gmail.com",
+    description: "I am a software engineer",
+    socials: [
+      {
+        platform: "Twitter",
+        link: "https://twitter.com/johndoe",
+      },
+      {
+        platform: "Instagram",
+        link: "https://instagram.com/johndoe",
+      },
+      {
+        platform: "LinkedIn",
+        link: "https://linkedin.com/johndoe",
+      },
+    ],
+    boardDescription:
+      "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
+    minimumQuestionPrice: 5.0,
+  };
 
+  const [profile, setProfile] = useState(Profile);
+
+  const [username, setUsername] = useState(Profile.username);
+  const [email, setEmail] = useState(Profile.email);
+  const [name, setName] = useState(Profile.name);
+  const [description, setDescription] = useState(Profile.description);
+  const [boardDescription, setBoardDescription] = useState(
+    Profile.boardDescription
+  );
+  const [socials, setSocials] = useState(Profile.socials);
+  const [instagramUsername, setInstagramUsername] = useState("johndoe");
+
+  const [minimumQuestionPrice, setMinimumQuestionPrice] = useState(
+    Profile.minimumQuestionPrice
+  );
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
+
+  const handleSave = () => {
+    console.log("Saving profile");
+  };
 
   return (
     <Cont>
-    <Wrapper>
-      <ConnectWalletIcon />
-      {/* <Top>
+      <Wrapper>
+        <ConnectWalletIcon />
+        {/* <Top>
       <ConnectWalletButton/>
     </Top> */}
-      
-      <Middle>
-        <Head2>Profile</Head2>
-      <SubHead>/johndoe</SubHead>
-        <Section4>
-          <ProfilePicture></ProfilePicture>
-          <Entries>
-            <Username>
-              <Label>USERNAME: </Label>
-              <Label>johndoe</Label>
-            </Username>
-            <Username>
-              <Label>EMAIL: </Label>
-              <Label>john.doe@gmail.com</Label>
-            </Username>
-            <Username>
-              <Label>NAME: </Label>
-              <Label>JOHN DOE</Label>
-            </Username>
-          </Entries>
-        </Section4>
-        <Section>
-          {/* <Spread2>
+
+        <Middle>
+          <Head2>Profile</Head2>
+          <SubHead>/{username}</SubHead>
+          <Section4>
+            <ProfilePicture></ProfilePicture>
+            <Entries>
+              <Username>
+                <Label>USERNAME: </Label>
+                <Label>{username}</Label>
+              </Username>
+              <Username>
+                <Label>EMAIL: </Label>
+                <Label>{email}</Label>
+              </Username>
+              <Username>
+                <Label>NAME: </Label>
+                <Label>{name}</Label>
+              </Username>
+            </Entries>
+          </Section4>
+          <Section>
+            {/* <Spread2>
             <First>VIEW HISTORY</First>
             <Second2>V</Second2>
           </Spread2> */}
-          {/* <ClosedHistory/> */}
-          {/* <OpenHistory/> */}
-          {/* {historySelection} */}
-          <SwitchingHistoryComponent/>
-        </Section>
-        <Section>
-          <Spread>
-            <First></First>
-            <div>
-              {/* <Second>EDIT</Second> */}
-              <Link to="/profile">
-              <Second>SAVE</Second></Link>
-            </div>
-          </Spread>
-        </Section>
-        <br></br>
-        <Section>
-          <Label>HEADLINE</Label>
-          <Entry value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."></Entry>
-          {/* <ValueLabel>
+            {/* <ClosedHistory/> */}
+            {/* <OpenHistory/> */}
+            {/* {historySelection} */}
+            <SwitchingHistoryComponent />
+          </Section>
+          <Section>
+            <Spread>
+              <First></First>
+              <div>
+                {/* <Second>EDIT</Second> */}
+                <Link to="/profile">
+                <Second onClick={handleSave}>SAVE</Second>
+                </Link>
+              </div>
+            </Spread>
+          </Section>
+          <br></br>
+          <Section>
+            <Label>HEADLINE</Label>
+            <Entry
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            ></Entry>
+            {/* <ValueLabel>
           
           </ValueLabel> */}
-        </Section>
-        <Section>
-          <Label>PUBLIC BOARD DESCRIPTION</Label>
-          <Desc value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."></Desc>
-          {/* <ValueLabel>
+          </Section>
+          <Section>
+            <Label>PUBLIC BOARD DESCRIPTION</Label>
+            <Desc
+              value={boardDescription}
+              onChange={(e) => {
+                setBoardDescription(e.target.value);
+              }}
+            ></Desc>
+            {/* <ValueLabel>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </ValueLabel> */}
-        </Section>
-        <Section>
-          <Label>MINIMUM QUESTION PRICE</Label>
-          <SmallEntry value="$5.00"></SmallEntry>
-          {/* <MinPriceValueLabel>
+          </Section>
+          <Section>
+            <Label>MINIMUM QUESTION PRICE</Label>
+            <SmallEntry
+              value={minimumQuestionPrice}
+              onChange={(e) => {
+                setMinimumQuestionPrice(e.target.value);
+              }}
+            ></SmallEntry>
+            {/* <MinPriceValueLabel>
             $5.00
           </MinPriceValueLabel> */}
-        </Section>
-        <Section>
-          <Socials>
-            <Head>SOCIALS</Head>
+          </Section>
+          <Section>
+            <Socials>
+              <Head>SOCIALS</Head>
 
-            <Platform>
-              <Name>INSTRAGRAM.COM/</Name>
-              <Entry value="johndoe"></Entry>
-              {/* <LinkValueLabel>
+              <Platform>
+                <Name>INSTRAGRAM.COM/</Name>
+                <Entry
+                  value={instagramUsername}
+                  onChange={(e) => {
+                    setInstagramUsername(e.target.value);
+                  }}
+                ></Entry>
+                {/* <LinkValueLabel>
             johndoe
           </LinkValueLabel> */}
-            </Platform>
-            {/* <Platform>
+              </Platform>
+              {/* <Platform>
               <Name>LINKEDIN.COM/</Name>
               <Entry></Entry>
             </Platform>
@@ -352,15 +422,16 @@ const ProfHistEditPage = () => {
               <Name>TWITTER.COM/</Name>
               <Entry></Entry>
             </Platform> */}
-          </Socials>
-        </Section>
-      </Middle>
-      {/* <BottomWrap> */}
+            </Socials>
+          </Section>
+        </Middle>
+        {/* <BottomWrap> */}
 
-      {/* <BottomNavBar/> */}
-      {/* </BottomWrap> */}
-      <BottomNavBar />
-    </Wrapper></Cont>
+        {/* <BottomNavBar/> */}
+        {/* </BottomWrap> */}
+        <BottomNavBar />
+      </Wrapper>
+    </Cont>
   );
 };
 

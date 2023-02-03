@@ -32,9 +32,15 @@ const Button = styled.button`
   padding: 10px;
   font-size: 0.75em;
   background: transparent;
-  border: 1.5px solid black;
+  border: 2px solid black;
   border-radius: 7px;
   width: 50%;
+
+  &:hover {
+    background: black;
+    color: white;
+  }
+
 `;
 
 const UsernameBoxEntry = styled.input`
@@ -124,9 +130,9 @@ const Home = () => {
             placeholder={headPlaceholder}
           ></UsernameBoxEntry>
           <br></br>
-          {/* <Link to="/askpage"> */}
+          <Link to="/askpage">
           <Button onClick={handleClick}>VISIT BOARD</Button>
-          {/* </Link> */}
+          </Link>
         </Middle>
         {/* <BottomWrap> */}
 
