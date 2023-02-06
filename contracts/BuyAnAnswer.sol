@@ -19,6 +19,68 @@ contract BuyAnAnswer {
 
     // CREATE ALL NECESSARY EVENTS
 
+    event UserCreated(
+        address userAddress,
+        string username,
+        string name,
+        string email,
+        string password,
+        uint256 balance,
+        bytes32 boardID,
+        string headline,
+        string bio,
+        uint256 minimumPrice
+    );
+
+    event UserUpdated(
+        address userAddress,
+        string username,
+        string name,
+        string email,
+        string password,
+        uint256 balance,
+        bytes32 boardID,
+        string headline,
+        string bio,
+        uint256 minimumPrice
+    );
+
+    event QuestionPosted(
+        bytes32 questionID,
+        string questionText,
+        bytes32 boardID,
+        uint256 price,
+        uint256 priorityBonus,
+        address askUser,
+        address answerUser,
+        bool isAnswered
+    );
+
+    event AnswerPosted(
+        bytes32 questionID,
+        string questionText,
+        bytes32 boardID,
+        uint256 price,
+        uint256 priorityBonus,
+        address askUser,
+        address answerUser,
+        bool isAnswered,
+        string answerText
+    );
+
+    event QuestionDeclined(
+        bytes32 questionID,
+        string questionText,
+        bytes32 boardID,
+        uint256 price,
+        uint256 priorityBonus,
+        address askUser,
+        address answerUser,
+        bool isAnswered
+    );
+
+    // CREATE ALL NECESSARY STRUCTS
+
     struct User {
         address payable userAddress;
         string username;
@@ -55,7 +117,9 @@ contract BuyAnAnswer {
     }
 
     mapping(address => User) public users;
-    mapping(string => User) public usersByUsername;
+    // mapping(string => User) public usersByUsername;
+    mapping(address => string) public usernameByAddress;
+    mapping(address => Question[]) public askedQuestions;
     mapping(address => Question[]) public history;
     mapping(address => Question[]) public receivedQuestions;
     mapping(address => Question[]) public declinedQuestions;
@@ -89,9 +153,8 @@ contract BuyAnAnswer {
         // bytes32 _boardID,
         string memory _headline,
         string memory _bio,
-        uint256 _minimumPrice
-    ) public // Social[] memory _socials
-    {
+        uint256 _minimumPrice // Social[] memory _socials
+    ) public {
         // check if there is already a user with this address
         // if yes, throw error
         // if no, create user
@@ -121,7 +184,20 @@ contract BuyAnAnswer {
             // new Question[](0)
         );
         users[msg.sender] = newUser;
-        usersByUsername[_username] = newUser;
+        usernameByAddress[userAddress] = _username;
+
+        emit UserCreated(
+            userAddress,
+            _username,
+            _name,
+            _email,
+            _password,
+            0,
+            _boardID,
+            _headline,
+            _bio,
+            _minimumPrice
+        );
     }
 
     // get user
@@ -140,6 +216,19 @@ contract BuyAnAnswer {
         users[msg.sender].headline = _headline;
         users[msg.sender].bio = _bio;
         users[msg.sender].minimumPrice = _minimumPrice;
+
+        emit UserUpdated(
+            msg.sender,
+            users[msg.sender].username,
+            users[msg.sender].name,
+            users[msg.sender].email,
+            users[msg.sender].password,
+            users[msg.sender].balance,
+            users[msg.sender].boardID,
+            _headline,
+            _bio,
+            _minimumPrice
+        );
     }
 
     // post question from user to another user
@@ -184,6 +273,17 @@ contract BuyAnAnswer {
             )
         ] = newQuestion;
         receivedQuestions[_answerUser].push(newQuestion);
+
+        emit QuestionPosted(
+            newQuestion.questionID,
+            _questionText,
+            getUser(_answerUser).boardID,
+            (getUser(_answerUser).minimumPrice + _priorityBonus),
+            _priorityBonus,
+            msg.sender,
+            _answerUser,
+            false
+        );
     }
 
     // post answer from user to question
@@ -211,6 +311,18 @@ contract BuyAnAnswer {
         // question.askUser.transfer(question.priorityBonus);
         // payable(question.answerUser).transfer(question.price);
         // payable(question.askUser).transfer(question.price);
+
+        emit AnswerPosted(
+            question.questionID,
+            question.questionText,
+            question.boardID,
+            question.price,
+            question.priorityBonus,
+            question.askUser,
+            question.answerUser,
+            question.isAnswered,
+            _answerText
+        );
     }
 
     // decline question from user to question
@@ -223,11 +335,25 @@ contract BuyAnAnswer {
                 break;
             }
         }
+
+        question.isAnswered = true;
         declinedQuestions[msg.sender].push(question);
         history[question.askUser].push(question);
         history[question.answerUser].push(question);
-        question.answerUser.transfer(question.price);
-        question.askUser.transfer(question.priorityBonus);
+
+        // question.answerUser.transfer(question.price);
+        // question.askUser.transfer(question.priorityBonus);
+
+        emit QuestionDeclined(
+            question.questionID,
+            question.questionText,
+            question.boardID,
+            question.price,
+            question.priorityBonus,
+            question.askUser,
+            question.answerUser,
+            question.isAnswered
+        );
     }
 
     // get user history
@@ -348,11 +474,11 @@ contract BuyAnAnswer {
 
     // get user by username
 
-    function getUserByUsername(string memory _username)
+    function getUsernameByAddress(address _userAddress)
         public
         view
-        returns (User memory)
+        returns (string memory)
     {
-        return usersByUsername[_username];
+        return usernameByAddress[_userAddress];
     }
 }
