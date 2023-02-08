@@ -183,20 +183,21 @@ contract BuyAnAnswer {
             // _socials,
             // new Question[](0)
         );
+
         users[msg.sender] = newUser;
-        usernameByAddress[userAddress] = _username;
+        usernameByAddress[msg.sender] = _username;
 
         emit UserCreated(
-            userAddress,
-            _username,
-            _name,
-            _email,
-            _password,
-            0,
-            _boardID,
-            _headline,
-            _bio,
-            _minimumPrice
+            msg.sender,
+            users[msg.sender].username,
+            users[msg.sender].name,
+            users[msg.sender].email,
+            users[msg.sender].password,
+            msg.sender.balance,
+            users[msg.sender].boardID,
+            users[msg.sender].headline,
+            users[msg.sender].bio,
+            users[msg.sender].minimumPrice
         );
     }
 
@@ -482,3 +483,11 @@ contract BuyAnAnswer {
         return usernameByAddress[_userAddress];
     }
 }
+
+// truffle(development)> migrate --reset
+// testing
+// BuyAnAnswerInstance2.methods.createUser("test", "Test Ta", "test@gmail.com", "admin", "hi", "hey", 5).send({from: "0x4E2914232E29032490F25e88b73836fC5dF921f1", gas: 1000000})
+// BuyAnAnswerInstance.methods.getUser(cale)
+
+
+// BuyAnAnswerInstance2.methods.getUser("0x4E2914232E29032490F25e88b73836fC5dF921f1").call()
