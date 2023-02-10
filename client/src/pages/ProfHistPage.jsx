@@ -6,6 +6,7 @@ import ClosedHistory from "../components/ClosedHistory";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
+import contract from "../services/web3";
 
 // This is the page that shows the user's profile and history
 // It recieves the user's profile data from the server and displays it.
@@ -281,7 +282,6 @@ const SocialPlatform = styled.div`
   // background:purple;
 `;
 
-
 const Question = styled.p`
   flex: 7;
   text-align: left;
@@ -294,6 +294,8 @@ const Fin = styled.p`
 `;
 
 const ProfHistPage = () => {
+  // on load, get the user from the address and contract
+
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
   // const Profile = [
@@ -319,36 +321,87 @@ const ProfHistPage = () => {
   //   },
   // ];
 
-  const Profile = {
-    name: "John Doe",
-    username: "johndoe",
-    email: "john.doe@gmail.com",
-    description: "I am a software engineer",
-    socials: [
-      {
-        platform: "Twitter",
-        link: "https://twitter.com/johndoe",
-      },
-      {
-        platform: "Instagram",
-        link: "https://instagram.com/johndoe",
-      },
-      {
-        platform: "LinkedIn",
-        link: "https://linkedin.com/johndoe",
-      },
-    ],
-    boardDescription: "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
-    minimumQuestionPrice: 5.0,
+  // const Profile = {
+    // name: "John Doe",
+    // username: "johndoe",
+    // email: "john.doe@gmail.com",
+    // description: "I am a software engineer",
+    // socials: [
+    //   {
+    //     platform: "Twitter",
+    //     link: "https://twitter.com/johndoe",
+    //   },
+    //   {
+    //     platform: "Instagram",
+    //     link: "https://instagram.com/johndoe",
+    //   },
+    //   {
+    //     platform: "LinkedIn",
+    //     link: "https://linkedin.com/johndoe",
+    //   },
+    // ],
+    // boardDescription: "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
+    // minimumQuestionPrice: 5.0,
+  // };
+
+  // const [userAddress, setUserAddress] = useState(null);
+
+  // const handleUserAddress = (address) => {
+  //   setUserAddress(address);
+  // };
+
+  // handleUserAddress(0xa5a062cc7aa1f44161153e8a1deb4edb916fbe55);
+
+  // console.log("TIK");
+
+  const [user, setUser] = useState(null);
+
+  const handleUser = (user) => {
+    setUser(user);
   };
 
+  const [username, setUsername] = useState("");
 
-  const [username, setUsername] = useState(Profile.username);
-  const [email, setEmail] = useState(Profile.email);
-  const [name, setName] = useState(Profile.name);
-  const [description, setDescription] = useState(Profile.description);
-  const [socials, setSocials] = useState(Profile.socials);
+  const [email, setEmail] = useState("");
 
+  const [name, setName] = useState("");
+
+  const [description, setDescription] = useState("");
+
+  const [bio, setBio] = useState("");
+
+  const [minimumPrice, setMinimumPrice] = useState("");
+
+  // const [socials, setSocials] = useState("");
+  // setSocials(Profile.socials);
+
+  // create an on load function that gets the user from the address and contract
+
+
+
+  contract.methods
+    .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
+    .call()
+    .then((user) => {
+      // console.log(user);
+      // handleUser(user);
+      setUsername(user.username);
+      setEmail(user.email);
+      setName(user.name);
+      setDescription(user.headline);
+      setBio(user.bio);
+      setMinimumPrice(user.minimumPrice);
+    }
+    );
+
+  // contract.methods
+  //   .createUser(username, name, email, "test", headline, description, 5)
+  //   .send({
+  //     from: "0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55",
+  //     gas: 1000000,
+  //   });
+
+  // console.log(user);
 
   return (
     <Cont>
@@ -366,15 +419,15 @@ const ProfHistPage = () => {
             <Entries>
               <Username>
                 <Label>USERNAME: </Label>
-                <Label>{Profile.username}</Label>
+                <Label>{username}</Label>
               </Username>
               <Username>
                 <Label>EMAIL: </Label>
-                <Label>{Profile.email}</Label>
+                <Label>{email}</Label>
               </Username>
               <Username>
                 <Label>NAME: </Label>
-                <Label>{Profile.name}</Label>
+                <Label>{name}</Label>
               </Username>
             </Entries>
           </Section4>
@@ -403,9 +456,7 @@ const ProfHistPage = () => {
           <Section>
             <Label>HEADLINE</Label>
             {/* <Entry value=""></Entry> */}
-            <ValueLabel>
-              {Profile.description}
-            </ValueLabel>
+            <ValueLabel>{description}</ValueLabel>
           </Section>
           <Section>
             <Label>PUBLIC BOARD DESCRIPTION</Label>
@@ -417,26 +468,25 @@ const ProfHistPage = () => {
               nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
               reprehenderit in voluptate velit esse cillum dolore eu fugiat
               nulla pariatur. */}
-              {Profile.boardDescription}
+              {bio}
             </ValueLabel>
           </Section>
           <Section>
             <Label>MINIMUM QUESTION PRICE</Label>
             {/* <SmallEntry></SmallEntry> */}
-            <MinPriceValueLabel>$ {Profile.minimumQuestionPrice}</MinPriceValueLabel>
+            <MinPriceValueLabel>$ {minimumPrice}</MinPriceValueLabel>
           </Section>
-          <Section>
+          {/* <Section>
             <Socials>
               <Head>SOCIALS</Head>
-               {socials.map((social) => (
-                 <Social>
-                   <SocialPlatform>{social.platform}</SocialPlatform>
-                   <SocialLink>{social.link}</SocialLink>
-                 </Social>
-               ))}
-
+              {socials.map((social) => (
+                <Social>
+                  <SocialPlatform>{social.platform}</SocialPlatform>
+                  <SocialLink>{social.link}</SocialLink>
+                </Social>
+              ))}
             </Socials>
-          </Section>
+          </Section> */}
         </Middle>
         {/* <BottomWrap> */}
 

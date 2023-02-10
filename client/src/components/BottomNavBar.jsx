@@ -19,7 +19,8 @@ const Centerer = styled.div`
   justify-content: center;
 `;
 const MenuItem = styled.div`
-  background: lightblue;
+  background: #159a1f;
+  opacity: 0.5;
   padding: 3px;
   border-radius: 50%;
   width: 50px;
@@ -28,6 +29,10 @@ const MenuItem = styled.div`
   align-items: center;
   justify-content: center;
   margin: 10px;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const SelectedMenuItem = styled.div`

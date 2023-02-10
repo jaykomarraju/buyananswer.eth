@@ -6,6 +6,7 @@ import ClosedHistory from "../components/ClosedHistory";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
+import contract from "../services/web3";
 
 const Cont = styled.div`
   display: flex;
@@ -263,50 +264,75 @@ const Fin = styled.p`
 `;
 
 const ProfHistEditPage = () => {
-  const Profile = {
-    name: "John Doe",
-    username: "johndoe",
-    email: "john.doe@gmail.com",
-    description: "I am a software engineer",
-    socials: [
-      {
-        platform: "Twitter",
-        link: "https://twitter.com/johndoe",
-      },
-      {
-        platform: "Instagram",
-        link: "https://instagram.com/johndoe",
-      },
-      {
-        platform: "LinkedIn",
-        link: "https://linkedin.com/johndoe",
-      },
-    ],
-    boardDescription:
-      "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
-    minimumQuestionPrice: 5.0,
+  const [user, setUser] = useState(null);
+
+  const handleUser = (user) => {
+    setUser(user);
   };
 
-  const [profile, setProfile] = useState(Profile);
+  // const Profile = {
+  // //   name: "John Doe",
+  // //   username: "johndoe",
+  // //   email: "john.doe@gmail.com",
+  // //   description: "I am a software engineer",
+  //   socials: [
+  //     {
+  //       platform: "Twitter",
+  //       link: "https://twitter.com/johndoe",
+  //     },
+  //     {
+  //       platform: "Instagram",
+  //       link: "https://instagram.com/johndoe",
+  //     },
+  //     {
+  //       platform: "LinkedIn",
+  //       link: "https://linkedin.com/johndoe",
+  //     },
+  //   ],
+  // //   boardDescription:
+  // //     "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
+  // //   minimumQuestionPrice: 5.0,
+  // };
 
-  const [username, setUsername] = useState(Profile.username);
-  const [email, setEmail] = useState(Profile.email);
-  const [name, setName] = useState(Profile.name);
-  const [description, setDescription] = useState(Profile.description);
-  const [boardDescription, setBoardDescription] = useState(
-    Profile.boardDescription
-  );
-  const [socials, setSocials] = useState(Profile.socials);
-  const [instagramUsername, setInstagramUsername] = useState("johndoe");
+  // const [profile, setProfile] = useState(Profile);
 
-  const [minimumQuestionPrice, setMinimumQuestionPrice] = useState(
-    Profile.minimumQuestionPrice
-  );
+  
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [boardDescription, setBoardDescription] = useState("");
+  // const [socials, setSocials] = useState(Profile.socials);
+  // const [instagramUsername, setInstagramUsername] = useState("johndoe");
+
+  const [minimumPrice, setMinimumPrice] = useState("");
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
   const handleSave = () => {
     console.log("Saving profile");
   };
+
+
+
+  contract.methods
+    .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
+    .call()
+    .then((user) => {
+      // console.log(user);
+      // handleUser(user);
+      setUsername(user.username);
+      setEmail(user.email);
+      setName(user.name);
+      setDescription(user.headline);
+      setBoardDescription(user.bio);
+      setMinimumPrice(user.minimumPrice);
+    });
+
+    const [username, setUsername] = useState("");
+
+    const handleDescriptionChange = (e) => {
+      // setDescription("")
+      setDescription(e.target.value);
+    };
 
   return (
     <Cont>
@@ -351,8 +377,9 @@ const ProfHistEditPage = () => {
               <First></First>
               <div>
                 {/* <Second>EDIT</Second> */}
+                
                 <Link to="/profile">
-                <Second onClick={handleSave}>SAVE</Second>
+                  <Second onClick={handleSave}>SAVE</Second>
                 </Link>
               </div>
             </Spread>
@@ -362,9 +389,8 @@ const ProfHistEditPage = () => {
             <Label>HEADLINE</Label>
             <Entry
               value={description}
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
+              onChange={handleDescriptionChange}
+
             ></Entry>
             {/* <ValueLabel>
           
@@ -385,16 +411,16 @@ const ProfHistEditPage = () => {
           <Section>
             <Label>MINIMUM QUESTION PRICE</Label>
             <SmallEntry
-              value={minimumQuestionPrice}
+              value={minimumPrice}
               onChange={(e) => {
-                setMinimumQuestionPrice(e.target.value);
+                setMinimumPrice(e.target.value);
               }}
             ></SmallEntry>
             {/* <MinPriceValueLabel>
             $5.00
           </MinPriceValueLabel> */}
           </Section>
-          <Section>
+          {/* <Section>
             <Socials>
               <Head>SOCIALS</Head>
 
@@ -409,8 +435,8 @@ const ProfHistEditPage = () => {
                 {/* <LinkValueLabel>
             johndoe
           </LinkValueLabel> */}
-              </Platform>
-              {/* <Platform>
+          {/* </Platform> */}
+          {/* <Platform>
               <Name>LINKEDIN.COM/</Name>
               <Entry></Entry>
             </Platform>
@@ -422,8 +448,8 @@ const ProfHistEditPage = () => {
               <Name>TWITTER.COM/</Name>
               <Entry></Entry>
             </Platform> */}
-            </Socials>
-          </Section>
+          {/* </Socials> */}
+          {/* </Section> */}
         </Middle>
         {/* <BottomWrap> */}
 
