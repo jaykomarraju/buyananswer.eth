@@ -7,6 +7,7 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import contract from "../services/web3";
+import profile from "../assets/profile.jpg";
 
 // This is the page that shows the user's profile and history
 // It recieves the user's profile data from the server and displays it.
@@ -66,19 +67,39 @@ const ProfilePicture = styled.div`
   border-radius: 50%;
   border: 1.5px solid black;
   margin: 20px;
+
+  background-image: url(${profile});
+  background-size: cover;
+  background-position: center;
+
+
 `;
 
 const Label = styled.p`
   margin-right: 4px;
   // text-align: left;
   // background:blue;
+  // flex: 1;
+
+  @media (max-width: 768px) {
+    flex: 1;
+  }
 `;
+
+const Label2 = styled.p`
+margin-right: 4px;
+  // text-align: left;
+  // background:blue;
+  // flex: 1;
+`;
+
 
 const ValueLabel = styled.p`
   margin-right: 4px;
   padding-left: 25px;
   text-align: right;
   // background:blue;
+  flex: 3;
 `;
 
 const MinPriceValueLabel = styled.div`
@@ -88,6 +109,7 @@ const MinPriceValueLabel = styled.div`
   // background:blue;
   font-weight: 600;
   font-size: 2em;
+  flex: 3;
 `;
 const LinkValueLabel = styled.div`
   margin-right: 4px;
@@ -322,26 +344,26 @@ const ProfHistPage = () => {
   // ];
 
   // const Profile = {
-    // name: "John Doe",
-    // username: "johndoe",
-    // email: "john.doe@gmail.com",
-    // description: "I am a software engineer",
-    // socials: [
-    //   {
-    //     platform: "Twitter",
-    //     link: "https://twitter.com/johndoe",
-    //   },
-    //   {
-    //     platform: "Instagram",
-    //     link: "https://instagram.com/johndoe",
-    //   },
-    //   {
-    //     platform: "LinkedIn",
-    //     link: "https://linkedin.com/johndoe",
-    //   },
-    // ],
-    // boardDescription: "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
-    // minimumQuestionPrice: 5.0,
+  // name: "John Doe",
+  // username: "johndoe",
+  // email: "john.doe@gmail.com",
+  // description: "I am a software engineer",
+  // socials: [
+  //   {
+  //     platform: "Twitter",
+  //     link: "https://twitter.com/johndoe",
+  //   },
+  //   {
+  //     platform: "Instagram",
+  //     link: "https://instagram.com/johndoe",
+  //   },
+  //   {
+  //     platform: "LinkedIn",
+  //     link: "https://linkedin.com/johndoe",
+  //   },
+  // ],
+  // boardDescription: "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
+  // minimumQuestionPrice: 5.0,
   // };
 
   // const [userAddress, setUserAddress] = useState(null);
@@ -377,8 +399,6 @@ const ProfHistPage = () => {
 
   // create an on load function that gets the user from the address and contract
 
-
-
   contract.methods
     .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
     .call()
@@ -391,8 +411,7 @@ const ProfHistPage = () => {
       setDescription(user.headline);
       setBio(user.bio);
       setMinimumPrice(user.minimumPrice);
-    }
-    );
+    });
 
   // contract.methods
   //   .createUser(username, name, email, "test", headline, description, 5)
@@ -418,29 +437,29 @@ const ProfHistPage = () => {
             <ProfilePicture></ProfilePicture>
             <Entries>
               <Username>
-                <Label>USERNAME: </Label>
-                <Label>{username}</Label>
+                <Label2>USERNAME: </Label2>
+                <Label2>{username}</Label2>
               </Username>
               <Username>
-                <Label>EMAIL: </Label>
-                <Label>{email}</Label>
+                <Label2>EMAIL: </Label2>
+                <Label2>{email}</Label2>
               </Username>
               <Username>
-                <Label>NAME: </Label>
-                <Label>{name}</Label>
+                <Label2>NAME: </Label2>
+                <Label2>{name}</Label2>
               </Username>
             </Entries>
           </Section4>
-          <Section>
-            {/* <Spread2>
+          {/* <Section> */}
+          {/* <Spread2>
             <First>VIEW HISTORY</First>
             <Second2>V</Second2>
           </Spread2> */}
-            {/* <ClosedHistory/> */}
-            {/* <OpenHistory/> */}
-            {/* {historySelection} */}
-            <SwitchingHistoryComponent />
-          </Section>
+          {/* <ClosedHistory/> */}
+          {/* <OpenHistory/> */}
+          {/* {historySelection} */}
+          {/* <SwitchingHistoryComponent />
+          </Section> */}
           <Section>
             <Spread>
               <First></First>

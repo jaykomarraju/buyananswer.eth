@@ -59,7 +59,7 @@ const Left = styled.div`
 const Title = styled.h1`
   font-size: 4em;
 //   margin-right: 30px;
-  font-weight: 600;
+  font-weight: 700;
   // color:;#034782;
   color: #2b2b2b;
 
@@ -87,9 +87,9 @@ const Title = styled.h1`
 `;
 
 const Desc = styled.p`
-font-size: 2.5em;
+font-size: 3em;
 //   margin-right: 30px;
-  font-weight: 400;
+  font-weight: 500;
   margin-top: -30px;
   width: 60%;
   // text-align: right;

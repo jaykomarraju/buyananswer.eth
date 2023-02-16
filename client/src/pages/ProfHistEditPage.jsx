@@ -296,22 +296,39 @@ const ProfHistEditPage = () => {
 
   // const [profile, setProfile] = useState(Profile);
 
-  
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [boardDescription, setBoardDescription] = useState("");
   // const [socials, setSocials] = useState(Profile.socials);
   // const [instagramUsername, setInstagramUsername] = useState("johndoe");
-
+  const [prevDescription, setPrevDescription] = useState("");
+  const [prevBoardDescription, setPrevBoardDescription] = useState("");
+  // const [twitterUsername, setTwitterUsername] = useState("johndoe");
   const [minimumPrice, setMinimumPrice] = useState("");
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
   const handleSave = () => {
     console.log("Saving profile");
+
+    const minPriceInt = parseInt(minimumPrice);
+
+    contract.methods.updateUser(description, boardDescription, minPriceInt).send({
+      from: "0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55",
+      gas: 1000000,
+    });
+
+    contract.methods
+      .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
+      .call()
+      .then((user) => {
+        console.log(user);
+      });
+
+    // handleUser(user);
+
+    console.log("Profile saved");
   };
-
-
 
   contract.methods
     .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
@@ -322,17 +339,20 @@ const ProfHistEditPage = () => {
       setUsername(user.username);
       setEmail(user.email);
       setName(user.name);
-      setDescription(user.headline);
-      setBoardDescription(user.bio);
+      setPrevDescription(user.headline);
+      setPrevBoardDescription(user.bio);
+      // setDescription(user.headline);
+      // setBoardDescription(user.bio);
       setMinimumPrice(user.minimumPrice);
     });
 
-    const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
 
-    const handleDescriptionChange = (e) => {
-      // setDescription("")
-      setDescription(e.target.value);
-    };
+  const handleDescriptionChange = (e) => {
+    // setDescription("")
+    setDescription(e.target.value);
+    console.log(description);
+  };
 
   return (
     <Cont>
@@ -362,7 +382,7 @@ const ProfHistEditPage = () => {
               </Username>
             </Entries>
           </Section4>
-          <Section>
+          {/* <Section> */}
             {/* <Spread2>
             <First>VIEW HISTORY</First>
             <Second2>V</Second2>
@@ -370,14 +390,14 @@ const ProfHistEditPage = () => {
             {/* <ClosedHistory/> */}
             {/* <OpenHistory/> */}
             {/* {historySelection} */}
-            <SwitchingHistoryComponent />
-          </Section>
+            {/* <SwitchingHistoryComponent /> */}
+          {/* </Section> */}
           <Section>
             <Spread>
               <First></First>
               <div>
                 {/* <Second>EDIT</Second> */}
-                
+
                 <Link to="/profile">
                   <Second onClick={handleSave}>SAVE</Second>
                 </Link>
@@ -389,8 +409,10 @@ const ProfHistEditPage = () => {
             <Label>HEADLINE</Label>
             <Entry
               value={description}
-              onChange={handleDescriptionChange}
-
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+              defaultValue={prevDescription}
             ></Entry>
             {/* <ValueLabel>
           
@@ -403,6 +425,7 @@ const ProfHistEditPage = () => {
               onChange={(e) => {
                 setBoardDescription(e.target.value);
               }}
+              defaultValue={prevBoardDescription}
             ></Desc>
             {/* <ValueLabel>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -411,7 +434,7 @@ const ProfHistEditPage = () => {
           <Section>
             <Label>MINIMUM QUESTION PRICE</Label>
             <SmallEntry
-              value={minimumPrice}
+              defaultValue={minimumPrice}
               onChange={(e) => {
                 setMinimumPrice(e.target.value);
               }}

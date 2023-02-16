@@ -22,7 +22,8 @@ const ReceivedQuestion = styled.div`
 `;
 
 const QText = styled.p`
-  padding-left: 7px;
+  // padding-left: 7px;
+  padding: 25px;
 `;
 
 const QPrice = styled.p`
@@ -52,7 +53,8 @@ const Flexer2 = styled.div`
   flex: 2;
 `;
 const QuestionsPlayground = styled.div`
-margin-bottom: 130px;`;
+  margin-bottom: 130px;
+`;
 
 const ANSButton = styled.button`
   margin: 5px;
@@ -82,27 +84,29 @@ const Date = styled.p`
 `;
 
 const ReceivedQuestionPlayground = () => {
-
   const ReceivedQuestions = [
     {
       askUser: "@sammycursner",
-      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      question:
+        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
       price: "$12.00",
-      date: "MAR 20, 2022"
+      date: "MAR 20, 2022",
     },
     {
       askUser: "@samayraju",
-      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      question:
+        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
       price: "$11.00",
-      date: "MAR 20, 2022"
+      date: "MAR 20, 2022",
     },
     {
       askUser: "@kokokom",
-      question: "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+      question:
+        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
       price: "$8.50",
-      date: "MAR 20, 2022"
+      date: "MAR 20, 2022",
     },
-  ]
+  ];
 
   return (
     <QuestionsPlayground>

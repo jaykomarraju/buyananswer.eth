@@ -1,10 +1,7 @@
 import react from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
-import { 
-    BrowserRouter as Router,
-    Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -70,8 +67,6 @@ const Right = styled.div`
 
 const Navbar = () => {
   return (
-
-
     <Container>
       <Left></Left>
       <Middle>
@@ -80,9 +75,12 @@ const Navbar = () => {
         </Link>
       </Middle>
       <Right>
-        <Link to="/enterapp">
-        <Button>Enter App</Button>
-        </Link>
+        {/* <Link to="/enterapp"> */}
+        <a href="http://localhost:3001/">
+          <Button>Enter App</Button>
+          {/* app */}
+        </a>
+        {/* </Link> */}
       </Right>
     </Container>
   );

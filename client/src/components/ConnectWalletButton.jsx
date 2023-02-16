@@ -42,7 +42,7 @@ async function connect() {
     const web3 = await window.web3;
     const accounts = web3.eth.getAccounts();
 
-     web3.eth.requestAccounts().then(console.log);
+    web3.eth.requestAccounts().then(console.log);
 
     //  const walletAddress = account.givenProvider.selectedAddress;
     const account = accounts[0];

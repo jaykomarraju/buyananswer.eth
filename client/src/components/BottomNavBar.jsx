@@ -20,7 +20,7 @@ const Centerer = styled.div`
 `;
 const MenuItem = styled.div`
   background: #159a1f;
-  opacity: 0.5;
+  opacity: 0.75;
   padding: 3px;
   border-radius: 50%;
   width: 50px;

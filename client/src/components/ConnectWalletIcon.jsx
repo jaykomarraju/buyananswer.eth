@@ -23,7 +23,7 @@ font-size:11px;`
 const ConnectWalletIcon = () => {
   return (
     <ConnectedWallet>
-            <WalletAddress>0x84fb2C34Dd1f30D4caC1c11E1d793F77a65127Ab</WalletAddress>
+            <WalletAddress>0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55</WalletAddress>
             <ConnectedIcon src={greenlight} alt="greenlight"></ConnectedIcon>
         </ConnectedWallet>
   )

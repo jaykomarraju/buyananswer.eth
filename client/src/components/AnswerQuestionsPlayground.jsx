@@ -23,6 +23,8 @@ const ReceivedQuestion = styled.div`
 
 const QText = styled.p`
   flex: 8;
+  padding: 25px;
+
 `;
 
 const QPrice = styled.p`
@@ -41,8 +43,8 @@ const DeclineButton = styled.button`
 
 const QuestionsPlayground = styled.div`
   margin-bottom: 150px;
-  max-width: 800px;
-  padding: 5px;
+  // max-width: 800px;
+  // padding: 5px;
 `;
 
 const ANSButton = styled.button`

@@ -65,11 +65,12 @@ const MyBoard = () => {
     <Wrapper>
         <ConnectWalletIcon/>
         <Playground>
-            <Head>ASK JOHN DOE</Head>
+            <Head>JAY KOMARRAJU</Head>
             <Buttons>
                 <Button onClick={handleReceiveClick}>RECEIVED</Button>
                 <Button onClick={handleAnswerClick}>ANSWERED</Button>
                 <Button onClick={handleDeclineClick}>DECLINED</Button>
+                <Button >ASKED</Button>
             </Buttons>
             <QuestionWrapper>
             {selectedWindow}

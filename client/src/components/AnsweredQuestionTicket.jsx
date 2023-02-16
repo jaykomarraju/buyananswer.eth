@@ -6,14 +6,22 @@ const Ticket = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  margin-left: 10px;
+  // padding: 10px;
+  // margin-left: 10px;
 
-  margin-right: 10px;
+  // margin-right: 10px;
   border: 1.5px solid black;
-  border-radius: 15px;
-  margin-top: 20px;
+  // border-radius: 15px;
+  // margin-top: 20px;
   align-items: center;
+
+  padding: 5px;
+  border: 1.5px solid black;
+  border-radius: 10px;
+  margin: 25px;
+  max-width: 800px;
+
+
 `;
 
 const TicketContainer = styled.div`
@@ -23,33 +31,41 @@ const TicketContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  max-width: 1000px;
+  // max-width: 1000px;
   margin: 0 auto;
   `;
 
 const Ticket2 = styled.div`
-  cursor: pointer;
-  //   display: flex;
-  //   background:#262626;
-  background: #fff;
-  // opacity: 0.5;
-  color: #1a1a1a;
-  padding: 10px;
-  margin-left: 10px;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+// padding: 10px;
+// margin-left: 10px;
 
-  margin-right: 10px;
-  border: 1.5px solid black;
-  border-radius: 15px;
-  margin-top: 20px;
-  align-items: center;
-  max-height: 300px;
-  overflow: scroll;
+// margin-right: 10px;
+border: 1.5px solid black;
+// border-radius: 15px;
+// margin-top: 20px;
+align-items: center;
+
+padding: 5px;
+border: 1.5px solid black;
+border-radius: 10px;
+margin: 25px;
+max-width: 800px;
+// overflow: hidden;
+overflow-y: scroll;
+overflow-x: hidden;
+overflow-wrap: break-word;
+
 `;
 
 const Question = styled.p`
   flex: 7;
-  text-align: left;
+  text-align: center;
   padding-left: 10px;
+  padding: 25px;
+
 `;
 
 const Fin = styled.p`
@@ -82,11 +98,14 @@ const Heading = styled.p`
 
 const HeadSect = styled.div`
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: flex-end;
+  margin-right: 55px;
 `;
 
 const Asker = styled.p`
-  font-size: 14px;
+  font-size: 1em;
+padding-top:15px;
   margin: 0;
 `;
 

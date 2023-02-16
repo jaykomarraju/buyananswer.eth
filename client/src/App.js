@@ -30,6 +30,7 @@ import UnConnectedBoard from "./pages/UnConnectedBoard";
 // import {load} from './funcs';
 import { useEffect } from "react";
 import DarkModeHome from "./pages/DarkModeHome";
+import Login from "./utility/Login";
 
 const Container = styled.div`
   width: 100vw;
@@ -104,6 +105,7 @@ function App() {
       <Routes>
         <Route path="/connected" element={<Home />} />
         <Route path="/darkmode" element={<DarkModeHome />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<UnConnectedHome />} />
         {/* <Route index element={<BottomNavBar />} /> */}
         <Route path="profile" element={<ProfHistPage />} />

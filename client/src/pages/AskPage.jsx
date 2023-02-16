@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
+import profile from "../assets/profile.jpg";
 
 const Container = styled.div`
   height: 100vh;
@@ -10,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-    padding: 50px 10px;
+  padding: 50px 10px;
   // height: 100vh;
   // background:green;
   display: flex;
@@ -31,9 +32,14 @@ const ProfilePicture = styled.div`
   border-radius: 50%;
   border: 1.5px solid black;
   margin: 20px;
+  margin-left: 0;
+  background-image: url(${profile});
+  background-size: cover;
+  background-position: center;
 `;
 const Heading = styled.p`
   font-size: 2em;
+  margin-bottom: 10px;
 `;
 
 const BoardDesc = styled.div`
@@ -41,9 +47,16 @@ const BoardDesc = styled.div`
   align-items: center;
 `;
 
-const Name = styled.div``;
+const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  align-items: flex-start;
+`;
 
-const SubHeading = styled.p``;
+const SubHeading = styled.p`
+  padding: 20px;
+`;
 
 const Pic = styled.div``;
 
@@ -82,8 +95,9 @@ const Entry = styled.input`
 `;
 
 const Headline = styled.p`
-  margin-top: -35px;
-  margin-bottom: 40px;
+  margin-top: 0px;
+  font-size: 1.2em;
+  // margin-bottom: 40px;
 `;
 
 const Button = styled.button`
@@ -97,7 +111,6 @@ const Button = styled.button`
     background: black;
     color: white;
   }
-
 `;
 
 const Url = styled.div`
@@ -111,6 +124,13 @@ const Url = styled.div`
 // the user can also set a priority bonus and a total amount to pay for the question
 // the user can also set a headline for their question
 
+const Board = {
+  username: "jayusaik",
+  name: "Jay Komarraju",
+  headline: "Full-stack Engineer",
+  bio: "👋 Hi, I’m @jaykomarraju 👀 I’m interested in creating tech products that have a significant impact on consumer behavior Economies that are sprung from within tech ecosystems seems to have a net impact in bringing the world to an energy neutral state. When I talk about impacting consumer behavior it is primarily to make tech economies more accessible across the world. 🌱 I’m currently learning blockchain technology, modern web development principles and product design. Have any questions for me? Shoot them and I'll answer them for $7"
+};
+
 const AskPage = () => {
   // const username = "johndoe";
   // const name = "John Doe";
@@ -118,22 +138,16 @@ const AskPage = () => {
   // const bio = "I am a 20 year old student at the University of Waterloo. I am studying Computer Science and I am a huge fan of the Toronto Raptors.";
   // const price = "$10";
 
-  const [username, setUsername] = useState("sarahparker");
-  const [name, setName] = useState("Sarah Parker");
-  const [headline, setHeadline] = useState(
-    "I am here to answer any questions you have for me!"
-  );
-  const [bio, setBio] = useState(
-    "I am a 20 year old student at the University of Waterloo. I am studying Computer Science and I am a huge fan of the Toronto Raptors. I am also a huge fan of the Toronto Maple Leafs. I am also a huge fan of the Toronto Blue Jays. I am also a huge fan of the Toronto Argonauts. "
-  );
+  const [username, setUsername] = useState(Board.username);
+  const [name, setName] = useState(Board.name);
+  const [headline, setHeadline] = useState(Board.headline);
+  const [bio, setBio] = useState(Board.bio);
 
   const [questionText, setQuestionText] = useState("");
-  const [price, setPrice] = useState(10);
+  const [price, setPrice] = useState(7);
   const [priorityBonus, setPriorityBonus] = useState(0);
 
   const [total, setTotal] = useState(parseInt(price) + parseInt(priorityBonus));
-  
-  
 
   // const [total, setTotal] = useState(price + priorityBonus);
 
@@ -154,8 +168,6 @@ const AskPage = () => {
     };
     console.log(question);
 
-    
-
     // fetch("http://localhost:5000/createQuestion", {
     //   method: "POST",
     //   headers: {
@@ -174,7 +186,7 @@ const AskPage = () => {
     <Container>
       <Wrapper>
         <ConnectWalletIcon />
-        <Url>BUYANANSWER.COM/{username}</Url>
+        <Url>BUYANANSWER.IO/{username}</Url>
         <BoardDesc>
           <Pic>
             <ProfilePicture></ProfilePicture>
@@ -182,13 +194,13 @@ const AskPage = () => {
           <Name>
             <Heading>Ask {name}</Heading>
             <Headline>{headline}</Headline>
-            
           </Name>
         </BoardDesc>
         <BoardDesc>
-        <SubHeading>{bio}</SubHeading>
+          <SubHeading>{bio}</SubHeading>
         </BoardDesc>
-        <QuestionEntry placeholder="Enter your question here..."
+        <QuestionEntry
+          placeholder="Enter your question here..."
           onChange={(e) => {
             setQuestionText(e.target.value);
           }}
@@ -198,16 +210,19 @@ const AskPage = () => {
           <Entry
             placeholder="$"
             onChange={(e) => {
+              if (!e.target.value) {
+                setPriorityBonus(0);
+                setTotal(parseInt(price) + 0);
+                return;
+              }
               setPriorityBonus(e.target.value);
               setTotal(parseInt(price) + parseInt(e.target.value));
-
             }}
-
           ></Entry>
         </PriorityBonusSect>
         <TotalSect>
           <Label>TOTAL:</Label>
-          <Label>{total}</Label>
+          <Label>$ {total}</Label>
         </TotalSect>
         <Link to="/successqorder">
           <Button onClick={createQuestion}>BUY ANSWER</Button>
