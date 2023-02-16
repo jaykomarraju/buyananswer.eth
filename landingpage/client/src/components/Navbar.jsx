@@ -75,12 +75,12 @@ const Navbar = () => {
         </Link>
       </Middle>
       <Right>
-        {/* <Link to="/enterapp"> */}
-        <a href="http://localhost:3001/">
+        <Link to="/enterapp">
+        {/* <a href="http://localhost:3001/"> */}
           <Button>Enter App</Button>
           {/* app */}
-        </a>
-        {/* </Link> */}
+        {/* </a> */}
+        </Link>
       </Right>
     </Container>
   );
