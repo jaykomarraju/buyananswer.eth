@@ -62,8 +62,10 @@ const Title = styled.h1`
   font-weight: 700;
   // color:;#034782;
   color: #2b2b2b;
+  text-align: center;
+  margin-top: 100px;
 
-  line-height: 1;
+  // line-height: 1;
   opacity: 0.85;
   width: 95%;
   // mix-blend-mode: color-burn;
@@ -91,7 +93,7 @@ font-size: 3em;
 //   margin-right: 30px;
   font-weight: 500;
   margin-top: -30px;
-  width: 60%;
+  width: 95%;
   // text-align: right;
   // margin-right: 0px;
   justify-content: right;
@@ -99,6 +101,7 @@ font-size: 3em;
   color: #2b2b2b;
   line-height: 1.4;
   opacity: 0.85;
+  text-align: center;
   // mix-blend-mode: color-burn;
 
   // box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);

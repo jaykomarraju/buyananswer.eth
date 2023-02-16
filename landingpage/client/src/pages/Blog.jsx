@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { db } from "../services/Firebase";
 
 import background from "../assets/background11.jpg";
+import background2 from "../assets/background12.jpg";
 
 const Container = styled.div`
   display: flex;
@@ -27,13 +28,17 @@ const TopWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url(${background2});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   width: 100%;
   padding: 50px;
   //   margin-top: 20px;
   margin-bottom: 100px;
   padding-top: 100px;
-  background: rgba(255, 255, 255, 0.9);
+  // background: rgba(255, 255, 255, 0.9);
 
   @media (max-width: 768px) {
     width: 95%;
@@ -45,7 +50,7 @@ const Title = styled.h1`
   font-size: 60px;
   width: 70%;
   font-weight: 700;
-  color: #000;
+  color: #159a1f;
   // line-height: 0.1;
   margin-bottom: 0px;
 

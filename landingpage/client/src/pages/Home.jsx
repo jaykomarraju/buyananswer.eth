@@ -6,6 +6,8 @@ import Footer from "../components/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import About2 from "../components/About2";
+import LandingFooter from "../components/LandingFooter";
+
 
 
 
@@ -22,6 +24,7 @@ const Home = () => {
       <About />
       <How />
       <Footer />
+      <LandingFooter/>
     </div>
   );
 };

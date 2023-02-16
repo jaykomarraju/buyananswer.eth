@@ -27,8 +27,8 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 60px;
   width: 60%;
-  font-weight: 900;
-  color: #B26E63;
+  font-weight: 600;
+  color: #159a1f;
 
   @media (max-width: 768px) {
     font-size: 40px;
@@ -83,10 +83,11 @@ const Text = styled.p`
 `;
 
 const LinkStyled = styled(Link)`
-    color: #B26E63;
+    color: #fff;
+    font-weight: 900;
     text-decoration: none;
     &:hover {
-        color: #fff;
+        color: #159a1f;
 
 
     }
@@ -119,7 +120,7 @@ const About2 = () => {
       </Text>
       <Text>
         Referral Program: <LinkStyled to="/business">
-        <b>Click here to learn more</b>
+        Click here to learn more
         </LinkStyled>
       </Text>
       
