@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const Container = styled.div`
-  height: 60px;
+  height: 80px;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@ const Container = styled.div`
   position: fixed;
   width: 100vw;
   z-index: 1;
-  opacity: 0.75;
+  opacity: 0.9;
 `;
 
 // only one logo image in the center of navbar
@@ -25,12 +25,13 @@ const Logo = styled.img`
 `;
 
 const Button = styled.button`
-  border: 2px solid #000;
+  border: 1.5px solid #000;
   padding: 10px 15px;
+  font-size: 1.2em;
   border-radius: 10px;
   background-color: transparent;
   color: #000;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.5s ease;
   margin-left: 20px;
@@ -38,6 +39,11 @@ const Button = styled.button`
   &:hover {
     background-color: #000;
     color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.8em;
+    padding: 10px;
   }
 `;
 

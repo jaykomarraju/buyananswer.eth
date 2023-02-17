@@ -8,6 +8,8 @@ import { db } from "../services/Firebase";
 
 import background from "../assets/background11.jpg";
 import background2 from "../assets/background12.jpg";
+import background3 from "../assets/background15.jpg";
+import LandingFooter from "../components/LandingFooter";
 
 const Container = styled.div`
   display: flex;
@@ -16,11 +18,38 @@ const Container = styled.div`
   justify-content: center;
   //   height: 100vh;
   width: 100vw;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100vw;
+    // height: 100vh;
+    // overflow: scroll;
+
+    // background-attachment: fixed;
+  }
+`;
+
+const BlogPostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // width: 100%;
+  width: 100vw;
+  min-height: 100vh;
   background-image: url(${background});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  padding: 50px;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    min-height: 100vh;
+    background-attachment: fixed;
+    overflow: scroll;
+  }
 `;
 
 const TopWrapper = styled.div`
@@ -36,13 +65,15 @@ const TopWrapper = styled.div`
   width: 100%;
   padding: 50px;
   //   margin-top: 20px;
-  margin-bottom: 100px;
+  // margin-bottom: 100px;
   padding-top: 100px;
   // background: rgba(255, 255, 255, 0.9);
 
   @media (max-width: 768px) {
-    width: 95%;
-    margin: auto;
+    width: 100vw;
+    height: 30vh;
+    margin: 0px;
+    background-attachment: scroll;
   }
 `;
 
@@ -84,8 +115,7 @@ const BottomWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 150px;
+  margin: auto;
 
   @media (max-width: 768px) {
     width: 95%;
@@ -131,7 +161,7 @@ const BlogSubTitle = styled.h2`
   font-size: 20px;
   width: 100%;
   margin-top: 15px;
-  color: #fff;
+  color: #159a1f;
   // line-height: 0.1;
 
   @media (max-width: 768px) {
@@ -178,11 +208,12 @@ const BlogMenu = styled.ul`
   justify-content: center;
   width: 60%;
   list-style: none;
-  margin-top: 20px;
-  margin-bottom: 150px;
+  // padding:20px;
   border: 1.5px solid #fff;
   border-radius: 10px;
   padding: 50px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 
   @media (max-width: 768px) {
     width: 60%;
@@ -191,7 +222,7 @@ const BlogMenu = styled.ul`
 `;
 
 const BlogMenuItem = styled.li`
-  font-size: 20px;
+  font-size: 1em;
   width: 100%;
   text-decoration: none;
   display: flex;
@@ -208,20 +239,35 @@ const BlogMenuItem = styled.li`
   }
 
   &:hover {
-    color: #159a1f;
+    // color: #000;
+    font-weight: 600;
   }
 `;
 
-const BlogMenuTitle = styled.div`
-text-transform: uppercase;
-flex: 5;
+const BlogWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  margin-top: 0px;
+  background-image: url(${background3});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+`;
 
-`
+const BlogMenuTitle = styled.div`
+  text-transform: uppercase;
+  flex: 5;
+  padding-right: 15px;
+`;
 
 const BlogMenuDate = styled.div`
-flex: 1;
-font-size: 15px;
-`
+  flex: 1;
+  font-size: 15px;
+`;
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -243,8 +289,8 @@ const Blog = () => {
 
   const scrollToTarget = (target) => {
     const targetE = document.getElementById(target);
-    targetE.scrollIntoView({ behavior: 'smooth'});
-  }
+    targetE.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <Container>
@@ -253,25 +299,27 @@ const Blog = () => {
         <SubTitle>Company Blog</SubTitle>
       </TopWrapper>
       <BottomWrapper>
-        <BlogMenu>
-          {blogs
-            .slice(0)
-            .reverse()
-            .map((blog) => (
-              <BlogMenuItem onClick={
-                (e) => {
-                  scrollToTarget((blog.id))
-                }
-              }>
-                {/* Each blog post will be a link to blogpost element on this page with the id of the blog post */}
-                
-                <BlogMenuTitle>{blog.title}</BlogMenuTitle>
-                <BlogMenuDate>{convertDate(blog.timestamp.seconds)}</BlogMenuDate>
-                
-              </BlogMenuItem>
+        <BlogWrapper>
+          <BlogMenu>
+            {blogs
+              .slice(0)
+              .reverse()
+              .map((blog) => (
+                <BlogMenuItem
+                  onClick={(e) => {
+                    scrollToTarget(blog.id);
+                  }}
+                >
+                  {/* Each blog post will be a link to blogpost element on this page with the id of the blog post */}
 
-            ))}
-        </BlogMenu>
+                  <BlogMenuTitle>{blog.title}</BlogMenuTitle>
+                  {/* <BlogMenuDate>
+                    // {convertDate(blog.timestamp.seconds)}
+                  </BlogMenuDate> */}
+                </BlogMenuItem>
+              ))}
+          </BlogMenu>
+        </BlogWrapper>
         {/* <BlogPost>
           <BlogTitle>Blog Post 1</BlogTitle>
           <BlogSubTitle>Subtitle</BlogSubTitle>
@@ -316,32 +364,35 @@ const Blog = () => {
             aliquet, nec
           </BlogText>
         </BlogPost> */}
+        <BlogPostWrapper>
+          {blogs
+            .slice(0)
+            .reverse()
+            .map((blog) => (
+              <BlogPost id={blog.id} key={blog.id}>
+                <BlogTitle>{blog.title}</BlogTitle>
+                <BlogSubTitle>{blog.subheading}</BlogSubTitle>
+                <BlogDate>{convertDate(blog.timestamp.seconds)}</BlogDate>
+                <BlogText>
+                  {/* {blog.body} */}
+                  {/* split the body text into paragraphs at \n */}
 
-        {blogs
-          .slice(0)
-          .reverse()
-          .map((blog) => (
-            <BlogPost id={blog.id} key={blog.id}>
-              <BlogTitle>{blog.title}</BlogTitle>
-              <BlogSubTitle>{blog.subheading}</BlogSubTitle>
-              <BlogDate>{convertDate(blog.timestamp.seconds)}</BlogDate>
-              <BlogText>
-                {/* {blog.body} */}
-                {/* split the body text into paragraphs at \n */}
-
-                {blog.body
-                  .replace(/\\n/g, "\n")
-                  .split("\n")
-                  .map((paragraph) => (
-                    <p>
-                      {paragraph}
-                      <br />
-                    </p>
-                  ))}
-              </BlogText>
-            </BlogPost>
-          ))}
+                  {blog.body
+                    .replace(/\\n/g, "\n")
+                    .split("\n")
+                    .map((paragraph) => (
+                      <p>
+                        {paragraph}
+                        <br />
+                      </p>
+                    ))}
+                </BlogText>
+              </BlogPost>
+            ))}
+        </BlogPostWrapper>
       </BottomWrapper>
+
+    <LandingFooter/>
     </Container>
   );
 };

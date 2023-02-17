@@ -1,6 +1,7 @@
 import react from "react";
 import styled from "styled-components";
 import background from "../assets/background8.jpg";
+import LandingFooter from "../components/LandingFooter";
 
 const Container = styled.div`
     // height: 100vh;
@@ -171,7 +172,9 @@ const AlphaLaunch = () => {
         <Button>Apply</Button>
       </Form>
         </Wrapper>
+       <LandingFooter/>
     </Container>
+     
   );
 };
 

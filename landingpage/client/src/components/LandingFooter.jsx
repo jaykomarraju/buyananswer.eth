@@ -9,6 +9,7 @@ import instagram from "../assets/instagram.png";
 import twitter from "../assets/twitter.png";
 import linkedin from "../assets/linkedin.png";
 import youtube from "../assets/youtube.png";
+import tiktok from "../assets/tiktok.png";
 
 const Socials = [
   {
@@ -24,7 +25,7 @@ const Socials = [
   },
   {
     name: "Twitter",
-    link: "https://twitter.com/jaykomarraju",
+    link: "https://twitter.com/buyananswer",
     icon: twitter,
   },
   {
@@ -37,6 +38,11 @@ const Socials = [
     link: "https://www.youtube.com/",
     icon: youtube,
   },
+  {
+    name: "TikTok",
+    link: "https://www.tiktok.com/@buyananswer.io",
+    icon: tiktok,
+  }
 ];
 
 const Container = styled.div`
@@ -51,6 +57,10 @@ const Container = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+
+    @media (max-width: 768px) {
+        background-attachment: scroll;
+    }
 `;
 
 const SocialMenu = styled.div`
@@ -71,6 +81,12 @@ const SocialIcon = styled.img`
   height: 50px;
   padding: 15px;
   cursor: pointer;
+
+    @media (max-width: 768px) {
+        width: 35px;
+        height: 35px;
+        padding: 10px;
+    }
 `;
 
 const Wrapper = styled.div`
@@ -90,10 +106,11 @@ const Title = styled.h1`
   font-weight: 700;
   padding: 25px;
   text-align: center;
+  text-transform: uppercase;
   color: #fff;
 
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 22px;
     // width: 80%;
     // margin-top: 85px;
 

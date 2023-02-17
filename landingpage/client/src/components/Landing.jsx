@@ -45,25 +45,28 @@ const Left = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-left: 150px;
+  flex:2;
 
   @media (max-width: 768px) {
-    margin-left: 10%;
-    margin-top: 85px;
-    width: 80%;
-    // margin-bottom: 150px;
+    // margin-left: 10%;
+    margin-top: 150px;
+    width: 100%;
+    margin-left: 0px;
+    
+    margin-bottom: 50px;
   }
 
 
 `;
 
 const Title = styled.h1`
-  font-size: 4em;
+  font-size: 3.5em;
 //   margin-right: 30px;
   font-weight: 700;
   // color:;#034782;
   color: #2b2b2b;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 40px;
 
   // line-height: 1;
   opacity: 0.85;
@@ -79,8 +82,11 @@ const Title = styled.h1`
   // width:100vw;
 
   @media (max-width: 768px) {
-    font-size: 2.5em;
-    width: 100%;
+    // font-size: 2.5em;
+    width: 80%;
+    text-align: center;
+    margin:auto;
+    font-size: 3em;
 
 
   }
@@ -110,9 +116,9 @@ font-size: 3em;
   // width:100vw;
 
   @media (max-width: 768px) {
-    font-size: 1.5em;
+    font-size: 2em;
     width: 100%;
-    margin-top: -10px;
+    margin-top: 10px;
   }
 
 
@@ -136,6 +142,7 @@ const Image = styled.img`
 const Right = styled.div`
   width: 40%;
   margin-right: 100px;
+  flex: 1;
 
   @media (max-width: 768px) {
     width: 100%;

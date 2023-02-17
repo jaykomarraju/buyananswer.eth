@@ -29,12 +29,13 @@ const Title = styled.h1`
   font-weight: 400;
   color: #fff;
   line-height: 0.1;
+  text-transform: uppercase;
 
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 30px;
     width: 80%;
     margin-top: 85px;
-    margin-left: 10%;
+    margin-left: auto;
   }
 `;
 

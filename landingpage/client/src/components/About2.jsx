@@ -4,7 +4,7 @@ import styled from "styled-components";
 import background from "../assets/background9.jpg";
 
 const Container = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   //   background-color: #fff;
   background-image: url(${background});
   background-size: cover;
@@ -33,7 +33,7 @@ const Title = styled.h1`
   @media (max-width: 768px) {
     font-size: 40px;
     width: 80%;
-    margin: 0 auto;
+    margin: 150px auto  0px auto;
     // margin-top: 85px;
     // margin-left: 10%;
   }
@@ -64,7 +64,7 @@ const CenterOfPageWrap = styled.div`
     @media (max-width: 768px) {
         flex-direction: column;
         background-attachment: scroll;
-        // padding-bottom: 75px;
+        margin-bottom: 75px;
         }
 `;
 
@@ -72,9 +72,10 @@ const Text = styled.p`
     font-size: 20px;
     width: 60%;
     font-weight: 400;
-    color: #FFE1C6;
-    text-align: center;
+    color: #FAF3DD;
+    text-align: left;
     @media (max-width: 768px) {
+      text-align: center;
         font-size: 16px;
         width: 80%;
         margin: 50px auto;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import background from "../assets/background7.jpg";
 import {db} from "../services/Firebase";
+import LandingFooter from "../components/LandingFooter";
 
 const Container = styled.div`
   height: 100vh;
@@ -140,7 +141,8 @@ const NoLaunch = () => {
         />
         <Button onClick={handleSubmit}>Notify Me</Button>
       </Form>
-    </Container></div>
+    </Container>
+    <LandingFooter/></div>
   );
 };
 
