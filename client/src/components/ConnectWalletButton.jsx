@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Web3 from "web3";
+import { Link } from "react-router-dom";
+// import { db } from "../services/Firebase";
+// import {connect} from 
+
 
 const Button = styled.button`
   padding: 10px;
@@ -32,6 +36,16 @@ const Button = styled.button`
 //   }
 // }
 
+
+
+const ConnectWalletButton = () => {
+  // function connectWalletButtonOnClick() {
+  //   console.log("Homie!");
+  // if (typeof window !== "undefined"){
+  //   getAccount().then((response)=>{console.log(response)})
+  // }
+  // };
+
 async function connect() {
   if (window.ethereum) {
     await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -48,19 +62,25 @@ async function connect() {
     const account = accounts[0];
     // const walletAddress = account.givenProvider.selectedAddress;
     console.log(account);
+
+    // first authenticate(account);
+
+
+
+    // then set account as context for the app
+    // then redirect to app
+
+    // const account = await web3.eth.getAccounts();
+    // console.log(account);
+
+
+
+
     // return account;
   } else {
     console.log("No wallet");
   }
 }
-
-const ConnectWalletButton = () => {
-  // function connectWalletButtonOnClick() {
-  //   console.log("Homie!");
-  // if (typeof window !== "undefined"){
-  //   getAccount().then((response)=>{console.log(response)})
-  // }
-  // };
 
   const handleClick = () => {
     // e.preventDefault();

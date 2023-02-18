@@ -100,6 +100,27 @@ const headPlaceholder = "Enter username...";
 // })
 
 function App() {
+
+
+
+
+// const authenticate = async (account) => {
+//   const response = await fetch('http://localhost:3001/authenticate', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({ account })
+//   });
+//   const data = await response.json();
+//   console.log(data);
+// }
+
+// const authenticate = async (account) => {
+//   const response = await fetch('http://localhost:3001/authenticate', {
+//     method: 'POST',
+
+
   return (
     <div className="App">
       <Routes>

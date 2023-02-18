@@ -8,6 +8,7 @@ import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import contract from "../services/web3";
 import profile from "../assets/profile.jpg";
+// import AuthContext from "../contexts/AuthContext";
 
 // This is the page that shows the user's profile and history
 // It recieves the user's profile data from the server and displays it.
@@ -421,6 +422,7 @@ const ProfHistPage = () => {
   //   });
 
   // console.log(user);
+
 
   return (
     <Cont>
