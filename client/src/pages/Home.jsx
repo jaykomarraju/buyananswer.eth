@@ -40,7 +40,6 @@ const Button = styled.button`
     background: black;
     color: white;
   }
-
 `;
 
 const UsernameBoxEntry = styled.input`
@@ -131,7 +130,7 @@ const Home = () => {
           ></UsernameBoxEntry>
           <br></br>
           <Link to="/askpage">
-          <Button onClick={handleClick}>VISIT BOARD</Button>
+            <Button onClick={handleClick}>VISIT BOARD</Button>
           </Link>
         </Middle>
         {/* <BottomWrap> */}
