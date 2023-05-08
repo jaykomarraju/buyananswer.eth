@@ -130,25 +130,6 @@ contract BuyAnAnswer {
         balances[receiver] += amount;
     }
 
-    // address payable userAddress;
-    // string username;
-    // string email;
-    // string name;
-    // string boardID;
-    // Question[] askedQuestions;
-    // Answer[] answeredQuestions;
-    // string boardHeadline;
-    // string boardDesc;
-    // uint256 minQuestionPrice;
-    // string INSTAGRAM;
-    // string LINKEDIN;
-    // string FACEBOOK;
-    // string TWITTER;
-
-    // function toBytes(string calldata x) public returns (bytes memory b) {
-    //     b = new bytes(32);
-    //     assembly { mstore(add(b, 32), x.offset) }
-    // }
     function createBoardID(string calldata usrnm, string calldata eml)
         internal
         returns (bytes32)
@@ -200,20 +181,11 @@ contract BuyAnAnswer {
             _name,
             _boardID,
             _socialLink_INSTAGRAM
-            // _socialLink_LINKEDIN,
-            // _socialLink_FACEBOOK,
-            // _socialLink_TWITTER
         );
 
         addressToUser[payable(msg.sender)] = u;
 
         emit CreateUser(
-            // address payable userAddress,
-            // string username,
-            // string email,
-            // string name,
-            // bytes32 boardID,
-            // string INSTAGRAM
             payable(msg.sender),
             _username,
             _email,
@@ -272,10 +244,6 @@ contract BuyAnAnswer {
         // emit Transfer(msg.sender, address(this), _prc);
     }
 
-    // if a question is answered/declined it can't be answered again
-    // it is imparative to keep a track of the
-    // balanced received by the contract in asking questions and the
-    // exited balanced with answering questions.
 
     function declineAnswer(bytes32 _boardID, uint256 _index) external payable {
         Question memory question = boardIDToQuestions[_boardID][_index];
@@ -338,14 +306,6 @@ contract BuyAnAnswer {
         }
     }
 
-    //
-    // Functions for creating and fetching custom usernames. If a user updates
-    // their username it will update for all of their messages
-    // function createUser(string calldata _name) external {
-    //     addressToUsername[msg.sender] = _name;
-    // }
-
-    //
     function getUserForAddress(address _user)
         external
         view
@@ -381,11 +341,6 @@ contract BuyAnAnswer {
         return (addressToUser[_user].username, addressToUser[_user].boardID);
     }
 
-    //
-    //  Currently, there is no support for returning nested lists, so the length
-    //  of messages needs to be fetched and then retrieved by index. This is not
-    //  fast but it is the most gas efficient method for storing and
-    //  fetching data. Ideally this only needs to be done once per room load
     function getQuestionCountForBoard(bytes32 _boardID)
         external
         view
@@ -414,9 +369,6 @@ contract BuyAnAnswer {
         return userToAnswers[payable(msg.sender)];
     }
 
-    //
-    // There is no support for returning a struct to web3, so this needs to be
-    // returned as multiple items. This will throw an error if the index is invalid
     function getQuestionByIndexForBoard(bytes32 _boardID, uint256 _index)
         external
         view

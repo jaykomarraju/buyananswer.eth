@@ -3,7 +3,7 @@ import Web3 from "web3";
 // import BuyAnAnswer from './solidity/'
 import "./App.css";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
@@ -93,46 +93,47 @@ const headPlaceholder = "Enter username...";
 //   return new Web3('HTTP://127.0.0.1:7545');
 // }
 
-
-
 // useEffect(()=>{
 
 // })
 
-function App() {
+function App() {  
+  const [isConnected, setIsConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState(null);
 
-
-
-
-// const authenticate = async (account) => {
-//   const response = await fetch('http://localhost:3001/authenticate', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ account })
-//   });
-//   const data = await response.json();
-//   console.log(data);
-// }
-
-// const authenticate = async (account) => {
-//   const response = await fetch('http://localhost:3001/authenticate', {
-//     method: 'POST',
-
+  // Update this function to set the connection status and wallet address
+  const handleConnection = (status, address) => {
+    setIsConnected(status);
+    setWalletAddress(address);
+    console.log("handleConnection", status, address);
+  };
 
   return (
     <div className="App">
+      {/* Pass the connection status and wallet address to the ConnectWalletButton */}
+      
+        
+         
+
+          {isConnected ? (
+            <ConnectWalletIcon walletAddress={walletAddress} />
+             
+            ) : (
+              <ConnectWalletButton onConnect={handleConnection} />
+            )}
+
+
+
       <Routes>
-        <Route path="/connected" element={<Home />} />
+        {/* <Route path="/connected" element={<Home />} />
         <Route path="/darkmode" element={<DarkModeHome />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<UnConnectedHome />} />
+        <Route path="/" element={<UnConnectedHome />} /> */}
         {/* <Route index element={<BottomNavBar />} /> */}
-        <Route path="profile" element={<ProfHistPage />} />
-        <Route path="noauthprofile" element={<UnConnectedProfile />} />
+        {/* <Route path="profile" element={<ProfHistPage />} />
+        <Route path="noauthprofile" element={<UnConnectedProfile />} /> */}
         {/* <Route path="createprofile" element={<Profile />} /> */}
-        <Route path="createprofile" element={<CreateProfile />} />
+        {/* <Route path="createprofile" element={<CreateProfile />} />
         <Route path="editprofile" element={<ProfHistEditPage />} />
         <Route path="myboard" element={<MyBoard />} />
         <Route path="noauthboard" element={<UnConnectedBoard />} />
@@ -144,7 +145,33 @@ function App() {
         <Route path="profhist" element={<ProfHistPage />} />
         <Route path="successqorder" element={<SuccessQuestionOrder />} />
         <Route path="ansques" element={<AnswerQuestion />} />
-        <Route path="anscnfrm" element={<AnswerConfirmation/>}/>  
+        <Route path="anscnfrm" element={<AnswerConfirmation/>}/>   */}
+        {isConnected ? (
+          <>
+            {/* Connected routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<ProfHistPage walletAddress={walletAddress} />} />
+            <Route path="/createprofile" element={<CreateProfile />} />
+            <Route path="/editprofile" element={<ProfHistEditPage />} />
+            <Route path="/myboard" element={<MyBoard />} />
+            <Route path="/answered" element={<AnswerQuestionPlayground />} />
+            <Route path="/declined" element={<DeclinedQuestionPlayground />} />
+            <Route path="/naboard" element={<UserBoardDoesNotExist />} />
+            <Route path="/askpage" element={<AskPage />} />
+            <Route path="/profhist" element={<ProfHistPage />} />
+            <Route path="/successqorder" element={<SuccessQuestionOrder />} />
+            <Route path="/ansques" element={<AnswerQuestion />} />
+            <Route path="/anscnfrm" element={<AnswerConfirmation />} />
+          </>
+        ) : (
+          <>
+            {/* Unconnected routes */}
+            <Route path="/" element={<UnConnectedHome />} />
+            <Route path="/profile" element={<UnConnectedProfile />} />
+            <Route path="/myboard" element={<UnConnectedBoard />} />
+            <Route path="/askpage" element={<UnAuthAskPageView />} />
+          </>
+        )}
       </Routes>
       {/* <Container> */}
       {/* <ConnectWalletIcon /> */}

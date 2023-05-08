@@ -281,7 +281,8 @@ const UnConnectedProfile = () => {
       {/* <ConnectWalletIcon /> */}
       <Top>
         <Link to="/profile">
-      <ConnectWalletButton/></Link>
+      {/* <ConnectWalletButton/> */}
+      </Link>
     </Top>
     <Head2>Profile</Head2>
       <Middle>

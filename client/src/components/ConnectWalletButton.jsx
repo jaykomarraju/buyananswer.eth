@@ -2,9 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Web3 from "web3";
 import { Link } from "react-router-dom";
-// import { db } from "../services/Firebase";
-// import {connect} from 
-
+import { db } from "../services/Firebase";
+// import {connect} from
 
 const Button = styled.button`
   padding: 10px;
@@ -36,9 +35,7 @@ const Button = styled.button`
 //   }
 // }
 
-
-
-const ConnectWalletButton = () => {
+const ConnectWalletButton = ({ onConnect }) => {
   // function connectWalletButtonOnClick() {
   //   console.log("Homie!");
   // if (typeof window !== "undefined"){
@@ -46,41 +43,73 @@ const ConnectWalletButton = () => {
   // }
   // };
 
-async function connect() {
-  if (window.ethereum) {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
-    //  window.web3 = new Web3(window.ethereum);
-    //  window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-    window.web3 = new Web3(window.ethereum);
+  // check if account is active
+  // then check if account is in database
+  // if not, add to database and redirect to create profile page
+  // if so, redirect to home page
 
-    const web3 = await window.web3;
-    const accounts = web3.eth.getAccounts();
+  async function connect() {
+    if (window.ethereum) {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      window.web3 = new Web3(window.ethereum);
+      const web3 = await window.web3;
+      const accounts = await web3.eth.getAccounts();
+  
+      await web3.eth.requestAccounts().then(async function (accounts) {
+        console.log("The account is: " + accounts);
 
-    web3.eth.requestAccounts().then(console.log);
+        // check if account is active
+        // then check if account is in database
+        // if not, add to database and redirect to create profile page
+        // if so, redirect to home page
 
-    //  const walletAddress = account.givenProvider.selectedAddress;
-    const account = accounts[0];
-    // const walletAddress = account.givenProvider.selectedAddress;
-    console.log(account);
+        // use db from firebase
+        
 
-    // first authenticate(account);
+        // check if account is in database
+        const docRef = db.collection("users").doc(accounts[0]);
+
+        docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              console.log("Document data:", doc.data());
+              // redirect to home page
+            } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+              // add to database
+              db.collection("users").doc(accounts[0]).set({
+                username: "username",
+                email: "email",
+                bio: "bio",
+                profilePic: "profilePic",
+                walletAddress: accounts[0],
+              });
+              // redirect to create profile page
 
 
+            }
 
-    // then set account as context for the app
-    // then redirect to app
+            // Call the onConnect prop here
+            onConnect(true, accounts[0]);
+          })
+          .catch((error) => {
+            console.log("Error getting document:", error);
+          });
+      });
 
-    // const account = await web3.eth.getAccounts();
-    // console.log(account);
+      //  const walletAddress = account.givenProvider.selectedAddress;
+      const account = accounts[0];
+      // const walletAddress = account.givenProvider.selectedAddress;
+      console.log(account);
+      // console.log(`Wallet: ${walletAddress}`);
 
-
-
-
-    // return account;
-  } else {
-    console.log("No wallet");
+      // return account;
+    } else {
+      console.log("No wallet");
+    }
   }
-}
 
   const handleClick = () => {
     // e.preventDefault();

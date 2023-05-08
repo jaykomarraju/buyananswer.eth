@@ -357,7 +357,7 @@ const ProfHistEditPage = () => {
   return (
     <Cont>
       <Wrapper>
-        <ConnectWalletIcon />
+        {/* <ConnectWalletIcon /> */}
         {/* <Top>
       <ConnectWalletButton/>
     </Top> */}

@@ -281,7 +281,8 @@ const UnConnectedBoard = () => {
       {/* <ConnectWalletIcon /> */}
       <Top>
         <Link to="/myboard">
-      <ConnectWalletButton/></Link>
+      {/* <ConnectWalletButton/> */}
+      </Link>
     </Top>
     <Head2>QUESTION BOARD</Head2>
       <Middle>

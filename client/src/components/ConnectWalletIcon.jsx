@@ -20,13 +20,13 @@ text-align:right;`
 const WalletAddress = styled.div`
 font-size:11px;`
 
-const ConnectWalletIcon = () => {
+const ConnectWalletIcon = ({ walletAddress }) => {
   return (
     <ConnectedWallet>
-            <WalletAddress>0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55</WalletAddress>
-            <ConnectedIcon src={greenlight} alt="greenlight"></ConnectedIcon>
-        </ConnectedWallet>
-  )
-}
+      <WalletAddress>{walletAddress}</WalletAddress>
+      <ConnectedIcon src={greenlight} alt="greenlight"></ConnectedIcon>
+    </ConnectedWallet>
+  );
+};
 
-export default ConnectWalletIcon
+export default ConnectWalletIcon;

@@ -62,7 +62,7 @@ const BottomNavBar = () => {
             <Icon src={profile} alt="profile"></Icon>
           </MenuImage>
         </MenuItem></Link>
-        <Link to="/connected">
+        <Link to="/">
         <MenuItem>
           <MenuImage>
             <Icon src={home} alt="home"></Icon>

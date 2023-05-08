@@ -56,7 +56,7 @@ const UnAuthBottomNavBar = () => {
   return (
     <Centerer>
       <MenuWrapper>
-      <Link to="/noauthprofile">
+      <Link to="/profile">
         <MenuItem>
           <MenuImage>
             <Icon src={profile} alt="profile"></Icon>
@@ -68,7 +68,7 @@ const UnAuthBottomNavBar = () => {
             <Icon src={home} alt="home"></Icon>
           </MenuImage>
         </MenuItem></Link>
-        <Link to="/noauthboard">
+        <Link to="/myboard">
         <MenuItem>
           <MenuImage>
             <Icon src={myboard} alt="noauthboard"></Icon>

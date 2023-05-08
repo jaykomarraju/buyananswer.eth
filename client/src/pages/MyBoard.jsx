@@ -63,7 +63,7 @@ const MyBoard = () => {
   return (
 
     <Wrapper>
-        <ConnectWalletIcon/>
+        {/* <ConnectWalletIcon/> */}
         <Playground>
             <Head>JAY KOMARRAJU</Head>
             <Buttons>

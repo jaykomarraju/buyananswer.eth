@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -8,6 +9,7 @@ import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import contract from "../services/web3";
 import profile from "../assets/profile.jpg";
+import { db } from "../services/Firebase";
 // import AuthContext from "../contexts/AuthContext";
 
 // This is the page that shows the user's profile and history
@@ -316,7 +318,7 @@ const Fin = styled.p`
   font-size: 25px;
 `;
 
-const ProfHistPage = () => {
+const ProfHistPage = ({ walletAddress }) => {
   // on load, get the user from the address and contract
 
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
@@ -395,24 +397,29 @@ const ProfHistPage = () => {
 
   const [minimumPrice, setMinimumPrice] = useState("");
 
+
+
+
+  
+
   // const [socials, setSocials] = useState("");
   // setSocials(Profile.socials);
 
   // create an on load function that gets the user from the address and contract
 
-  contract.methods
-    .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
-    .call()
-    .then((user) => {
-      // console.log(user);
-      // handleUser(user);
-      setUsername(user.username);
-      setEmail(user.email);
-      setName(user.name);
-      setDescription(user.headline);
-      setBio(user.bio);
-      setMinimumPrice(user.minimumPrice);
-    });
+  // contract.methods
+  //   .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
+  //   .call()
+  //   .then((user) => {
+  //     // console.log(user);
+  //     // handleUser(user);
+  //     setUsername(user.username);
+  //     setEmail(user.email);
+  //     setName(user.name);
+  //     setDescription(user.headline);
+  //     setBio(user.bio);
+  //     setMinimumPrice(user.minimumPrice);
+  //   });
 
   // contract.methods
   //   .createUser(username, name, email, "test", headline, description, 5)
@@ -423,11 +430,33 @@ const ProfHistPage = () => {
 
   // console.log(user);
 
+  useEffect(() => {
+    db.collection("users")
+      .doc(walletAddress)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setUsername(doc.data().username);
+          setEmail(doc.data().email);
+          setName(doc.data().name);
+          setDescription(doc.data().description);
+          setBio(doc.data().bio);
+          setMinimumPrice(doc.data().minimumPrice);
+        } else {
+          console.log("No such document!");
+        }
+      });
+  }, [walletAddress]);
+  
+  
+
+
+
 
   return (
     <Cont>
       <Wrapper>
-        <ConnectWalletIcon />
+        {/* <ConnectWalletIcon /> */}
         {/* <Top>
       <ConnectWalletButton/>
     </Top> */}
