@@ -241,43 +241,56 @@ const CreateProfile = ({ walletAddress }) => {
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
-
-    const user = {
-      username: username,
-      email: email,
-      name: name,
-      headline: headline,
-      description: description,
-      // twitter: twitter,
-      instagram: instagram,
-      // linkedin: linkedin,
-      // github: github,
-      website: website,
-      profilePicture: profilePicture,
-      minPrice: minPrice,
-    };
-
-    console.log(user);
-    console
-      .log("wallet address", walletAddress)
-
-    db.collection("users")
-      .doc(walletAddress)
-      .set(user)
-      .then(() => {
-        console.log("Document successfully written!");
-        // window.location.reload();
-
-        // redirect to the profile page
-        window.location.href = "/profile";
-      }
-      )
+  
+    // Ensure username and email are unique
+    const usersRef = db.collection("users");
+    usersRef.where("username", "==", username).get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          alert("This username is already taken. Please choose another one.");
+          return;
+        }
+  
+        usersRef.where("email", "==", email).get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              alert("This email is already used. Please use another one.");
+              return;
+            }
+  
+            const user = {
+              username: username,
+              email: email,
+              name: name,
+              headline: headline,
+              description: description,
+              instagram: instagram,
+              website: website,
+              profilePicture: profilePicture,
+              minPrice: minPrice,
+            };
+  
+            console.log(user);
+            console.log("wallet address", walletAddress)
+  
+            usersRef.doc(walletAddress).set(user)
+              .then(() => {
+                console.log("Document successfully written!");
+  
+                // Redirect to the profile page
+                window.location.href = "/profile";
+              })
+              .catch((error) => {
+                console.error("Error writing document: ", error);
+              });
+          });
+      })
       .catch((error) => {
-        console.error("Error writing document: ", error);
+        console.error("Error checking uniqueness of username/email: ", error);
       });
   };
+  
 
   return (
     <Cont>

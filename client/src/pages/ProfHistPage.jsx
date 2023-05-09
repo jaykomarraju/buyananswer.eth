@@ -440,9 +440,9 @@ const ProfHistPage = ({ walletAddress }) => {
           setUsername(doc.data().username);
           setEmail(doc.data().email);
           setName(doc.data().name);
-          setDescription(doc.data().description);
-          setBio(doc.data().bio);
-          setMinimumPrice(doc.data().minimumPrice);
+          setDescription(doc.data().headline);
+          setBio(doc.data().description);
+          setMinimumPrice(doc.data().minPrice);
           setProfilePicture(doc.data().profilePicture);
           console.log(profilePicture);
         } else {
