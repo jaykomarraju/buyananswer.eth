@@ -5,6 +5,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import DarkModeButton from "../components/DarkModeButton";
+import { db, storage } from "../services/Firebase";
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -90,19 +91,21 @@ const Home = () => {
     if (username === "") {
       alert("Please enter a username");
     } else {
-      // check if username exists
-      // if it does, redirect to /askpage/${username}
-      // if it doesn't, alert "username not found"
-
-      fetch(`/api/users/${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data: ", data);
-          if (data === null) {
-            alert("Username not found");
+      db.collection("users")
+        .where("username", "==", username)
+        .get()
+        .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            alert("No such user exists");
           } else {
-            window.location.href = `/askpage/${username}`;
+            querySnapshot.forEach((doc) => {
+              console.log(doc.id, " => ", doc.data());
+              window.location.href = `/${doc.data().username}`;
+            });
           }
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
         });
     }
   };
@@ -129,9 +132,9 @@ const Home = () => {
             placeholder={headPlaceholder}
           ></UsernameBoxEntry>
           <br></br>
-          <Link to="/askpage">
+          {/* <Link to="/askpage"> */}
             <Button onClick={handleClick}>VISIT BOARD</Button>
-          </Link>
+          {/* </Link> */}
         </Middle>
         {/* <BottomWrap> */}
 
