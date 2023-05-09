@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import profile from "../assets/profile.jpg";
+import { db } from "../services/Firebase";
 
 const Container = styled.div`
   height: 100vh;
@@ -33,7 +34,7 @@ const ProfilePicture = styled.div`
   border: 1.5px solid black;
   margin: 20px;
   margin-left: 0;
-  background-image: url(${profile});
+  background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
 `;
@@ -119,11 +120,6 @@ const Url = styled.div`
   font-weight: 600;
 `;
 
-// askpage is the page that the user sees when they click on the "ask" button on the home page
-// it essentially is a form that the user fills out to ask a question for the particular user they are asking
-// the user can also set a priority bonus and a total amount to pay for the question
-// the user can also set a headline for their question
-
 const Board = {
   username: "jayusaik",
   name: "Jay Komarraju",
@@ -132,13 +128,17 @@ const Board = {
 };
 
 const AskPage = () => {
-  // const username = "johndoe";
-  // const name = "John Doe";
-  // const headline = "I am here to answer any questions you have for me!";
-  // const bio = "I am a 20 year old student at the University of Waterloo. I am studying Computer Science and I am a huge fan of the Toronto Raptors.";
-  // const price = "$10";
 
-  const [username, setUsername] = useState(Board.username);
+  const { username } = useParams();
+
+
+  // username must be resolved to a address
+
+  
+  
+
+
+  // const [username, setUsername] = useState(Board.username);
   const [name, setName] = useState(Board.name);
   const [headline, setHeadline] = useState(Board.headline);
   const [bio, setBio] = useState(Board.bio);
@@ -146,6 +146,7 @@ const AskPage = () => {
   const [questionText, setQuestionText] = useState("");
   const [price, setPrice] = useState(7);
   const [priorityBonus, setPriorityBonus] = useState(0);
+  const [profilePicture, setProfilePicture] = useState(profile);
 
   const [total, setTotal] = useState(parseInt(price) + parseInt(priorityBonus));
 
@@ -168,19 +169,60 @@ const AskPage = () => {
     };
     console.log(question);
 
-    // fetch("http://localhost:5000/createQuestion", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(question),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   }
-    // );
   };
+
+  useEffect(() => {
+    let walletAddress = null;
+  
+    // First, find the wallet address for the given username
+    db.collection("users")
+      .where("username", "==", username)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          walletAddress = doc.id;
+        });
+  
+        // Then, fetch the user's board using the wallet address
+        if (walletAddress !== null) {
+          db.collection("users")
+            .doc(walletAddress)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                console.log("Document data:", doc.data());
+                setName(doc.data().name);
+                setHeadline(doc.data().headline);
+                setBio(doc.data().description);
+                setPrice(doc.data().minPrice);
+                setProfilePicture(doc.data().profilePicture);
+
+
+              } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+                setName("No User");
+                setHeadline("No Headline");
+                setBio("No Bio");
+                setPrice(0);
+                setProfilePicture(doc.data().profilePicture);
+              }
+            })
+            .catch((error) => {
+              console.log("Error getting document:", error);
+            });
+        } else {
+          console.log("No user with the given username found.");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }, []);
+
+
 
   return (
     <Container>
@@ -189,7 +231,7 @@ const AskPage = () => {
         <Url>BUYANANSWER.IO/{username}</Url>
         <BoardDesc>
           <Pic>
-            <ProfilePicture></ProfilePicture>
+            <ProfilePicture src={profilePicture}></ProfilePicture>
           </Pic>
           <Name>
             <Heading>Ask {name}</Heading>

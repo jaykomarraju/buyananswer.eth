@@ -130,7 +130,7 @@ function App() {
             <Route path="/answered" element={<AnswerQuestionPlayground />} />
             <Route path="/declined" element={<DeclinedQuestionPlayground />} />
             <Route path="/naboard" element={<UserBoardDoesNotExist />} />
-            <Route path="/askpage" element={<AskPage />} />
+            <Route path="/:username" element={<AskPage />} />
             <Route path="/profhist" element={<ProfHistPage />} />
             <Route path="/successqorder" element={<SuccessQuestionOrder />} />
             <Route path="/ansques" element={<AnswerQuestion />} />
@@ -144,6 +144,7 @@ function App() {
             <Route path="/myboard" element={<UnConnectedBoard />} />
             <Route path="/askpage" element={<UnAuthAskPageView />} />
             <Route path="/createprofile" element={<CreateProfile walletAddress={walletAddress}/>} />
+            <Route path="/:username" element={<AskPage />} />
           </>
         )}
       </Routes>
