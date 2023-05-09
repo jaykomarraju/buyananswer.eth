@@ -10,7 +10,7 @@ import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import contract from "../services/web3";
-import { db } from "../services/Firebase";
+import { db, storage } from "../services/Firebase";
 
 const Cont = styled.div`
   display: flex;
@@ -229,8 +229,15 @@ const CreateProfile = ({ walletAddress }) => {
     setWebsite(e.target.value);
   };
 
-  const handleProfilePictureChange = (e) => {
-    setProfilePicture(e.target.value);
+  const handleProfilePictureChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`profilePictures/${walletAddress}`);
+      await fileRef.put(file);
+      const fileUrl = await fileRef.getDownloadURL();
+      setProfilePicture(fileUrl);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -281,7 +288,11 @@ const CreateProfile = ({ walletAddress }) => {
           <Section>
             <ProfilePicture></ProfilePicture>
             <Entries>
-              <Button>Upload Profile Picture</Button>
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+              />
              
             </Entries>
           </Section>

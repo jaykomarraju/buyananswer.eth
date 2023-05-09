@@ -8,7 +8,6 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import contract from "../services/web3";
-import profile from "../assets/profile.jpg";
 import { db } from "../services/Firebase";
 // import AuthContext from "../contexts/AuthContext";
 
@@ -71,7 +70,7 @@ const ProfilePicture = styled.div`
   border: 1.5px solid black;
   margin: 20px;
 
-  background-image: url(${profile});
+  background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
 
@@ -397,6 +396,8 @@ const ProfHistPage = ({ walletAddress }) => {
 
   const [minimumPrice, setMinimumPrice] = useState("");
 
+  const [profilePicture, setProfilePicture] = useState("");
+
 
 
 
@@ -442,12 +443,14 @@ const ProfHistPage = ({ walletAddress }) => {
           setDescription(doc.data().description);
           setBio(doc.data().bio);
           setMinimumPrice(doc.data().minimumPrice);
+          setProfilePicture(doc.data().profilePicture);
+          console.log(profilePicture);
         } else {
           console.log("No such document!");
         }
       });
   }, [walletAddress]);
-  
+
   
 
 
@@ -465,7 +468,7 @@ const ProfHistPage = ({ walletAddress }) => {
           <Head2>Profile</Head2>
           <SubHead>/{username}</SubHead>
           <Section4>
-            <ProfilePicture></ProfilePicture>
+            <ProfilePicture src={profilePicture}></ProfilePicture>
             <Entries>
               <Username>
                 <Label2>USERNAME: </Label2>

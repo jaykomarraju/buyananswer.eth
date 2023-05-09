@@ -14,8 +14,8 @@ const Button = styled.button`
   border: 1.5px solid black;
   border-radius: 7px;
   position: fixed;
-  top: 30px;
-  right: 30px;
+  top: 70px;
+  right: 75px;
 `;
 
 // async function getAccount() {
