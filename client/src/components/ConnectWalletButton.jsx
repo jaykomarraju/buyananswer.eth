@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Web3 from "web3";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../services/Firebase";
+import CreateProfile from "../pages/CreateProfile";
+
 // import {connect} from
 
 const Button = styled.button`
@@ -36,6 +38,7 @@ const Button = styled.button`
 // }
 
 const ConnectWalletButton = ({ onConnect }) => {
+  const navigate = useNavigate(); 
   // function connectWalletButtonOnClick() {
   //   console.log("Homie!");
   // if (typeof window !== "undefined"){
@@ -82,17 +85,27 @@ const ConnectWalletButton = ({ onConnect }) => {
               db.collection("users").doc(accounts[0]).set({
                 username: "username",
                 email: "email",
-                bio: "bio",
                 profilePic: "profilePic",
                 walletAddress: accounts[0],
               });
-              // redirect to create profile page
+              // return <CreateProfile walletAddress={accounts[0]} />;
+              onConnect(true, accounts[0]);
+            navigate("/createprofile", { state: { walletAddress:  accounts[0] } });
+              
+
+
+
 
 
             }
 
             // Call the onConnect prop here
             onConnect(true, accounts[0]);
+
+            // redirect to create profile page with the wallet address as a prop
+
+            
+
           })
           .catch((error) => {
             console.log("Error getting document:", error);
@@ -122,7 +135,8 @@ const ConnectWalletButton = ({ onConnect }) => {
     }
   };
 
-  return <Button onClick={handleClick}>CONNECT YOUR WALLET</Button>;
+  return <Button onClick={handleClick}>CONNECT YOUR WALLET</Button>
+  ;
 };
 
 export default ConnectWalletButton;

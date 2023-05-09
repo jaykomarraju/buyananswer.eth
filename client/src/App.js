@@ -31,6 +31,7 @@ import UnConnectedBoard from "./pages/UnConnectedBoard";
 import { useEffect } from "react";
 import DarkModeHome from "./pages/DarkModeHome";
 import Login from "./utility/Login";
+import DisconnectConnect from "./components/DisconnectConnect";
 
 const Container = styled.div`
   width: 100vw;
@@ -72,20 +73,11 @@ const PushinP = styled.p`
   margin-top: 30px;
 `;
 
-// const ConnectWalletButton = styled.div``
 
 const BottomWrap = styled.div`
   // position:fixed;
   // bottom:25px;
 `;
-// const Bottom = styled.div`
-//   // display:flex;
-//   // justify-content:center;
-//   // width:100%;
-//   width:200px;
-//   background:blue;
-//   height:100%;
-// `
 
 const headPlaceholder = "Enter username...";
 
@@ -116,7 +108,9 @@ function App() {
          
 
           {isConnected ? (
+            <>
             <ConnectWalletIcon walletAddress={walletAddress} />
+            <DisconnectConnect onDisconnect={handleConnection} /></>
              
             ) : (
               <ConnectWalletButton onConnect={handleConnection} />
@@ -125,33 +119,12 @@ function App() {
 
 
       <Routes>
-        {/* <Route path="/connected" element={<Home />} />
-        <Route path="/darkmode" element={<DarkModeHome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<UnConnectedHome />} /> */}
-        {/* <Route index element={<BottomNavBar />} /> */}
-        {/* <Route path="profile" element={<ProfHistPage />} />
-        <Route path="noauthprofile" element={<UnConnectedProfile />} /> */}
-        {/* <Route path="createprofile" element={<Profile />} /> */}
-        {/* <Route path="createprofile" element={<CreateProfile />} />
-        <Route path="editprofile" element={<ProfHistEditPage />} />
-        <Route path="myboard" element={<MyBoard />} />
-        <Route path="noauthboard" element={<UnConnectedBoard />} />
-        <Route path="answered" element={<AnswerQuestionPlayground />} />
-        <Route path="declined" element={<DeclinedQuestionPlayground />} />
-        <Route path="naboard" element={<UserBoardDoesNotExist />} />
-        <Route path="askpage" element={<AskPage />} />
-        <Route path="noauthaskpage" element={<UnAuthAskPageView />} />
-        <Route path="profhist" element={<ProfHistPage />} />
-        <Route path="successqorder" element={<SuccessQuestionOrder />} />
-        <Route path="ansques" element={<AnswerQuestion />} />
-        <Route path="anscnfrm" element={<AnswerConfirmation/>}/>   */}
         {isConnected ? (
           <>
             {/* Connected routes */}
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<ProfHistPage walletAddress={walletAddress} />} />
-            <Route path="/createprofile" element={<CreateProfile />} />
+            <Route path="/createprofile" element={<CreateProfile walletAddress={walletAddress}/>} />
             <Route path="/editprofile" element={<ProfHistEditPage />} />
             <Route path="/myboard" element={<MyBoard />} />
             <Route path="/answered" element={<AnswerQuestionPlayground />} />
@@ -170,14 +143,10 @@ function App() {
             <Route path="/profile" element={<UnConnectedProfile />} />
             <Route path="/myboard" element={<UnConnectedBoard />} />
             <Route path="/askpage" element={<UnAuthAskPageView />} />
+            <Route path="/createprofile" element={<CreateProfile walletAddress={walletAddress}/>} />
           </>
         )}
       </Routes>
-      {/* <Container> */}
-      {/* <ConnectWalletIcon /> */}
-      {/* <MyBoard /> */}
-      {/* <BottomNavBar /> */}
-      {/* </Container> */}
     </div>
   );
 }

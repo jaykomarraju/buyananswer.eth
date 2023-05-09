@@ -10,6 +10,7 @@ import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import contract from "../services/web3";
+import { db } from "../services/Firebase";
 
 const Cont = styled.div`
   display: flex;
@@ -169,7 +170,7 @@ const Platform = styled.div`
   // background:purple;
 `;
 
-const CreateProfile = () => {
+const CreateProfile = ({ walletAddress }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -233,39 +234,47 @@ const CreateProfile = () => {
   };
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
-    const profile = {
+
+    const user = {
       username: username,
       email: email,
       name: name,
       headline: headline,
       description: description,
-      twitter: twitter,
+      // twitter: twitter,
       instagram: instagram,
-      linkedin: linkedin,
-      github: github,
+      // linkedin: linkedin,
+      // github: github,
       website: website,
       profilePicture: profilePicture,
+      minPrice: minPrice,
     };
-    console.log(profile);
 
-    contract.methods
-      .createUser(username, name, email, "test", headline, description, 5)
-      .send({
-        from: "0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55",
-        gas: 1000000,
+    console.log(user);
+    console
+      .log("wallet address", walletAddress)
+
+    db.collection("users")
+      .doc(walletAddress)
+      .set(user)
+      .then(() => {
+        console.log("Document successfully written!");
+        // window.location.reload();
+
+        // redirect to the profile page
+        window.location.href = "/profile";
+      }
+      )
+      .catch((error) => {
+        console.error("Error writing document: ", error);
       });
   };
-
-  // send profile to backend solidity contract through web3
 
   return (
     <Cont>
       <Wrapper>
-        <ConnectWalletIcon />
-        {/* <Top>
-      <ConnectWalletButton/>
-    </Top> */}
         <Head2>Create Profile</Head2>
         <SubHead>and start answering questions today!</SubHead>
         <Middle>
@@ -273,14 +282,7 @@ const CreateProfile = () => {
             <ProfilePicture></ProfilePicture>
             <Entries>
               <Button>Upload Profile Picture</Button>
-              {/* <Username>
-                <Label>USERNAME*</Label>
-                <Entry></Entry>
-              </Username>
-              <Username>
-                <Label>EMAIL*</Label>
-                <Entry></Entry>
-              </Username> */}
+             
             </Entries>
           </Section>
           <Section>
@@ -371,10 +373,6 @@ const CreateProfile = () => {
             >Create Your Question Page</LButton>
           {/* </Link> */}
         </Middle>
-        {/* <BottomWrap> */}
-
-        {/* <BottomNavBar/> */}
-        {/* </BottomWrap> */}
         <BottomNavBar />
       </Wrapper>
     </Cont>
