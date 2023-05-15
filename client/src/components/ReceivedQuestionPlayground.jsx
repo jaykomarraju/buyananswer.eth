@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import {db } from "../services/Firebase";
 
 const Sect = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ const QText = styled.p`
 `;
 
 const QPrice = styled.p`
-  margin: 0;
+  margzin: 0;
   font-size: 23px;
 `;
 
@@ -75,7 +76,7 @@ const AText = styled.p`
   margin-bottom: -5px;
   text-align: left;
   padding-left: 10px;
-  text-transform: uppercase;
+  // text-transform: uppercase;
 `;
 
 const Date = styled.p`
@@ -83,43 +84,42 @@ const Date = styled.p`
   font-size: 12px;
 `;
 
-const ReceivedQuestionPlayground = () => {
-  const ReceivedQuestions = [
-    {
-      askUser: "@sammycursner",
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$12.00",
-      date: "MAR 20, 2022",
-    },
-    {
-      askUser: "@samayraju",
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$11.00",
-      date: "MAR 20, 2022",
-    },
-    {
-      askUser: "@kokokom",
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$8.50",
-      date: "MAR 20, 2022",
-    },
-  ];
+const ReceivedQuestionPlayground = ({ walletAddress }) => {
+
+  const [questions, setQuestions] = useState([]);
+
+  const getQuestions = async () => {
+    const questionsRef = db.collection("users").doc(walletAddress).collection("receivedQuestions");
+    const snapshot = await questionsRef.get();
+    if (!snapshot.empty) {  // check if snapshot is not empty
+      const questions = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        questions.push({...data, id: doc.id});
+      });
+      console.log('questions fetched:', questions); // log the fetched data
+      setQuestions(questions);
+    } else {
+      console.log('No documents found!');
+    }
+  };
+  
+  useEffect(() => {
+    getQuestions();
+  }, []); 
 
   return (
     <QuestionsPlayground>
-      {ReceivedQuestions.map((question) => (
-        <ReceivedQuestion>
-          <AText>QUESTION FROM: {question.askUser}</AText>
+      {questions.map((question) => (
+        <ReceivedQuestion key={question.id}>
+          <AText>QUESTION FROM: @{question.asker}</AText>
           <Sect>
             <Flexer>
               <QText>{question.question}</QText>
             </Flexer>
             <Flexer2>
-              <QPrice>{question.price}</QPrice>
-              <Date>{question.date}</Date>
+              <QPrice>$ {question.total}</QPrice>
+              <Date>{question.timestamp?.toDate().toLocaleString()}</Date>
             </Flexer2>
           </Sect>
           <Sect2>
@@ -130,54 +130,6 @@ const ReceivedQuestionPlayground = () => {
           </Sect2>
         </ReceivedQuestion>
       ))}
-
-      {/* <ReceivedQuestion>
-        <AText>QUESTION FROM: @sammycursner</AText>
-        <Sect>
-          <Flexer>
-            <QText>
-              Hey Justin. I’m a student in UNC studying CS and Econ and I’m
-              trying to start a company. What is the typical attitude toward
-              college founders in the valley? Also do investors prefer a demo or
-              a pitch?
-            </QText>
-          </Flexer>
-          <Flexer2>
-            <QPrice>$12.00</QPrice>
-            <Date>MAR 20, 2022</Date>
-          </Flexer2>
-        </Sect>
-        <Sect2>
-          <DeclineButton>X</DeclineButton>
-          <Link to="/ansques">
-            <ANSButton>ANSWER</ANSButton>
-          </Link>
-        </Sect2>
-      </ReceivedQuestion>
-
-      <ReceivedQuestion>
-        <AText>QUESTION FROM: @sammycursner</AText>
-        <Sect>
-          <Flexer>
-            <QText>
-              Hey Justin. I’m a student in UNC studying CS and Econ and I’m
-              trying to start a company. What is the typical attitude toward
-              college founders in the valley? Also do investors prefer a demo or
-              a pitch?
-            </QText>
-          </Flexer>
-          <Flexer2>
-            <QPrice>$12.00</QPrice>
-            <Date>MAR 20, 2022</Date>
-          </Flexer2>
-        </Sect>
-        <Sect2>
-          <DeclineButton>X</DeclineButton>
-          <Link to="/ansques">
-            <ANSButton>ANSWER</ANSButton>
-          </Link>
-        </Sect2>
-      </ReceivedQuestion> */}
     </QuestionsPlayground>
   );
 };

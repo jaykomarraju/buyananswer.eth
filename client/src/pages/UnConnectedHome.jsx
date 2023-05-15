@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import UnAuthBottomNavBar from "../components/UnAuthBottomNavBar";
+import { db } from "../services/Firebase";
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -73,6 +74,33 @@ const Container = styled.div`
 `
 
 const UnConnectedHome = () => {
+  const [username, setUsername] = useState("");
+
+  const handleClick = () => {
+    console.log("looking for: ", username);
+
+    if (username === "") {
+      alert("Please enter a username");
+    } else {
+      db.collection("users")
+        .where("username", "==", username)
+        .get()
+        .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            alert("No such user exists");
+          } else {
+            querySnapshot.forEach((doc) => {
+              console.log(doc.id, " => ", doc.data());
+              window.location.href = `/${doc.data().username}`;
+            });
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  };
+
   return (
     <Container>
     <Wrapper>
@@ -91,9 +119,11 @@ const UnConnectedHome = () => {
           placeholder={headPlaceholder}
         ></UsernameBoxEntry>
         <br></br>
-        <Link to="noauthaskpage">
-          <Button>VISIT BOARD</Button>
-        </Link>
+        {/* <Link to="noauthaskpage"> */}
+          <Button onClick={
+            handleClick
+          }>VISIT BOARD</Button>
+        {/* </Link> */}
       </Middle>
       {/* <BottomWrap> */}
 

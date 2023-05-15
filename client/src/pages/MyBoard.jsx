@@ -44,12 +44,12 @@ const QuestionWrapper = styled.div``
 
 const Playground = styled.div``
 
-const MyBoard = () => {
+const MyBoard = ({ walletAddress }) => {
 
   const [selectedWindow, setSelectedWindow] = useState(<ReceivedQuestionPlayground/>)
 
   const handleReceiveClick = () => {
-    setSelectedWindow(<ReceivedQuestionPlayground/>)
+    setSelectedWindow(<ReceivedQuestionPlayground walletAddress={walletAddress}/>)
   }
 
   const handleAnswerClick = () => {

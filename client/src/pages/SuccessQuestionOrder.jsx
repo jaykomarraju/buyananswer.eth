@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
+import { db } from "../services/Firebase";
 
 const Wrapper = styled.div`
   display: flex;
@@ -66,14 +67,13 @@ const Button = styled.button`
   border: 1.5px solid black;
   border-radius: 10px;
   padding: 12px;
-  font-size:15px;
-  margin-top:20px;
+  font-size: 15px;
+  margin-top: 20px;
 
   &:hover {
     background: black;
     color: white;
   }
-  
 `;
 
 const TopHeading = styled.p`
@@ -82,25 +82,159 @@ const TopHeading = styled.p`
   font-weight: 800;
 `;
 const CenterWrap = styled.div`
-display:flex;
-justify-content:center;`
+  display: flex;
+  justify-content: center;
+`;
 
-const SuccessQuestionOrder = () => {
+// const question = {
+//   username: username,
+//   question: questionText,
+//   priorityBonus: parseInt(priorityBonus),
+//   total: parseInt(priorityBonus) + parseInt(price),
+//   asker: askerUser,
+//   timestamp: Date.now(),
+// };
+
+const SuccessQuestionOrder = ({ location }) => {
+  let state;
+  if (location && location.state) {
+    state = location.state;
+  } else {
+    return <div>Loading...</div>;
+  }
+
+  const handleClick = () => {
+    // db.collection("users")
+    //   .doc(state.walletAddress)
+    //   .collection("askedQuestions")
+    //   .add(state.question)
+    //   .then((docRef) => {
+    //     console.log("Document written with ID: ", docRef.id);
+    //     db.collection("questions")
+    //       .doc(docRef.id)
+    //       .set(state.question)
+    //       .then(() => {
+    //         console.log("Document successfully written!");
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error writing document: ", error);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error adding document: ", error);
+    //   });
+
+    // // find the address of the answerer
+    // db.collection("users")
+    //   .where("username", "==", state.question.username)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       // doc.data() is never undefined for query doc snapshots
+    //       db.collection("users")
+    //         .doc(doc.id)
+    //         .collection("receivedQuestions")
+    //         .add(state.question)
+    //         .then((docRef) => {
+    //           console.log("Document written with ID: ", docRef.id);
+    //           db.collection("questions")
+    //             .doc(docRef.id)
+    //             .set(state.question)
+    //             .then(() => {
+    //               console.log("Document successfully written!");
+    //             })
+    //             .catch((error) => {
+    //               console.error("Error writing document: ", error);
+    //             });
+    //         })
+    //         .catch((error) => {
+    //           console.error("Error adding document: ", error);
+    //         });
+    //     });
+    //   }
+    // );
+
+    // Ensure that the same question is saved as a askedQuestion in the asker's wallet and as a receivedQuestion in the answerer's wallet
+
+    db.collection("users")
+      .doc(state.walletAddress)
+      .collection("askedQuestions")
+      .add(state.question)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        db.collection("questions")
+          .doc(docRef.id)
+          .set(state.question)
+          .then(() => {
+            console.log("Document successfully written!");
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          });
+      }
+      )
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      }
+      );
+
+    // find the address of the answerer
+    db.collection("users")
+      .where("username", "==", state.question.username)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          db.collection("users")
+            .doc(doc.id)
+            .collection("receivedQuestions")
+            .add(state.question)
+            .then((docRef) => {
+              console.log("Document written with ID: ", docRef.id);
+              db.collection("questions")
+                .doc(docRef.id)
+                .set(state.question)
+                .then(() => {
+                  console.log("Document successfully written!");
+                })
+                .catch((error) => {
+                  console.error("Error writing document: ", error);
+                });
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+            });
+        });
+      }
+      );
+
+    // db.collection("users")
+    //   .doc(state.walletAddress)
+    //   .collection("askedQuestions")
+    //   .add(state.question)
+    //   .then((docRef) => {
+    //     console.log("Document written with ID: ", docRef.id);
+    //     db.collection("questions")
+      
+    
+
+  };
+
+
+
+
   return (
     <Wrapper>
       <ConnectWalletIcon />
 
       <OrderDetails>
         <TopHeading>Confirm your BuyAnAnswer order!</TopHeading>
-        <Heading>Your Order : @johndoe</Heading>
+        <Heading>Your Order to : @{state.question.username}</Heading>
         <Box>
-          <QuestionText>
-            Can you share bullet points about everything I need to include in a
-            picth deck? (Obviously I'm looking at tech startups specifically)
-          </QuestionText>
+          <QuestionText>{state.question.question}</QuestionText>
           <Right>
-            <AmtPaid>$5.00</AmtPaid>
-            <DateAsked>MAR 29, 2022</DateAsked>
+            <AmtPaid>${state.question.total}</AmtPaid>
+            <DateAsked>{state.question.timestamp.toString()}</DateAsked>
           </Right>
         </Box>
         <AddInfo>
@@ -126,9 +260,20 @@ const SuccessQuestionOrder = () => {
           </List>
         </AddInfo>
         <CenterWrap>
-        <Button>Place Order</Button></CenterWrap>
+          <Button onClick={handleClick}>Place Order</Button>
+        </CenterWrap>
         <BottomNavBar />
       </OrderDetails>
+      {/* <div>
+        <h2>Success!</h2>
+        <p>Username: {state.question.username}</p>
+        <p>Question: {state.question.question}</p>
+        <p>Priority Bonus: {state.question.priorityBonus}</p>
+        <p>Total: {state.question.total}</p>
+        <p>Asker: {state.question.asker}</p>
+        <p>Timestamp: {state.question.timestamp.toString()}</p>
+        <p>Wallet Address: {state.walletAddress}</p>
+      </div> */}
     </Wrapper>
   );
 };
