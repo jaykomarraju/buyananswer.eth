@@ -201,6 +201,9 @@ const AskPage = ({ walletAddress }) => {
       total: parseInt(priorityBonus) + parseInt(price),
       asker: askerUser,
       timestamp: new Date(),
+      answered: false,
+      declined: false,
+      answer: null,
     };
     console.log(question);
     setQuestionState(question);

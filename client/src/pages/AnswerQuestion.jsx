@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
+import { db } from "../services/Firebase";
+import { useLocation } from 'react-router-dom';
+
 
 const Cont = styled.div`
   display: flex;
@@ -99,17 +102,54 @@ const ReviewButton = styled.button`
   }
 `;
 
-const AnswerQuestion = () => {
-  const Question = {
-    questionText:
-      "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-    price: "$12.00",
-    date: "MAR 20, 2022",
-    askUser: "@sammycursner",
-    answerUser: "@justin",
-  };
+const AnswerQuestion =  ({ location }) => {
+
+  // let state;
+  // if (location && location.state) {
+  //   state = location.state;
+  // } else {
+  //   return <div>Loading...</div>;
+  // }
+
+  const [Question, setQuestion] = useState({});
 
   const [answerText, setAnswerText] = useState("");
+    // check the questionID in recieved question collection within the user collection at the given wallet address
+    // get the question object from the questionID
+    // setQuestion(questionObject)
+
+    useEffect(() => {
+      // We'll handle the fetching logic later
+    }, []);
+
+    // if (!location || !location.state) {
+    //   return <div>Loading...</div>;
+    // }
+  
+    // // Now that we know location.state exists, we can use it
+    // const { walletAddress, questionID } = location.state;
+
+    const {  questionId = '', walletAddress = '' } = location?.state || {};
+
+  useEffect(() => {
+    console.log(walletAddress, questionId);
+
+
+    const getQuestion = async () => {
+      const questionRef = db.collection("users").doc(walletAddress).collection("receivedQuestions").doc(questionId);
+      const questionDoc = await questionRef.get();
+      if (!questionDoc.exists) {
+        console.log("No such document!");
+      } else {
+        console.log("Document data:", questionDoc.data());
+        setQuestion(questionDoc.data());
+      }
+    }
+
+    getQuestion();
+
+  });
+
 
   const handleAnswer = (e) => {
     setAnswerText(e.target.value);
@@ -118,12 +158,12 @@ const AnswerQuestion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const answer = {
-      question: Question,
-      answer: answerText,
-    };
+    // const answer = {
+    //   question: Question,
+    //   answer: answerText,
+    // };
 
-    console.log(answer);
+    // console.log(answer);
     // returns
   };
 
@@ -140,16 +180,16 @@ const AnswerQuestion = () => {
                 <Item>
                   <ProfilePicture></ProfilePicture>
 
-                  <Label>Username : </Label>
-                  <Value>{Question.askUser}</Value>
+                  <Label>Username:  </Label>
+                  <Value>@{Question.asker}</Value>
                 </Item>
               </AskerDetails>
             </ItemSpace>
             <ItemSpace>
-              <QuestionText>{Question.questionText}</QuestionText>
+              <QuestionText>{Question.question}</QuestionText>
               <Flexer>
-                <QuestionPrice>{Question.price}</QuestionPrice>
-                <Date>{Question.date}</Date>
+                <QuestionPrice>${Question.total}</QuestionPrice>
+                <Date>{Question.timestamp?.toDate().toLocaleString()}</Date>
               </Flexer>
             </ItemSpace>
           </QuestionObjectView>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import AnswerQuestionPlayground from '../components/AnswerQuestionsPlayground';
@@ -6,6 +6,8 @@ import BottomNavBar from '../components/BottomNavBar';
 import ConnectWalletIcon from '../components/ConnectWalletIcon';
 import DeclinedQuestionPlayground from '../components/DeclinedQuestionsPlayground';
 import ReceivedQuestionPlayground from '../components/ReceivedQuestionPlayground';
+import AskedQuestionPlayground from '../components/AskedQuestionPlayground';
+import {db} from '../services/Firebase'
 
 const Wrapper = styled.div`
 //   padding: 5%;
@@ -17,7 +19,9 @@ margin-top:60px;
     justify-content:center;
 `;
 
-const Head = styled.p``
+const Head = styled.p`
+  text-transform: uppercase;
+`
 
 const Buttons = styled.div`
 display:flex;
@@ -46,6 +50,17 @@ const Playground = styled.div``
 
 const MyBoard = ({ walletAddress }) => {
 
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const getName = async () => {
+      const doc = await db.collection("users").doc(walletAddress).get();
+      setName(doc.data().name);
+    };
+    getName();
+  }, []);
+
+
   const [selectedWindow, setSelectedWindow] = useState(<ReceivedQuestionPlayground/>)
 
   const handleReceiveClick = () => {
@@ -57,7 +72,11 @@ const MyBoard = ({ walletAddress }) => {
   }
 
   const handleDeclineClick = () => {
-    setSelectedWindow(<DeclinedQuestionPlayground/>)
+    setSelectedWindow(<DeclinedQuestionPlayground walletAddress={walletAddress}/>)
+  }
+
+  const handleAskedClick = () => {
+    setSelectedWindow(<AskedQuestionPlayground walletAddress={walletAddress}/>)
   }
     
   return (
@@ -65,12 +84,12 @@ const MyBoard = ({ walletAddress }) => {
     <Wrapper>
         {/* <ConnectWalletIcon/> */}
         <Playground>
-            <Head>JAY KOMARRAJU</Head>
+            <Head>{name}</Head>
             <Buttons>
                 <Button onClick={handleReceiveClick}>RECEIVED</Button>
                 <Button onClick={handleAnswerClick}>ANSWERED</Button>
                 <Button onClick={handleDeclineClick}>DECLINED</Button>
-                <Button >ASKED</Button>
+                <Button onClick={handleAskedClick}>ASKED</Button>
             </Buttons>
             <QuestionWrapper>
             {selectedWindow}

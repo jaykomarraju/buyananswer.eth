@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {db } from "../services/Firebase";
-import AnswerQuestion from "../pages/AnswerQuestion";
 
 const Sect = styled.div`
   display: flex;
@@ -85,81 +84,35 @@ const Date = styled.p`
   font-size: 12px;
 `;
 
-const ReceivedQuestionPlayground = ({ walletAddress }) => {
-
-  const navigate = useNavigate();
+const AskedQuestionPlayground = ({ walletAddress }) => {
 
   const [questions, setQuestions] = useState([]);
 
   const getQuestions = async () => {
-    // const questionsRef = db.collection("users").doc(walletAddress).collection("receivedQuestions");
-    // const snapshot = await questionsRef.get();
-    // if (!snapshot.empty) {  // check if snapshot is not empty
-    //   const questions = [];
-    //   snapshot.forEach((doc) => {
-    //     const data = doc.data();
-    //     questions.push({...data, id: doc.id});
-    //   });
-    //   console.log('questions fetched:', questions); // log the fetched data
-    //   setQuestions(questions);
-    // } else {
-    //   console.log('No documents found!');
-    // }
-
-    // WE HAVE TO FILTER THROUGH THE QUESTION WE RECEIVED AND ONLY SHOW THE ONES THAT ARE NOT DECLINED AND NOT ANSWERED
-
-    const questionsRef = db.collection("users").doc(walletAddress).collection("receivedQuestions");
+    const questionsRef = db.collection("users").doc(walletAddress).collection("askedQuestions");
     const snapshot = await questionsRef.get();
     if (!snapshot.empty) {  // check if snapshot is not empty
       const questions = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
-        if (!data.declined && !data.answered) {
-          questions.push({...data, id: doc.id});
-        }
-      }
-      );
+        questions.push({...data, id: doc.id});
+      });
       console.log('questions fetched:', questions); // log the fetched data
       setQuestions(questions);
     } else {
       console.log('No documents found!');
     }
-
-
-
-
   };
   
   useEffect(() => {
     getQuestions();
   }, []); 
 
-  const handleDecline = async (e, questionId) => {
-    e.preventDefault();
-    // console.log('questionId:', questionId);
-    const questionRef = db.collection("users").doc(walletAddress).collection("receivedQuestions").doc(questionId);
-  
-    // set the question's declined field to true
-    await questionRef.update({
-      declined: true
-    });
-  
-    // remove the question from the questions array
-    const newQuestions = questions.filter((question) => question.id !== questionId);
-    setQuestions(newQuestions);
-  };
-
-  const handleAnswer = async (e, questionId) => {
-    e.preventDefault();
-    navigate('/answer', { state: { questionId, walletAddress } });
-  };
-  
-
   return (
     <QuestionsPlayground>
       {questions.map((question) => (
         <ReceivedQuestion key={question.id}>
-          <AText>QUESTION FROM: @{question.asker}</AText>
+          <AText>QUESTION TO: @{question.username}</AText>
           <Sect>
             <Flexer>
               <QText>{question.question}</QText>
@@ -170,14 +123,14 @@ const ReceivedQuestionPlayground = ({ walletAddress }) => {
             </Flexer2>
           </Sect>
           <Sect2>
-          <DeclineButton onClick={(e) => handleDecline(e, question.id)}>X</DeclineButton>
-
-            {/* <Link to="/ansques"> */}
-
-              {/* <ANSButton>ANSWER</ANSButton> */}
-
-              <ANSButton onClick={(e) => handleAnswer(e, question.id)}>ANSWER</ANSButton>
-            {/* </Link> */}
+            {/* <DeclineButton>X</DeclineButton>
+            <Link to="/ansques">
+              <ANSButton>ANSWER</ANSButton>
+            </Link> */}
+            {/* <Flexer>
+                <AText>ANSWERED: {question.answered}</AText>
+                <AText>DECLINED: {question.declined}</AText>
+            </Flexer> */}
           </Sect2>
         </ReceivedQuestion>
       ))}
@@ -185,4 +138,4 @@ const ReceivedQuestionPlayground = ({ walletAddress }) => {
   );
 };
 
-export default ReceivedQuestionPlayground;
+export default AskedQuestionPlayground;
