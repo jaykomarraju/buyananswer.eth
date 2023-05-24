@@ -104,121 +104,53 @@ const SuccessQuestionOrder = ({ location }) => {
   }
 
   const handleClick = () => {
-    // db.collection("users")
-    //   .doc(state.walletAddress)
-    //   .collection("askedQuestions")
-    //   .add(state.question)
-    //   .then((docRef) => {
-    //     console.log("Document written with ID: ", docRef.id);
-    //     db.collection("questions")
-    //       .doc(docRef.id)
-    //       .set(state.question)
-    //       .then(() => {
-    //         console.log("Document successfully written!");
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error writing document: ", error);
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error adding document: ", error);
-    //   });
-
-    // // find the address of the answerer
-    // db.collection("users")
-    //   .where("username", "==", state.question.username)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       // doc.data() is never undefined for query doc snapshots
-    //       db.collection("users")
-    //         .doc(doc.id)
-    //         .collection("receivedQuestions")
-    //         .add(state.question)
-    //         .then((docRef) => {
-    //           console.log("Document written with ID: ", docRef.id);
-    //           db.collection("questions")
-    //             .doc(docRef.id)
-    //             .set(state.question)
-    //             .then(() => {
-    //               console.log("Document successfully written!");
-    //             })
-    //             .catch((error) => {
-    //               console.error("Error writing document: ", error);
-    //             });
-    //         })
-    //         .catch((error) => {
-    //           console.error("Error adding document: ", error);
-    //         });
-    //     });
-    //   }
-    // );
-
-    // Ensure that the same question is saved as a askedQuestion in the asker's wallet and as a receivedQuestion in the answerer's wallet
-
-    db.collection("users")
-      .doc(state.walletAddress)
-      .collection("askedQuestions")
+    // First, add the question to the 'questions' collection.
+    db.collection("questions")
       .add(state.question)
       .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-        db.collection("questions")
+        console.log("Question written with ID: ", docRef.id);
+        
+        // Then, add the question to the 'askedQuestions' subcollection.
+        db.collection("users")
+          .doc(state.walletAddress)
+          .collection("askedQuestions")
           .doc(docRef.id)
           .set(state.question)
           .then(() => {
-            console.log("Document successfully written!");
+            console.log("Document successfully added to askedQuestions!");
+  
+            // After that, find the address of the answerer and add the question to the 'receivedQuestions' subcollection.
+            db.collection("users")
+              .where("username", "==", state.question.username)
+              .get()
+              .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  db.collection("users")
+                    .doc(doc.id)
+                    .collection("receivedQuestions")
+                    .doc(docRef.id)
+                    .set(state.question)
+                    .then(() => {
+                      console.log("Document successfully added to receivedQuestions!");
+                    })
+                    .catch((error) => {
+                      console.error("Error adding document to receivedQuestions: ", error);
+                    });
+                });
+              })
+              .catch((error) => {
+                console.error("Error finding answerer: ", error);
+              });
           })
           .catch((error) => {
-            console.error("Error writing document: ", error);
+            console.error("Error adding document to askedQuestions: ", error);
           });
-      }
-      )
+      })
       .catch((error) => {
-        console.error("Error adding document: ", error);
-      }
-      );
-
-    // find the address of the answerer
-    db.collection("users")
-      .where("username", "==", state.question.username)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          db.collection("users")
-            .doc(doc.id)
-            .collection("receivedQuestions")
-            .add(state.question)
-            .then((docRef) => {
-              console.log("Document written with ID: ", docRef.id);
-              db.collection("questions")
-                .doc(docRef.id)
-                .set(state.question)
-                .then(() => {
-                  console.log("Document successfully written!");
-                })
-                .catch((error) => {
-                  console.error("Error writing document: ", error);
-                });
-            })
-            .catch((error) => {
-              console.error("Error adding document: ", error);
-            });
-        });
-      }
-      );
-
-    // db.collection("users")
-    //   .doc(state.walletAddress)
-    //   .collection("askedQuestions")
-    //   .add(state.question)
-    //   .then((docRef) => {
-    //     console.log("Document written with ID: ", docRef.id);
-    //     db.collection("questions")
-      
-    
-
+        console.error("Error adding question to questions: ", error);
+      });
   };
+  
 
 
 
