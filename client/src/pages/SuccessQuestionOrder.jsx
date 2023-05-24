@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import { db } from "../services/Firebase";
+import instance from "../contract";
 
 const Wrapper = styled.div`
   display: flex;
@@ -103,57 +104,53 @@ const SuccessQuestionOrder = ({ location }) => {
     return <div>Loading...</div>;
   }
 
-  const handleClick = () => {
-    // First, add the question to the 'questions' collection.
-    db.collection("questions")
-      .add(state.question)
-      .then((docRef) => {
-        console.log("Question written with ID: ", docRef.id);
-        
+  const handleClick = async () => {
+    try {
+      // Store question in firebase and get the document id.
+      const docRef = await db.collection("questions").add(state.question);
+      console.log("Question written with ID: ", docRef.id);
+
+      // Find the address of the answerer.
+      const answererSnapshot = await db
+        .collection("users")
+        .where("username", "==", state.question.username)
+        .get();
+
+      if (!answererSnapshot.empty) {
+        // We will just take the first user if there are multiple users with the same username.
+        const answererDoc = answererSnapshot.docs[0];
+
+        // Call the contract's askQuestion function
+        await instance.methods.askQuestion(docRef.id, answererDoc.id).send({
+          from: state.walletAddress, // sender address
+          value: state.question.total, // value in wei
+        });
+
         // Then, add the question to the 'askedQuestions' subcollection.
-        db.collection("users")
+        await db
+          .collection("users")
           .doc(state.walletAddress)
           .collection("askedQuestions")
           .doc(docRef.id)
-          .set(state.question)
-          .then(() => {
-            console.log("Document successfully added to askedQuestions!");
-  
-            // After that, find the address of the answerer and add the question to the 'receivedQuestions' subcollection.
-            db.collection("users")
-              .where("username", "==", state.question.username)
-              .get()
-              .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  db.collection("users")
-                    .doc(doc.id)
-                    .collection("receivedQuestions")
-                    .doc(docRef.id)
-                    .set(state.question)
-                    .then(() => {
-                      console.log("Document successfully added to receivedQuestions!");
-                    })
-                    .catch((error) => {
-                      console.error("Error adding document to receivedQuestions: ", error);
-                    });
-                });
-              })
-              .catch((error) => {
-                console.error("Error finding answerer: ", error);
-              });
-          })
-          .catch((error) => {
-            console.error("Error adding document to askedQuestions: ", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error adding question to questions: ", error);
-      });
+          .set(state.question);
+        console.log("Document successfully added to askedQuestions!");
+
+        // Then add the question to the 'receivedQuestions' subcollection for the answerer.
+        await db
+          .collection("users")
+          .doc(answererDoc.id)
+          .collection("receivedQuestions")
+          .doc(docRef.id)
+          .set(state.question);
+        console.log("Document successfully added to receivedQuestions!");
+      } else {
+        console.error("No user found with username: ", state.question.username);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
   };
   
-
-
-
 
   return (
     <Wrapper>
