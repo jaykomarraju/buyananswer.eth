@@ -4,9 +4,9 @@ This repository contains the project files and relevant documentation for BUYANA
 
 **Repository:** buyananswer.eth
 
-**System Design:** [System Design Documentation]()
+**System Design:** [System Design Documentation](https://github.com/jaykomarraju/buyananswer.eth/blob/main/docs/System%20Design.pdf)
 
-**Prototype:** [Figma Prototype]()
+**Prototype:** [Figma Prototype](https://www.figma.com/file/PnXms604MyGmsjdNyR8Wbz/buyananswer-MVP?node-id=0%3A1)
 
 ## Project Overview
 
