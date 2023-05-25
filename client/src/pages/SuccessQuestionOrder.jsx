@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -97,12 +97,28 @@ const CenterWrap = styled.div`
 // };
 
 const SuccessQuestionOrder = ({ location }) => {
+
+  
+
+
+  const [ethPrice, setEthPrice] = useState(null);
+
+  useEffect(() => {
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+      .then(response => response.json())
+      .then(data => setEthPrice(data.ethereum.usd));
+  }, []);
+
   let state;
   if (location && location.state) {
     state = location.state;
+
+    
   } else {
     return <div>Loading...</div>;
   }
+
+  
 
   const handleClick = async () => {
     try {
@@ -117,13 +133,22 @@ const SuccessQuestionOrder = ({ location }) => {
         .get();
 
       if (!answererSnapshot.empty) {
-        // We will just take the first user if there are multiple users with the same username.
+        // We will just take the users docID since we know there is only one user with that username.
         const answererDoc = answererSnapshot.docs[0];
+        console.log(answererDoc.id);
+
+
+        console.log("answererDoc.id: "+ answererDoc.id);
+        console.log(docRef.id);
+        console.log("asker: "+ state.walletAddress);
+        console.log(state.question.total);
+        console.log(state.question.total / ethPrice);
 
         // Call the contract's askQuestion function
-        await instance.methods.askQuestion(docRef.id, answererDoc.id).send({
-          from: state.walletAddress, // sender address
-          value: state.question.total, // value in wei
+        await instance.methods.askQuestion(docRef.id,  answererDoc.id).send({
+          from: state.walletAddress, 
+          value: window.web3.utils.toWei((state.question.total / ethPrice).toString(), 'ether'),
+          gas: 3000000,
         });
 
         // Then, add the question to the 'askedQuestions' subcollection.
@@ -150,7 +175,7 @@ const SuccessQuestionOrder = ({ location }) => {
       console.error("Error: ", error);
     }
   };
-  
+
 
   return (
     <Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -155,17 +155,21 @@ const AnswerQuestion =  ({ location }) => {
     setAnswerText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(async () => {
+    // try {
+    //   // Get user's Ethereum address
+    //   const accounts = await instance.eth.getAccounts();
+    //   const userAddress = accounts[0];
 
-    // const answer = {
-    //   question: Question,
-    //   answer: answerText,
-    // };
+    //   // Assuming you have the Firebase document id stored in a variable firebaseDocId
+    //   // Call the answerQuestion function
+    //   await instance.methods.answerQuestion(firebaseDocId).send({ from: userAddress });
 
-    // console.log(answer);
-    // returns
-  };
+    //   console.log('Answer submitted successfully');
+    // } catch (error) {
+    //   console.error('An error occurred while submitting the answer:', error);
+    // }
+  }, []);
 
   return (
     <div>

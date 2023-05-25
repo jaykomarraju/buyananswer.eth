@@ -10,9 +10,9 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 //     console.error(error);
 //   });
 
-const contractAddress = "0xB68a9B38F7fE5DA8d96C12ec2340b0406F1ACdb6";
+const contractAddress = "0xCAF024Bd7fe69354AD50316cC9e84e5c1461063f";
 
-const contractArtifact = require("../abi/BuyAnAnswer.json");
+const contractArtifact = require("../contracts/BuyAnAnswerContract.json");
 const abi = contractArtifact.abi;
 
 const contract = new web3.eth.Contract(abi, contractAddress);

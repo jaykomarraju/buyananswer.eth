@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import Web3 from "web3";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,7 +38,10 @@ const Button = styled.button`
 // }
 
 const ConnectWalletButton = ({ onConnect }) => {
+
+  
   const navigate = useNavigate(); 
+  const [loading, setLoading] = useState(false);
   // function connectWalletButtonOnClick() {
   //   console.log("Homie!");
   // if (typeof window !== "undefined"){
@@ -52,88 +55,75 @@ const ConnectWalletButton = ({ onConnect }) => {
   // if so, redirect to home page
 
   async function connect() {
+
+     // Forget the old provider
+     window.web3 = null;
+
     if (window.ethereum) {
       await window.ethereum.request({ method: "eth_requestAccounts" });
       window.web3 = new Web3(window.ethereum);
-      const web3 = await window.web3;
+      const web3 = window.web3;
       const accounts = await web3.eth.getAccounts();
+    
+      console.log("The account is: " + accounts);
   
-      await web3.eth.requestAccounts().then(async function (accounts) {
-        console.log("The account is: " + accounts);
-
-        // check if account is active
-        // then check if account is in database
-        // if not, add to database and redirect to create profile page
-        // if so, redirect to home page
-
-        // use db from firebase
-        
-
-        // check if account is in database
-        const docRef = db.collection("users").doc(accounts[0]);
-
-        docRef
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              console.log("Document data:", doc.data());
-              // redirect to home page
-            } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-              // add to database
-              db.collection("users").doc(accounts[0]).set({
-                username: "username",
-                email: "email",
-                profilePic: "profilePic",
-                walletAddress: accounts[0],
-              });
-              // return <CreateProfile walletAddress={accounts[0]} />;
-              onConnect(true, accounts[0]);
-            navigate("/createprofile", { state: { walletAddress:  accounts[0] } });
-              
-
-
-
-
-
-            }
-
-            // Call the onConnect prop here
+      // check if account is active
+      // then check if account is in database
+      // if not, add to database and redirect to create profile page
+      // if so, redirect to home page
+  
+      // use db from firebase
+          
+  
+      // check if account is in database
+      const docRef = db.collection("users").doc(accounts[0]);
+  
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            console.log("Document data:", doc.data());
+            // redirect to home page
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+            // add to database
+            db.collection("users").doc(accounts[0]).set({
+              username: "username",
+              email: "email",
+              profilePic: "profilePic",
+              walletAddress: accounts[0],
+            });
+            // return <CreateProfile walletAddress={accounts[0]} />;
             onConnect(true, accounts[0]);
-
-            // redirect to create profile page with the wallet address as a prop
-
-            
-
-          })
-          .catch((error) => {
-            console.log("Error getting document:", error);
-          });
-      });
-
+            navigate("/createprofile", { state: { walletAddress:  accounts[0] } });
+          }
+  
+          // Call the onConnect prop here
+          onConnect(true, accounts[0]);
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+  
       //  const walletAddress = account.givenProvider.selectedAddress;
       const account = accounts[0];
-      // const walletAddress = account.givenProvider.selectedAddress;
       console.log(account);
-      // console.log(`Wallet: ${walletAddress}`);
-
       // return account;
     } else {
       console.log("No wallet");
     }
   }
+  
 
   const handleClick = () => {
-    // e.preventDefault();
-    console.log("The link was clicked.");
-    if (typeof window !== "undefined") {
-      // getAccount().then((response) => {
-      connect().then((response) => {
-        console.log(response);
-      });
+    if (!loading) {
+      console.log("Link was clicked!");
+      setLoading(true);
+      connect().then(() => setLoading(false)).catch(() => setLoading(false));
     }
   };
+  
 
   return <Button onClick={handleClick}>CONNECT YOUR WALLET</Button>
   ;
