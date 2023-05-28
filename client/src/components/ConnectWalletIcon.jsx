@@ -7,9 +7,10 @@ display:flex;
 align-items:center;
 // padding:5px;
 margin-right:55px;
-position:fixed;
+position: absolute;
 top:25px;
-right:20px;`
+right:20px;
+`
 
 const ConnectedIcon = styled.img`
 width:20px;

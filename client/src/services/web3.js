@@ -10,7 +10,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 //     console.error(error);
 //   });
 
-const contractAddress = "0xCAF024Bd7fe69354AD50316cC9e84e5c1461063f";
+const contractAddress = "0x8e5f4D1b2C3fdAB0979a2Fb1489f0Ec07017Ab3C";
 
 const contractArtifact = require("../contracts/BuyAnAnswerContract.json");
 const abi = contractArtifact.abi;

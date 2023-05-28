@@ -16,6 +16,7 @@ const Button = styled.button`
   position: fixed;
   top: 70px;
   right: 75px;
+  position: absolute;
 `;
 
 // async function getAccount() {

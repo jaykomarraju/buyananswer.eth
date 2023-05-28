@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
 import { db } from "../services/Firebase";
-import { useLocation } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Cont = styled.div`
   display: flex;
@@ -102,8 +102,7 @@ const ReviewButton = styled.button`
   }
 `;
 
-const AnswerQuestion =  ({ location }) => {
-
+const AnswerQuestion = ({ location }) => {
   // let state;
   // if (location && location.state) {
   //   state = location.state;
@@ -111,32 +110,37 @@ const AnswerQuestion =  ({ location }) => {
   //   return <div>Loading...</div>;
   // }
 
+  const navigate = useNavigate();
+
   const [Question, setQuestion] = useState({});
 
   const [answerText, setAnswerText] = useState("");
-    // check the questionID in recieved question collection within the user collection at the given wallet address
-    // get the question object from the questionID
-    // setQuestion(questionObject)
+  // check the questionID in recieved question collection within the user collection at the given wallet address
+  // get the question object from the questionID
+  // setQuestion(questionObject)
 
-    useEffect(() => {
-      // We'll handle the fetching logic later
-    }, []);
+  useEffect(() => {
+    // We'll handle the fetching logic later
+  }, []);
 
-    // if (!location || !location.state) {
-    //   return <div>Loading...</div>;
-    // }
-  
-    // // Now that we know location.state exists, we can use it
-    // const { walletAddress, questionID } = location.state;
+  // if (!location || !location.state) {
+  //   return <div>Loading...</div>;
+  // }
 
-    const {  questionId = '', walletAddress = '' } = location?.state || {};
+  // // Now that we know location.state exists, we can use it
+  // const { walletAddress, questionID } = location.state;
+
+  const { questionId = "", walletAddress = "" } = location?.state || {};
 
   useEffect(() => {
     console.log(walletAddress, questionId);
 
-
     const getQuestion = async () => {
-      const questionRef = db.collection("users").doc(walletAddress).collection("receivedQuestions").doc(questionId);
+      const questionRef = db
+        .collection("users")
+        .doc(walletAddress)
+        .collection("receivedQuestions")
+        .doc(questionId);
       const questionDoc = await questionRef.get();
       if (!questionDoc.exists) {
         console.log("No such document!");
@@ -144,32 +148,31 @@ const AnswerQuestion =  ({ location }) => {
         console.log("Document data:", questionDoc.data());
         setQuestion(questionDoc.data());
       }
-    }
+    };
 
     getQuestion();
-
   });
-
 
   const handleAnswer = (e) => {
     setAnswerText(e.target.value);
   };
 
-  const handleSubmit = useCallback(async () => {
-    // try {
-    //   // Get user's Ethereum address
-    //   const accounts = await instance.eth.getAccounts();
-    //   const userAddress = accounts[0];
+  //   const handleAnswer = async (e, questionId) => {
+  //   e.preventDefault();
+  //   navigate("/answer", { state: { questionId, walletAddress } });
+  // };
 
-    //   // Assuming you have the Firebase document id stored in a variable firebaseDocId
-    //   // Call the answerQuestion function
-    //   await instance.methods.answerQuestion(firebaseDocId).send({ from: userAddress });
+  const handleAnswerSubmit = async (e) => {
+    e.preventDefault();
 
-    //   console.log('Answer submitted successfully');
-    // } catch (error) {
-    //   console.error('An error occurred while submitting the answer:', error);
-    // }
-  }, []);
+    navigate('/anscnfrm', {
+      state: { 
+        answerText: answerText,
+        questionId: questionId,
+        walletAddress: walletAddress
+      },
+    });
+  };
 
   return (
     <div>
@@ -184,7 +187,7 @@ const AnswerQuestion =  ({ location }) => {
                 <Item>
                   <ProfilePicture></ProfilePicture>
 
-                  <Label>Username:  </Label>
+                  <Label>Username: </Label>
                   <Value>@{Question.asker}</Value>
                 </Item>
               </AskerDetails>
@@ -203,13 +206,10 @@ const AnswerQuestion =  ({ location }) => {
             placeholder="Enter your answer here..."
             onChange={handleAnswer}
           ></AnswerEntry>
-         
-            <ReviewButton onClick={handleSubmit}>
-              REVIEW BEFORE SUBMIT
-            </ReviewButton>
-            <Link to="/anscnfrm">
-              next
-          </Link>
+
+<ReviewButton onClick={handleAnswerSubmit}>
+  REVIEW BEFORE SUBMIT
+</ReviewButton>
 
           <BottomNavBar />
         </Wrap>

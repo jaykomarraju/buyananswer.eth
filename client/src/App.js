@@ -145,7 +145,7 @@ function App() {
               element={<SuccessQuestionOrder location={location} />}
             />
             <Route path="/answer" element={<AnswerQuestion location={location}/>} />
-            <Route path="/anscnfrm" element={<AnswerConfirmation />} />
+            <Route path="/anscnfrm" element={<AnswerConfirmation location={location}/>} />
           </>
         ) : (
           <>

@@ -23,7 +23,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -42,7 +43,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -55,7 +57,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -94,7 +97,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -112,7 +116,8 @@
       "name": "askQuestion",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -7046,12 +7051,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xCAF024Bd7fe69354AD50316cC9e84e5c1461063f",
-      "transactionHash": "0xe65d3e61aaad78a66ee921be8c95635ea22a73aaae1e202281060459970aebdd"
+      "address": "0x683B99A413914cD6d6E6Ed762b8fB727C303295C",
+      "transactionHash": "0x9401cde8f2bba964a1976695e06ccc042249f86cec70ada9a1b09a9b3cf2d448"
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2023-05-24T13:35:14.722Z",
+  "updatedAt": "2023-05-26T18:07:58.749Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},
