@@ -133,44 +133,109 @@ const ReceivedQuestionPlayground = ({ walletAddress }) => {
     getQuestions();
   }, []);
 
+  // const handleDecline = async (e, questionId) => {
+  //   e.preventDefault();
+  //   // console.log('questionId:', questionId);
+  //   const questionRef = db
+  //     .collection("users")
+  //     .doc(walletAddress)
+  //     .collection("receivedQuestions")
+  //     .doc(questionId);
+
+  //   // contract call
+  //   try {
+  //     await instance.methods
+  //       .declineQuestion(questionId)
+  //       .send({ from: walletAddress,
+  //         gas: 3000000, });
+  //   } catch (error) {
+  //     console.log(
+  //       "An error occurred while declining the question in the contract: ",
+  //       error
+  //     );
+  //     return;
+  //   }
+
+  //   // set the question's declined field to true
+  //   await questionRef.update({
+  //     declined: true,
+  //   });
+
+  //   // remove the question from the questions array
+  //   const newQuestions = questions.filter(
+  //     (question) => question.id !== questionId
+  //   );
+  //   setQuestions(newQuestions);
+  // };
+
+  const handleAnswer = async (e, questionId) => {
+    e.preventDefault();
+    navigate("/answer", { state: { questionId, walletAddress } });
+  };
+
+  // const submitAnswer = async () => {
+  //   try {
+  //     // we are calling the answerQuestion function from the smart contract
+  //     await instance.methods.answerQuestion(questionId).send({from: walletAddress});
+  
+  //     // get new balance
+  //     const balanceWei = await web3.eth.getBalance(walletAddress);
+  //     const balanceEther = web3.utils.fromWei(balanceWei, 'ether');
+  
+  //     console.log('New balance:', balanceEther);
+  //   } catch (error) {
+  //     console.error('An error occurred:', error);
+  //   }
+  // };
+
   const handleDecline = async (e, questionId) => {
     e.preventDefault();
-    // console.log('questionId:', questionId);
-    const questionRef = db
-      .collection("users")
-      .doc(walletAddress)
-      .collection("receivedQuestions")
-      .doc(questionId);
+    try{
+      // contract call
+      await instance.methods.declineQuestion(questionId).send({ from: walletAddress});
 
-    // contract call
-    try {
-      await instance.methods
-        .declineQuestion(questionId)
-        .send({ from: walletAddress,
-          gas: 3000000, });
+      // set the question's declined field to true
+      const questionRef = db
+        .collection("users")
+        .doc(walletAddress)
+        .collection("receivedQuestions")
+        .doc(questionId);
+      await questionRef.update({
+        declined: true,
+      });
+
+      // set the question's declined field to true in the user asking the question
+      const questionDoc = await questionRef.get();
+      const question = questionDoc.data();
+      const asker = question.asker;
+      const askerQuestionRef = db
+        .collection("users")
+        .doc(asker)
+        .collection("askedQuestions")
+        .doc(questionId);
+      await askerQuestionRef.update({
+        declined: true,
+      });
+
+      // set the question's declined field to true in the questions collection
+      const questionsRef = db.collection("questions").doc(questionId);
+      await questionsRef.update({
+        declined: true,
+      });
+
+      // remove the question from the questions array
+      const newQuestions = questions.filter(
+        (question) => question.id !== questionId
+      );
+      setQuestions(newQuestions);
     } catch (error) {
       console.log(
         "An error occurred while declining the question in the contract: ",
         error
       );
       return;
+
     }
-
-    // set the question's declined field to true
-    await questionRef.update({
-      declined: true,
-    });
-
-    // remove the question from the questions array
-    const newQuestions = questions.filter(
-      (question) => question.id !== questionId
-    );
-    setQuestions(newQuestions);
-  };
-
-  const handleAnswer = async (e, questionId) => {
-    e.preventDefault();
-    navigate("/answer", { state: { questionId, walletAddress } });
   };
 
   return (

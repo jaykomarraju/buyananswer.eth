@@ -11,7 +11,7 @@ import {db} from '../services/Firebase'
 
 const Wrapper = styled.div`
 //   padding: 5%;
-margin-top:60px;
+margin-top:120px;
 // background:green;
   display:flex;
     flex-direction:column;

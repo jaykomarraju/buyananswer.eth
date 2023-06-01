@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {db } from "../services/Firebase";
+import instance from "../contract";
 
 const Sect = styled.div`
   display: flex;
@@ -108,6 +109,87 @@ const AskedQuestionPlayground = ({ walletAddress }) => {
     getQuestions();
   }, []); 
 
+
+  // const handleDecline = async (e, questionId) => {
+  //   e.preventDefault();
+  //   try{
+  //     // contract call
+  //     await instance.methods.declineQuestion(questionId).send({ from: walletAddress});
+
+  //     // set the question's declined field to true
+  //     const questionRef = db
+  //       .collection("users")
+  //       .doc(walletAddress)
+  //       .collection("receivedQuestions")
+  //       .doc(questionId);
+  //     await questionRef.update({
+  //       declined: true,
+  //     });
+
+  //     // set the question's declined field to true in the user asking the question
+  //     const questionDoc = await questionRef.get();
+  //     const question = questionDoc.data();
+  //     const asker = question.asker;
+  //     const askerQuestionRef = db
+  //       .collection("users")
+  //       .doc(asker)
+  //       .collection("askedQuestions")
+  //       .doc(questionId);
+  //     await askerQuestionRef.update({
+  //       declined: true,
+  //     });
+
+  //     // set the question's declined field to true in the questions collection
+  //     const questionsRef = db.collection("questions").doc(questionId);
+  //     await questionsRef.update({
+  //       declined: true,
+  //     });
+
+  //     // remove the question from the questions array
+  //     const newQuestions = questions.filter(
+  //       (question) => question.id !== questionId
+  //     );
+  //     setQuestions(newQuestions);
+  //   } catch (error) {
+  //     console.log(
+  //       "An error occurred while declining the question in the contract: ",
+  //       error
+  //     );
+  //     return;
+
+  //   }
+  // };
+  const handleCancel = async (e, questionId) => {
+    e.preventDefault();
+
+    try {
+      // contract call
+      await instance.methods.cancelQuestion(questionId).send({ from: walletAddress });
+
+      // set the question's cancelled field to true
+
+      // set the question's cancelled field to true in the user asking the question
+
+      // set the question's cancelled field to true in the questions collection
+
+      // remove the question from the questions array
+      const newQuestions = questions.filter(
+        (question) => question.id !== questionId
+      );
+      setQuestions(newQuestions);
+    } catch (error) {
+      console.log(
+        "An error occurred while cancelling the question in the contract: ",
+        error
+      );
+      return;
+    }
+  };
+
+
+
+
+
   return (
     <QuestionsPlayground>
       {questions.map((question) => (
@@ -132,6 +214,7 @@ const AskedQuestionPlayground = ({ walletAddress }) => {
                 <AText>DECLINED: {question.declined}</AText>
             </Flexer> */}
           </Sect2>
+          <DeclineButton onClick={(e) => handleCancel(e, question.id)}>CANCEL</DeclineButton>
         </ReceivedQuestion>
       ))}
     </QuestionsPlayground>
