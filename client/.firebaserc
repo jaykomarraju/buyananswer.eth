@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "buyananswer-eth"
-  }
+  },
+  "targets": {
+    "buyananswer-eth": {
+      "hosting": {
+        "app": [
+          "app-buyananswer"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

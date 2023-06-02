@@ -8,7 +8,7 @@ if (window.ethereum) {
 } else if (window.web3) {
     web3 = new Web3(window.web3.currentProvider);
 } else {
-    window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    window.alert('Non-Ethereum browser detected. You should consider trying Coinbase, MetaMask, Brave Browser, etc.!');
 }
 
 export default web3;

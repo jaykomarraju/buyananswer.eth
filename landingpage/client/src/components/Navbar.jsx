@@ -71,6 +71,11 @@ const Right = styled.div`
   margin-right: 25px;
 `;
 
+const A = styled.a`
+  text-decoration: none;
+  color: #000;
+`;
+
 const Navbar = () => {
   return (
     <Container>
@@ -81,12 +86,14 @@ const Navbar = () => {
         </Link>
       </Middle>
       <Right>
-        <Link to="/enterapp">
+        {/* <Link to="/enterapp"> */}
         {/* <a href="http://localhost:3001/"> */}
+        <A href="https://app.buyananswer.io/">
           <Button>Enter App</Button>
+        </A>
           {/* app */}
         {/* </a> */}
-        </Link>
+        {/* </Link> */}
       </Right>
     </Container>
   );

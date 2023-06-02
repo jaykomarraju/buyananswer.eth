@@ -5,6 +5,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import { db } from "../services/Firebase";
 import instance from "../contract";
+import web3 from "../web3";
 
 const Wrapper = styled.div`
   display: flex;
@@ -97,31 +98,29 @@ const CenterWrap = styled.div`
 // };
 
 const SuccessQuestionOrder = ({ location }) => {
-
-  
-
-
   const [ethPrice, setEthPrice] = useState(null);
 
   useEffect(() => {
-    fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
-      .then(response => response.json())
-      .then(data => setEthPrice(data.ethereum.usd));
+    fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+    )
+      .then((response) => response.json())
+      .then((data) => setEthPrice(data.ethereum.usd));
   }, []);
 
   let state;
   if (location && location.state) {
     state = location.state;
-
-    
   } else {
     return <div>Loading...</div>;
   }
 
-  
-
   const handleClick = async () => {
     try {
+      // get the current average gas price from the network
+      const gasPrice = await web3.eth.getGasPrice();
+      console.log("gasPrice: " + gasPrice);
+
       // Store question in firebase and get the document id.
       const docRef = await db.collection("questions").add(state.question);
       console.log("Question written with ID: ", docRef.id);
@@ -137,18 +136,21 @@ const SuccessQuestionOrder = ({ location }) => {
         const answererDoc = answererSnapshot.docs[0];
         console.log(answererDoc.id);
 
-
-        console.log("answererDoc.id: "+ answererDoc.id);
+        console.log("answererDoc.id: " + answererDoc.id);
         console.log(docRef.id);
-        console.log("asker: "+ state.walletAddress);
+        console.log("asker: " + state.walletAddress);
         console.log(state.question.total);
         console.log(state.question.total / ethPrice);
 
         // Call the contract's askQuestion function
-        await instance.methods.askQuestion(docRef.id,  answererDoc.id).send({
-          from: state.walletAddress, 
-          value: window.web3.utils.toWei((state.question.total / ethPrice).toString(), 'ether'),
+        await instance.methods.askQuestion(docRef.id, answererDoc.id).send({
+          from: state.walletAddress,
+          value: window.web3.utils.toWei(
+            (state.question.total / ethPrice).toString(),
+            "ether"
+          ),
           gas: 3000000,
+          gasPrice: gasPrice,
         });
 
         // Then, add the question to the 'askedQuestions' subcollection.
@@ -175,7 +177,6 @@ const SuccessQuestionOrder = ({ location }) => {
       console.error("Error: ", error);
     }
   };
-
 
   return (
     <Wrapper>
