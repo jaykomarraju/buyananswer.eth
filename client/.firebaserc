@@ -5,7 +5,7 @@
   "targets": {
     "buyananswer-eth": {
       "hosting": {
-        "app": [
+        "app-buyananswer": [
           "app-buyananswer"
         ]
       }

@@ -3,7 +3,8 @@ import BuyAnAnswerContract from './contracts/BuyAnAnswerContract.json'; // impor
 
 const instance = new web3.eth.Contract(
     BuyAnAnswerContract.abi, // ABI from JSON
-    '0x98F4d8813dB15576a06a87fe0460C2BfA3a29C18' // address of deployed contract
+    '0x8586FAa8588c589B804EC4724E69455B9e6564fB' // address of deployed contract
+    // '0x2f465d927e88F588b724Bfe444F938A1c304232B'
 );
 
 export default instance;
