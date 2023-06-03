@@ -45,7 +45,7 @@ contract BuyAnAnswerContract {
         require(msg.sender == question.answerer, "Only selected user can answer the question");
         require(!question.cancelled, "The question has been cancelled");
         
-        uint128 fee = uint128(question.amount * 5 / 100);  
+        uint128 fee = uint128(question.amount * 8 / 100);  
         uint128 payout = question.amount - fee;   
 
         question.answerer.transfer(payout);
