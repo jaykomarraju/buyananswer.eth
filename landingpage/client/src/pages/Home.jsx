@@ -23,7 +23,7 @@ const Home = () => {
       <About2 />
       <About />
       <How />
-      <Footer />
+      {/* <Footer /> */}
       <LandingFooter/>
     </div>
   );
