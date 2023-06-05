@@ -8,6 +8,7 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import UnAuthBottomNavBar from "../components/UnAuthBottomNavBar";
+import Banner from "../components/Banner";
 
 
 const Cont = styled.div`
@@ -261,7 +262,7 @@ const Question = styled.p`flex:7; text-align:left;padding-left:10px;`
 
 const Fin = styled.p`flex:1;font-size:25px;`
 
-const Banner = styled.div`
+const Bannera = styled.div`
 color:teal;
 text-transform:uppercase;
 margin-bottom:55px;
@@ -275,7 +276,8 @@ const UnConnectedBoard = () => {
 
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
-  return (
+  return (<>
+    <Banner/>
     <Cont>
     <Wrapper>
       {/* <ConnectWalletIcon /> */}
@@ -287,9 +289,9 @@ const UnConnectedBoard = () => {
     <Head2>QUESTION BOARD</Head2>
       <Middle>
         
-        <Banner>
+        <Bannera>
             Wallet not connected. 
-        </Banner>
+        </Bannera>
         <Label>Please connect your ethereum wallet to view your question board.</Label>
 
         
@@ -306,7 +308,7 @@ const UnConnectedBoard = () => {
       {/* </BottomWrap> */}
       {/* <BottomNavBar /> */}
       <UnAuthBottomNavBar />
-    </Wrapper></Cont>
+    </Wrapper></Cont></>
   );
 };
 

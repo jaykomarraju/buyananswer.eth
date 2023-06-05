@@ -9,6 +9,7 @@ import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
 import contract from "../services/web3";
 import { db } from "../services/Firebase";
+import Banner from "../components/Banner";
 // import AuthContext from "../contexts/AuthContext";
 
 // This is the page that shows the user's profile and history
@@ -456,7 +457,8 @@ const ProfHistPage = ({ walletAddress }) => {
 
 
 
-  return (
+  return (<>
+    <Banner/>
     <Cont>
       <Wrapper>
         {/* <ConnectWalletIcon /> */}
@@ -547,7 +549,7 @@ const ProfHistPage = ({ walletAddress }) => {
         {/* </BottomWrap> */}
         <BottomNavBar />
       </Wrapper>
-    </Cont>
+    </Cont></>
   );
 };
 

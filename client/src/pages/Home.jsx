@@ -6,6 +6,9 @@ import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import DarkModeButton from "../components/DarkModeButton";
 import { db, storage } from "../services/Firebase";
+import Banner from "../components/Banner";
+
+
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -83,7 +86,13 @@ const Wrap2 = styled.div`
 `;
 
 const Home = () => {
+
+  const [banner, setBanner] = useState(true);
   const [username, setUsername] = useState("");
+
+  const handleBanner = () => {
+    setBanner(false);
+  };
 
   const handleClick = () => {
     console.log("looking for: ", username);
@@ -112,6 +121,7 @@ const Home = () => {
 
   return (
     <Container>
+       <Banner/>
       <Wrapper>
         <Wrap2>
           <ConnectWalletIcon />

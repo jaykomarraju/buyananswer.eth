@@ -8,6 +8,7 @@ import DeclinedQuestionPlayground from '../components/DeclinedQuestionsPlaygroun
 import ReceivedQuestionPlayground from '../components/ReceivedQuestionPlayground';
 import AskedQuestionPlayground from '../components/AskedQuestionPlayground';
 import {db} from '../services/Firebase'
+import Banner from '../components/Banner';
 
 const Wrapper = styled.div`
 //   padding: 5%;
@@ -79,8 +80,8 @@ const MyBoard = ({ walletAddress }) => {
     setSelectedWindow(<AskedQuestionPlayground walletAddress={walletAddress}/>)
   }
     
-  return (
-
+  return (<>
+<Banner/>
     <Wrapper>
         {/* <ConnectWalletIcon/> */}
         <Playground>
@@ -100,7 +101,7 @@ const MyBoard = ({ walletAddress }) => {
             </QuestionWrapper>
         </Playground>
         <BottomNavBar/>
-    </Wrapper>
+    </Wrapper></>
   )
 }
 

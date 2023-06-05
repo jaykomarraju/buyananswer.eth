@@ -11,6 +11,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import contract from "../services/web3";
 import { db, storage } from "../services/Firebase";
+import Banner from "../components/Banner";
 
 const Cont = styled.div`
   display: flex;
@@ -294,6 +295,7 @@ const CreateProfile = ({ walletAddress }) => {
 
   return (
     <Cont>
+      <Banner/>
       <Wrapper>
         <Head2>Create Profile</Head2>
         <SubHead>and start answering questions today!</SubHead>

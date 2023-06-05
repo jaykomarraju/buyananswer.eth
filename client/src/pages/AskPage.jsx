@@ -6,6 +6,7 @@ import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import profile from "../assets/profile.jpg";
 import { db } from "../services/Firebase";
 import SuccessQuestionOrder from "./SuccessQuestionOrder";
+import Banner from "../components/Banner";
 
 const Container = styled.div`
   height: 100vh;
@@ -142,14 +143,14 @@ const AskPage = ({ walletAddress }) => {
   // username must be resolved to a address
 
   // const [username, setUsername] = useState(Board.username);
-  const [name, setName] = useState(Board.name);
-  const [headline, setHeadline] = useState(Board.headline);
-  const [bio, setBio] = useState(Board.bio);
+  const [name, setName] = useState("");
+  const [headline, setHeadline] = useState("");
+  const [bio, setBio] = useState("");
 
   const [questionText, setQuestionText] = useState("");
-  const [price, setPrice] = useState(7);
+  const [price, setPrice] = useState(5);
   const [priorityBonus, setPriorityBonus] = useState(0);
-  const [profilePicture, setProfilePicture] = useState(profile);
+  const [profilePicture, setProfilePicture] = useState();
 
   const [total, setTotal] = useState(parseInt(price) + parseInt(priorityBonus));
 
@@ -269,6 +270,8 @@ const AskPage = ({ walletAddress }) => {
 
   return (
     <Container>
+
+    <Banner/>
       <Wrapper>
         <ConnectWalletIcon />
         <Url>BUYANANSWER.IO/{username}</Url>

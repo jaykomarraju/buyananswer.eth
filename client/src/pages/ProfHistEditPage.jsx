@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from "../components/BottomNavBar";
@@ -6,7 +6,8 @@ import ClosedHistory from "../components/ClosedHistory";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import OpenHistory from "../components/OpenHistory";
 import SwitchingHistoryComponent from "../components/SwitchingHistoryComponent";
-import contract from "../services/web3";
+// import contract from "../services/web3";
+import { db } from "../services/Firebase";
 
 const Cont = styled.div`
   display: flex;
@@ -263,39 +264,8 @@ const Fin = styled.p`
   font-size: 25px;
 `;
 
-const ProfHistEditPage = () => {
-  const [user, setUser] = useState(null);
-
-  const handleUser = (user) => {
-    setUser(user);
-  };
-
-  // const Profile = {
-  // //   name: "John Doe",
-  // //   username: "johndoe",
-  // //   email: "john.doe@gmail.com",
-  // //   description: "I am a software engineer",
-  //   socials: [
-  //     {
-  //       platform: "Twitter",
-  //       link: "https://twitter.com/johndoe",
-  //     },
-  //     {
-  //       platform: "Instagram",
-  //       link: "https://instagram.com/johndoe",
-  //     },
-  //     {
-  //       platform: "LinkedIn",
-  //       link: "https://linkedin.com/johndoe",
-  //     },
-  //   ],
-  // //   boardDescription:
-  // //     "I am a software engineer. I am answering questions on the blockchain. If you have any questions, feel free to ask me.",
-  // //   minimumQuestionPrice: 5.0,
-  // };
-
-  // const [profile, setProfile] = useState(Profile);
-
+const ProfHistEditPage = ({ walletAddress }) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -308,50 +278,74 @@ const ProfHistEditPage = () => {
   const [minimumPrice, setMinimumPrice] = useState("");
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
-  const handleSave = () => {
-    console.log("Saving profile");
+  // Call the fetch data function on component mount
+  useEffect(() => {
+    fetchUserData(walletAddress);
+  }, [walletAddress]);
 
-    const minPriceInt = parseInt(minimumPrice);
-
-    contract.methods.updateUser(description, boardDescription, minPriceInt).send({
-      from: "0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55",
-      gas: 1000000,
-    });
-
-    contract.methods
-      .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
-      .call()
-      .then((user) => {
-        console.log(user);
-      });
-
-    // handleUser(user);
-
-    console.log("Profile saved");
+  // Function to fetch user data from Firebase
+  const fetchUserData = async (walletAddress) => {
+    try {
+      const userDoc = await db.collection('users').doc(walletAddress).get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        // Now, set the state using the data
+        setUsername(userData.username);
+        setEmail(userData.email);
+        setName(userData.name);
+        setDescription(userData.headline);
+        setBoardDescription(userData.description);
+        setMinimumPrice(userData.minPrice);
+      } else {
+        console.log('No such document!');
+      }
+    } catch (error) {
+      console.error("Error getting document:", error);
+    }
   };
 
-  contract.methods
-    .getUser("0xA5a062Cc7aA1F44161153E8A1Deb4edB916fbE55")
-    .call()
-    .then((user) => {
-      // console.log(user);
-      // handleUser(user);
-      setUsername(user.username);
-      setEmail(user.email);
-      setName(user.name);
-      setPrevDescription(user.headline);
-      setPrevBoardDescription(user.bio);
-      // setDescription(user.headline);
-      // setBoardDescription(user.bio);
-      setMinimumPrice(user.minimumPrice);
-    });
+  const handleSave = () => {
+    console.log("Saving profile");
+    // Updating the user data in Firebase
+    db.collection("users")
+      .doc(walletAddress)
+      .set(
+        {
+          username: username,
+          email: email,
+          name: name,
+          headline: description,
+          description: boardDescription,
+          minPrice: minimumPrice,
+        },
+        { merge: true }
+      ) // Merge option prevents overwriting of the existing fields in the document
+      .then(() => {
+        console.log("Profile updated successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating profile: ", error);
+      });
+  };
 
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
 
   const handleDescriptionChange = (e) => {
     // setDescription("")
     setDescription(e.target.value);
     console.log(description);
+  };
+
+  const handleBoardDescriptionChange = (e) => {
+    // setBoardDescription("")
+    setBoardDescription(e.target.value);
+    console.log(boardDescription);
+  };
+
+  const handleMinimumPriceChange = (e) => {
+    // setMinimumPrice("")
+    setMinimumPrice(e.target.value);
+    console.log(minimumPrice);
   };
 
   return (
@@ -383,14 +377,14 @@ const ProfHistEditPage = () => {
             </Entries>
           </Section4>
           {/* <Section> */}
-            {/* <Spread2>
+          {/* <Spread2>
             <First>VIEW HISTORY</First>
             <Second2>V</Second2>
           </Spread2> */}
-            {/* <ClosedHistory/> */}
-            {/* <OpenHistory/> */}
-            {/* {historySelection} */}
-            {/* <SwitchingHistoryComponent /> */}
+          {/* <ClosedHistory/> */}
+          {/* <OpenHistory/> */}
+          {/* {historySelection} */}
+          {/* <SwitchingHistoryComponent /> */}
           {/* </Section> */}
           <Section>
             <Spread>

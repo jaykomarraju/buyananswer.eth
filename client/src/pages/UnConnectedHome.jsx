@@ -6,6 +6,7 @@ import ConnectWalletButton from "../components/ConnectWalletButton";
 import ConnectWalletIcon from "../components/ConnectWalletIcon";
 import UnAuthBottomNavBar from "../components/UnAuthBottomNavBar";
 import { db } from "../services/Firebase";
+import Banner from "../components/Banner";
 
 const Wrapper = styled.div`
   //   padding: 5%;
@@ -103,6 +104,7 @@ const UnConnectedHome = () => {
 
   return (
     <Container>
+      <Banner/>
     <Wrapper>
       {/* <ConnectWalletIcon /> */}
       <Top>

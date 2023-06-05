@@ -130,7 +130,7 @@ function App() {
               path="/createprofile"
               element={<CreateProfile walletAddress={walletAddress} />}
             />
-            <Route path="/editprofile" element={<ProfHistEditPage />} />
+            <Route path="/editprofile" element={<ProfHistEditPage walletAddress={walletAddress}/>} />
             <Route path="/myboard" element={<MyBoard walletAddress={walletAddress} />} />
             <Route path="/answered" element={<AnswerQuestionPlayground />} />
             <Route path="/declined" element={<DeclinedQuestionPlayground />} />

@@ -5,6 +5,7 @@ import BottomNavBar from '../components/BottomNavBar';
 import ConnectWalletButton from '../components/ConnectWalletButton';
 import ConnectWalletIcon from '../components/ConnectWalletIcon';
 import UnAuthBottomNavBar from '../components/UnAuthBottomNavBar';
+import Banner from '../components/Banner';
 
 const Container = styled.div`
   height:100vh;
@@ -89,7 +90,7 @@ font-size:20px;
 padding:10px;
 font-weight:600;`
 
-const Banner = styled.div`
+const Bannera = styled.div`
 color:teal;
 text-transform:uppercase;
 margin-top:-100px;
@@ -103,13 +104,14 @@ border-radius:20px;
 const UnAuthAskPageView = () => {
   return (
     <Container>
+      <Banner/>
     <Wrapper>
         <Link to="/askpage">
         <ConnectWalletButton/></Link>
         
-        <Banner>
+        <Bannera>
             Connect your Ethereum Wallet to ask a question to @johndoe
-        </Banner>
+        </Bannera>
         <Url>BUYANANSWER.COM/JOHNDOE</Url>
         <BoardDesc>
             <Pic>
