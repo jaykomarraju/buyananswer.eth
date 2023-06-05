@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AnsweredQuestionTicket from "./AnsweredQuestionTicket";
+import { db } from "../services/Firebase";
 
 const Sect = styled.div`
   display: flex;
@@ -24,7 +25,6 @@ const ReceivedQuestion = styled.div`
 const QText = styled.p`
   flex: 8;
   padding: 25px;
-
 `;
 
 const QPrice = styled.p`
@@ -85,50 +85,75 @@ const PublicCheck = styled.div`
 
 const Label = styled.p``;
 
-const AnswerQuestionPlayground = () => {
-  const answeredQuestions = [
-    {
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$12",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      date: "March 22nd, 2021",
-      askUser: "justin",
-      answerUser: "joe",
-    },
-    {
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$12",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      date: "March 22nd, 2021",
-      askUser: "ronnie",
-      answerUser: "joe",
-    },
-    {
-      question:
-        "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
-      price: "$12",
-      answer:
-        "KARAR KARALorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      date: "March 22nd, 2021",
-      askUser: "don",
-      answerUser: "joe",
-    },
-  ];
+const AnswerQuestionPlayground = ({ walletAddress }) => {
+  // const answeredQuestions = [
+  //   {
+  //     question:
+  //       "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+  //     price: "$12",
+  //     answer:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  //     date: "March 22nd, 2021",
+  //     askUser: "justin",
+  //     answerUser: "joe",
+  //   },
+  //   {
+  //     question:
+  //       "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+  //     price: "$12",
+  //     answer:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  //     date: "March 22nd, 2021",
+  //     askUser: "ronnie",
+  //     answerUser: "joe",
+  //   },
+  //   {
+  //     question:
+  //       "Hey Justin. I’m a student in UNC studying CS and Econ and I’m trying to start a company. What is the typical attitude toward college founders in the valley? Also do investors prefer a demo or a pitch?",
+  //     price: "$12",
+  //     answer:
+  //       "KARAR KARALorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  //     date: "March 22nd, 2021",
+  //     askUser: "don",
+  //     answerUser: "joe",
+  //   },
+  // ];
+
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
+
+  const getAnsweredQuestions = async () => {
+    const questionsRef = db
+      .collection("users")
+      .doc(walletAddress)
+      .collection("receivedQuestions");
+    const snapshot = await questionsRef.where("answered", "==", true).get();
+    if (!snapshot.empty) {
+      const questions = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        questions.push({ ...data, id: doc.id });
+      });
+      console.log("answered questions fetched:", questions);
+      setAnsweredQuestions(questions);
+    } else {
+      console.log("No documents found!");
+    }
+  };
+
+  useEffect(() => {
+    getAnsweredQuestions();
+  }, []);
 
   return (
     <QuestionsPlayground>
       {answeredQuestions.map((answer) => (
         <AnsweredQuestionTicket
           question={answer.question}
-          price={answer.price}
+          price={answer.total}
           answer={answer.answer}
-          date={answer.date}
-          askUser={answer.askUser}
-          answerUser={answer.answerUser}
+          date={answer.timestamp?.toDate().toLocaleString()}
+          askUser={answer.asker}
+          answerUser={answer.username}
         />
       ))}
       {/* <AnsweredQuestionTicket

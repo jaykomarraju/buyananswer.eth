@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {db } from "../services/Firebase";
 import instance from "../contract";
+import AnsweredQuestionTicket from "./AnsweredQuestionTicket";
 
 const Sect = styled.div`
   display: flex;
@@ -170,7 +171,7 @@ const AskedQuestionPlayground = ({ walletAddress }) => {
 
       // set the question's cancelled field to true in the user asking the question
 
-      // set the question's cancelled field to true in the questions collection
+      // set the question's cancelled field to true in the answerer users questions collection
 
       // remove the question from the questions array
       const newQuestions = questions.filter(
@@ -192,7 +193,7 @@ const AskedQuestionPlayground = ({ walletAddress }) => {
 
   return (
     <QuestionsPlayground>
-      {questions.map((question) => (
+      {/* {questions.map((question) => (
         <ReceivedQuestion key={question.id}>
           <AText>QUESTION TO: @{question.username}</AText>
           <Sect>
@@ -205,18 +206,61 @@ const AskedQuestionPlayground = ({ walletAddress }) => {
             </Flexer2>
           </Sect>
           <Sect2>
-            {/* <DeclineButton>X</DeclineButton>
-            <Link to="/ansques">
-              <ANSButton>ANSWER</ANSButton>
-            </Link> */}
-            {/* <Flexer>
-                <AText>ANSWERED: {question.answered}</AText>
-                <AText>DECLINED: {question.declined}</AText>
-            </Flexer> */}
           </Sect2>
           <DeclineButton onClick={(e) => handleCancel(e, question.id)}>CANCEL</DeclineButton>
         </ReceivedQuestion>
-      ))}
+      ))} */}
+
+{questions.map((question) => {
+        if (question.answered) {
+          // Render AnsweredQuestionTicket for answered questions.
+          return <AnsweredQuestionTicket key={question.id} question={question.question}
+          price={question.total}
+          answer={question.answer}
+          date={question.timestamp?.toDate().toLocaleString()}
+          askUser={question.asker}
+          answerUser={question.username}  />
+        } else if (question.declined) {
+          // Render Declined question without any action button
+          return (
+            <ReceivedQuestion key={question.id}>
+              <AText>QUESTION TO: @{question.username}</AText>
+              <Sect>
+                <Flexer>
+                  <QText>{question.question}</QText>
+                </Flexer>
+                <Flexer2>
+                  <QPrice>$ {question.total}</QPrice>
+                  <Date>{question.timestamp?.toDate().toLocaleString()}</Date>
+                </Flexer2>
+              </Sect>
+              <Sect2>
+                <AText>Question declined.</AText>
+              </Sect2>
+            </ReceivedQuestion>
+          );
+        }
+
+        // For all other questions (neither answered nor declined).
+        return (
+          <ReceivedQuestion key={question.id}>
+            <AText>QUESTION TO: @{question.username}</AText>
+            <Sect>
+              <Flexer>
+                <QText>{question.question}</QText>
+              </Flexer>
+              <Flexer2>
+                <QPrice>$ {question.total}</QPrice>
+                <Date>{question.timestamp?.toDate().toLocaleString()}</Date>
+              </Flexer2>
+            </Sect>
+            <Sect2>
+              {/* Show cancel button if question is not cancelled yet. */}
+              <DeclineButton onClick={(e) => handleCancel(e, question.id)}>CANCEL</DeclineButton>
+            </Sect2>
+          </ReceivedQuestion>
+        );
+      })}
     </QuestionsPlayground>
   );
 };

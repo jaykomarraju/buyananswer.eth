@@ -170,18 +170,67 @@ const AnswerConfirmation = () => {
     return <div>Loading...</div>; // or any other 'loading' component you want to display
   }
 
+  // Helper function to update Firestore
+  const markQuestionAsAnswered = async (userId, questionId) => {
+    const batch = db.batch();
+
+    const questionRef = db.collection("questions").doc(questionId);
+    batch.update(questionRef, { answered: true, answer: answerText });
+
+    // const askedQuestionRef = db
+    //   .collection("users")
+    //   .doc(userId)
+    //   .collection("askedQuestions")
+    //   .doc(questionId);
+    // batch.update(askedQuestionRef, { answered: true });
+
+    const askedQuestionRef = db
+      .collection("users")
+      .doc(getAskerDocId(question.askUser))
+      .collection("askedQuestions")
+      .doc(questionId);
+    batch.update(askedQuestionRef, { answered: true, answer: answerText });
+
+    const receivedQuestionRef = db
+      .collection("users")
+      .doc(walletAddress)
+      .collection("receivedQuestions")
+      .doc(questionId);
+    batch.update(receivedQuestionRef, { answered: true, answer: answerText });
+
+    return batch.commit();
+  };
+
+  const getAskerDocId = async (username) => {
+    const usersRef = db.collection("users");
+    const snapshot = await usersRef.where("username", "==", username).get();
+    if (snapshot.empty) {
+      console.log("No matching documents.");
+      return;
+    }
+
+    snapshot.forEach((doc) => {
+      console.log(doc.id, "=>", doc.data());
+    });
+  };
+
   const submitAnswer = async () => {
     try {
       // we are calling the answerQuestion function from the smart contract
-      await instance.methods.answerQuestion(questionId).send({from: walletAddress});
-  
+      await instance.methods
+        .answerQuestion(questionId)
+        .send({ from: walletAddress });
+
+      // Mark the question as answered in Firestore
+      await markQuestionAsAnswered(walletAddress, questionId);
+
       // get new balance
       const balanceWei = await web3.eth.getBalance(walletAddress);
-      const balanceEther = web3.utils.fromWei(balanceWei, 'ether');
-  
-      console.log('New balance:', balanceEther);
+      const balanceEther = web3.utils.fromWei(balanceWei, "ether");
+
+      console.log("New balance:", balanceEther);
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
     }
   };
 

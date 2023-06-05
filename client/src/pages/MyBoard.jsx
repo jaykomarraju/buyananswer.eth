@@ -69,7 +69,7 @@ const MyBoard = ({ walletAddress }) => {
   }
 
   const handleAnswerClick = () => {
-    setSelectedWindow(<AnswerQuestionPlayground/>)
+    setSelectedWindow(<AnswerQuestionPlayground walletAddress={walletAddress}/>)
   }
 
   const handleDeclineClick = () => {
