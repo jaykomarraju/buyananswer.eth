@@ -81,7 +81,7 @@ const MyBoard = ({ walletAddress }) => {
   }
     
   return (<>
-<Banner/>
+{/* <Banner/> */}
     <Wrapper>
         {/* <ConnectWalletIcon/> */}
         <Playground>

@@ -271,10 +271,10 @@ const AskPage = ({ walletAddress }) => {
   return (
     <Container>
 
-    <Banner/>
+    {/* <Banner/> */}
       <Wrapper>
         <ConnectWalletIcon />
-        <Url>BUYANANSWER.IO/{username}</Url>
+        <Url>app.BUYANANSWER.io/{username}</Url>
         <BoardDesc>
           <Pic>
             <ProfilePicture src={profilePicture}></ProfilePicture>

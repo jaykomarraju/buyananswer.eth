@@ -277,7 +277,7 @@ const UnConnectedBoard = () => {
   // const [historySelection, setHistorySelection] = useState(<ClosedHistory/>);
 
   return (<>
-    <Banner/>
+    {/* <Banner/> */}
     <Cont>
     <Wrapper>
       {/* <ConnectWalletIcon /> */}

@@ -121,7 +121,7 @@ const Home = () => {
 
   return (
     <Container>
-       <Banner/>
+       {/* <Banner/> */}
       <Wrapper>
         <Wrap2>
           <ConnectWalletIcon />

@@ -278,7 +278,7 @@ const UnConnectedProfile = () => {
 
   return (
 <>
-    <Banner/>
+    {/* <Banner/> */}
     <Cont>
     <Wrapper>
       {/* <ConnectWalletIcon /> */}

@@ -295,7 +295,7 @@ const CreateProfile = ({ walletAddress }) => {
 
   return (
     <Cont>
-      <Banner/>
+      {/* <Banner/> */}
       <Wrapper>
         <Head2>Create Profile</Head2>
         <SubHead>and start answering questions today!</SubHead>

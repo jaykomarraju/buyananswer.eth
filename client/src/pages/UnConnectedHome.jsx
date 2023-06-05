@@ -104,7 +104,7 @@ const UnConnectedHome = () => {
 
   return (
     <Container>
-      <Banner/>
+      {/* <Banner/> */}
     <Wrapper>
       {/* <ConnectWalletIcon /> */}
       <Top>

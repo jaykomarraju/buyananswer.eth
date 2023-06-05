@@ -458,7 +458,7 @@ const ProfHistPage = ({ walletAddress }) => {
 
 
   return (<>
-    <Banner/>
+    {/* <Banner/> */}
     <Cont>
       <Wrapper>
         {/* <ConnectWalletIcon /> */}

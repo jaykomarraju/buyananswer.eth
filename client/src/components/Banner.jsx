@@ -11,8 +11,8 @@ const Banneri = styled.div`
   font-size: 1.25rem;
   text-decoration: none;
   font-weight: 700;
-  margin: 0;
-  margin-bottom: 1rem;
+  margin:0;
+  margin-bottom: 10px;
   font-family: "Major Mono Display", monospace;
 `;
 
@@ -55,11 +55,13 @@ const Banner = () => {
     return (    
         <>
         {banner && (
+          <div>
             <Banneri onClick={handleBanner}>
               <A href="https://base.org">
                 We're currently live on Base Goerli Testnet. Click here to learn
               </A>
             </Banneri>
+            </div>
           )}
           </>
     )

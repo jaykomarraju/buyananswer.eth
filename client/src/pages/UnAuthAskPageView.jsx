@@ -104,7 +104,7 @@ border-radius:20px;
 const UnAuthAskPageView = () => {
   return (
     <Container>
-      <Banner/>
+      {/* <Banner/> */}
     <Wrapper>
         <Link to="/askpage">
         <ConnectWalletButton/></Link>

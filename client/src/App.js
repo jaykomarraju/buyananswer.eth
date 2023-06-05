@@ -33,6 +33,7 @@ import DarkModeHome from "./pages/DarkModeHome";
 import Login from "./utility/Login";
 import DisconnectConnect from "./components/DisconnectConnect";
 import { useLocation } from "react-router-dom";
+import Banner from "./components/Banner";
 
 
 const Container = styled.div`
@@ -110,11 +111,13 @@ function App() {
 
       {isConnected ? (
         <>
+        <Banner/>
           <ConnectWalletIcon walletAddress={walletAddress} />
           <DisconnectConnect onDisconnect={handleConnection} />
         </>
-      ) : (
-        <ConnectWalletButton onConnect={handleConnection} />
+      ) : (<>
+        <Banner/>
+        <ConnectWalletButton onConnect={handleConnection} /></>
       )}
 
       <Routes>
