@@ -18,23 +18,6 @@ Our choice of cryptocurrency, specifically Ethereum, as our transaction medium i
 
 We invite you to participate in this WEB 3.0 vision by joining us on the Ethereum blockchain. Although currently in beta, BUYANANSWER.ETH assures paramount security and transparency.
 
-## Marketing Strategy
-
-### 1. SEO Optimization
-Enhancing visibility is vital to attracting a wider user base. By employing on-page and off-page SEO strategies, we can optimize our website to better cater to search engine algorithms.
-
-### 2. Online Directory Listings
-Getting listed on online directories can help increase exposure and drive more traffic to our site.
-
-### 3. Content Generation
-Creating informative and keyword-rich content not only boosts our search engine rankings but also improves user engagement and increases website traffic.
-
-### 4. Social Media Promotion
-Promoting our website on various social media platforms like Facebook, Twitter, and LinkedIn allows us to connect with a wider audience and generate more inbound links.
-
-### 5. Google AdWords
-Leveraging Google AdWords for paid advertising helps position our website more prominently on Google and affiliated websites, directing more traffic our way.
-
 ## Future Development
 
 Our post-MVP development plan involves integrating a community element to the product. We aim to establish a cryptocurrency-based chat room for each board. Entry will be exclusive to users who have transacted on that board, facilitating focused discussions on topics and answered questions relevant to that community.
